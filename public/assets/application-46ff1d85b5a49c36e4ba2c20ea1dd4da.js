@@ -861,12 +861,9 @@ var KenKenGame = function () {
         var activeItem = activeItem || self.steps.getActiveItem();
         var size = self.puzzleData.size;
         var currentState = self.steps.getCurrentState();
-        //var indexValue = (activePuzzleItem.indexX - 1)* currentStateObject.size + activePuzzleItem.indexY;
         var indexValue = (activeItem.indexX - 1) * size + activeItem.indexY;
-        //var notesArray = currentStateObject.notes[indexValue-1];
         var notesArray = currentState.notes[indexValue - 1];
         var domArray = $('.notesItem');
-        //var size = currentStateObject.size;
         var i = 1;
         var currentNote;
 
@@ -1006,6 +1003,8 @@ var KenKenGame = function () {
                         });
                         currentItem.find('.itemValue').text('');
                         currentItem.removeClass('withValue');
+
+                        prepareStateObjectTo(kenken.game.autoSave);
                     } else {
                         clearAllNotes();
                     }
