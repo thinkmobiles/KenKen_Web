@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <title></title>
+</head>
+<body>
+
+<div class="box-inner-main">
+    <div id="trash1"></div>
+    <div id="trash2"></div>
+</div>
+<div>
+    <iframe width="640" height="360" src="https://www.youtube.com/embed/KUeVpBQ73kM" frameborder="0" allowfullscreen></iframe>
+</div>
+
+
+<script type="text/javascript">
+
+    // *************************************
+
+    kenken = {
+        game: {
+            onSolution: function () {
+                console.log('kenken.game.onSolution()');
+            }
+        }
+    };
+
+    function parse(item) {
+        var result = [];
+        var len = item.length;
+        var last = len - 1;
+        var it = '';
+
+        for(var i=0; i<len; i++) {
+            if (item[i] !== ' ') {
+                it += item[i];
+                if (i === last) {
+                    result.push(it);
+                }
+
+            } else {
+                if (it) {
+                    result.push(it);
+                    it = '';
+                }
+            }
+        }
+
+        return result;
+    }
+
+    function normalizeData(e) {
+        var str = e.data;
+        var newline = '\r\n';
+        var arr = str.split(newline);
+        var arrLength = arr.length - 2; // without /r/n/r/n
+        var keys = ['A', 'T', 'S', 'V', 'H'];
+        var obj = {};
+        var arrOfArr;
+        var row;
+        var item;
+        var key;
+
+        for (var i = 0; i < arrLength; i++) {
+            item = arr[i];
+
+            if (keys.indexOf(item) !== -1) {
+                key = item;
+                continue; // there was find a new key, nothing to parse
+            }
+
+            if (key === 'T') {
+                row = parse(item);
+            } else { //optimization (without parse)
+                item = item.replace(/ /g, '');
+                row = item.split('');
+            }
+
+            arrOfArr = obj[key];
+
+            if (!arrOfArr) {
+                arrOfArr = [];
+                obj[key] = arrOfArr;
+            }
+
+            arrOfArr.push(row);
+        }
+
+        e.dataObj = obj;
+
+        return e;
+    }
+
+    // <editor-fold desc="Test Data">
+
+    var testObject3 = {
+        id      : 000001,
+        level   : 'easy',
+        size    : 3,
+        dataObj : {
+            A: [['1', '2', '3'], ['2', '3', '1'], ['3', '1', '2']],
+            T: [['3', '0', '4'], ['5', '0', '0'], ['3', '3', '0']],
+            S: [['+', '0', '+'], ['+', '0', '0'], ['0', '+', '0']],
+            V: [['0', '1'],      ['0', '1'],      ['1', '0']],
+            H: [['1', '1'],      ['1', '1'],      ['0', '1']]
+        }
+    };
+
+    var testObject4 = {
+        id      : 000001,
+        level   : 'easy',
+        size    : 4,
+        dataObj : {
+            A: [['4', '2', '1', '3'], ['2', '3', '4', '1'], ['1', '4', '3', '2'], ['3', '1', '2', '4']],
+            T: [['9', '0', '1', '2'], ['3', '0', '7', '0'], ['0', '4', '0', '2'], ['6', '0', '0', '0']],
+            S: [['+', '0', '1', '-'], ['+', '0', '+', '0'], ['0', '1', '0', '-'], ['+', '0', '0', '0']],
+            V: [['0', '1', '1'],      ['1', '1', '1'],      ['1', '1', '1']     , ['0', '0', '1']],
+            H: [['1', '0', '1'],      ['0', '1', '1'],      ['1', '0', '1']     , ['0', '1', '0']]
+        }
+    };
+
+    var testObject5 = normalizeData({"id":9921,"data":"A\r\n4 1 2 5 3 \r\n5 3 1 2 4 \r\n3 5 4 1 2 \r\n1 2 3 4 5 \r\n2 4 5 3 1 \r\nT\r\n 60   0   2  15   0\r\n  0   0   0   2   2\r\n  3  40  12   0   0\r\n  2   0   0  20   0\r\n  0   0  15   0   0\r\nS\r\n* 0 / * 0\r\n0 0 0 * /\r\n1 * * 0 0\r\n/ 0 0 * 0\r\n0 0 * 0 0\r\nV\r\n0 1 1 0\r\n0 1 1 1\r\n1 1 1 1\r\n1 1 1 0\r\n1 1 0 1\r\nH\r\n0 1 1 0\r\n0 1 0 0\r\n0 1 0 1\r\n1 0 1 1\r\n1 0 1 0\r\n\r\n","size":5,"level":"easy","operations":"dm","no":9921,"guest":false,"daily":false,"state":null,"u_level":"B"});
+
+    var testObject6 = normalizeData({"id":15714,"data":"A\r\n3 5 1 4 2 6 \r\n5 4 2 1 6 3 \r\n6 3 4 2 5 1 \r\n4 6 3 5 1 2 \r\n1 2 5 6 3 4 \r\n2 1 6 3 4 5 \r\nT\r\n180   5   0   2   0  18\r\n  0   0   2   0  30   0\r\n 24   0  60  10   0   0\r\n  0   3   0   0   2   0\r\n  2   0   0 108  12  20\r\n  0   0   0   0   0   0\r\nS\r\n* * 0 / 0 *\r\n0 0 / 0 * 0\r\n* 0 * * 0 0\r\n0 / 0 0 * 0\r\n/ 0 0 * * *\r\n0 0 0 0 0 0\r\nV\r\n1 0 1 0 1\r\n0 1 0 1 1\r\n1 1 1 1 0\r\n1 1 1 1 0\r\n1 1 1 1 1\r\n1 0 0 1 1\r\nH\r\n0 1 0 1 0\r\n1 0 1 0 1\r\n1 1 0 0 1\r\n1 1 0 1 0\r\n1 0 1 1 0\r\n0 1 1 1 0\r\n\r\n","size":6,"level":"easy","operations":"dm","no":15714,"guest":false,"daily":false,"state":null,"u_level":"B"});
+
+    var testObject7 = normalizeData({"id":21726,"data":"A\r\n3 6 4 1 7 2 5 \r\n7 1 5 6 2 3 4 \r\n5 2 1 7 4 6 3 \r\n6 5 2 3 1 4 7 \r\n1 3 6 4 5 7 2 \r\n4 7 3 2 6 5 1 \r\n2 4 7 5 3 1 6 \r\nT\r\n  2   0   4  14   0   0 420\r\n210   2   5   3   0   2   0\r\n  0   0   0  28   0   0   0\r\n  0 180   0   3   0  56   0\r\n  0   0   0 120   0   0   0\r\n672   0   0  70   0   5   0\r\n  0   0   0   0  18   0   0\r\nS\r\n/ 0 1 * 0 0 *\r\n* / * / 0 / 0\r\n0 0 0 * 0 0 0\r\n0 * 0 / 0 * 0\r\n0 0 0 * 0 0 0\r\n* 0 0 * 0 1 0\r\n0 0 0 0 * 0 0\r\nV\r\n0 1 1 0 0 1\r\n1 1 1 0 1 1\r\n1 1 1 0 1 1\r\n1 0 1 0 1 1\r\n1 0 1 0 1 0\r\n0 0 1 1 1 1\r\n0 1 0 1 0 0\r\nH\r\n1 0 0 0 1 0\r\n1 0 1 0 1 0\r\n1 0 1 0 1 1\r\n1 1 1 1 1 0\r\n1 1 1 1 0 1\r\n1 0 1 0 1 1\r\n0 0 0 1 0 1\r\n\r\n","size":7,"level":"medium","operations":"dm","no":21726,"guest":false,"daily":false,"state":null,"u_level":"B"});
+
+    var testObject8 = normalizeData({"id":82420,"data":"A\r\n2 3 8 7 6 4 1 5 \r\n4 7 3 6 8 5 2 1 \r\n7 8 1 3 4 6 5 2 \r\n1 6 5 4 2 3 8 7 \r\n5 1 2 8 3 7 6 4 \r\n6 4 7 5 1 2 3 8 \r\n8 5 6 2 7 1 4 3 \r\n3 2 4 1 5 8 7 6 \r\nT\r\n  2  63  56   0  18   4   0   8\r\n  0   0   0   2   0   1   0   0\r\n 42   7   0   0   0   0  80   0\r\n  0   0   1   0  12   0   0  25\r\n  1   4   5  16   0   0   0   0\r\n  0   0   0   0   1   1   0   0\r\n120   0  48  70   0   7   3   2\r\n  0   0   0   0   0   0   0   0\r\nS\r\n/ * * 0 + / 0 +\r\n0 0 0 / 0 - 0 0\r\n* - 0 0 0 0 * 0\r\n0 0 - 0 + 0 0 +\r\n- / - + 0 0 0 0\r\n0 0 0 0 1 - 0 0\r\n* 0 * * 0 - - /\r\n0 0 0 0 0 0 0 0\r\nV\r\n1 1 0 1 1 0 1\r\n1 0 1 1 1 1 0\r\n1 0 1 1 1 1 0\r\n0 1 0 1 0 1 1\r\n1 1 1 0 1 1 0\r\n1 1 1 1 1 0 1\r\n0 1 1 0 1 1 1\r\n1 0 1 0 1 1 1\r\nH\r\n0 1 0 1 0 1 0\r\n0 1 1 1 0 1 1\r\n1 1 1 1 0 1 0\r\n1 0 1 1 0 1 0\r\n0 0 1 1 1 1 0\r\n1 0 1 0 1 1 0\r\n1 1 0 1 1 1 0\r\n0 1 1 0 0 1 0\r\n\r\n","size":8,"level":"medium","operations":"adms","no":82420,"guest":false,"daily":false,"state":null,"u_level":"B"});
+
+    var testObject9 = normalizeData({"id":37453,"data":"A\r\n2 4 6 9 5 8 1 7 3 \r\n5 1 2 8 9 3 7 4 6 \r\n8 3 1 2 4 5 6 9 7 \r\n9 5 7 3 8 1 2 6 4 \r\n3 8 5 6 2 7 4 1 9 \r\n4 6 3 7 1 2 9 8 5 \r\n6 9 8 1 7 4 3 5 2 \r\n1 7 9 4 3 6 5 2 8 \r\n7 2 4 5 6 9 8 3 1 \r\nT\r\n  3   4   3  45   0  24   0   4   0\r\n  0   0   0   1   0   0   3   0  13\r\n 17   6   0   0   2   6   3  15   0\r\n  0  35 105   0   0   0   0   0  13\r\n  1   0   0  14  14   0   3   0   0\r\n  0   0  20   0   0  11   0  80   0\r\n  5   0   0   4   3   0   2   0   0\r\n  0   0   0   0   2  19   0   6   0\r\n  5   0   1   0   0   9   0   3   0\r\nS\r\n- / / * 0 * 0 - 0\r\n0 0 0 - 0 0 - 0 +\r\n+ * 0 0 / + / + 0\r\n0 + * 0 0 0 0 0 +\r\n- 0 0 + * 0 - 0 0\r\n0 0 + 0 0 + 0 * 0\r\n- 0 0 / - 0 - 0 0\r\n0 0 0 0 / + 0 - 0\r\n- 0 - 0 0 1 0 / 0\r\nV\r\n1 1 1 0 1 0 1 0\r\n1 1 1 0 1 1 0 1\r\n1 0 0 1 1 1 1 1\r\n1 1 0 1 1 1 1 1\r\n1 1 1 1 0 1 0 1\r\n1 1 1 0 1 0 1 0\r\n1 1 1 1 0 1 0 1\r\n1 1 1 1 1 0 1 0\r\n0 1 0 1 1 1 1 0\r\nH\r\n0 1 0 1 0 1 0 1\r\n0 1 1 0 0 0 0 1\r\n0 1 1 0 1 0 0 1\r\n1 1 1 1 0 1 0 1\r\n1 1 0 1 1 1 1 0\r\n0 1 0 1 1 1 1 1\r\n1 1 0 1 1 1 1 0\r\n1 1 0 1 1 1 1 1\r\n1 0 1 0 1 0 1 1\r\n\r\n","size":9,"level":"hard","operations":"adms","no":37453,"guest":false,"daily":false,"state":null,"u_level":"B"});
+
+    // </editor-fold>
+
+    var testObject = testObject5;
+    // *************************************
+
+
+    var currentStateObject = new CurrentStateConstructor(testObject);
+    var activePuzzleItem = {};
+
+
+    // function which draw out HTML version of flash puzzle
+    function drawOurForm(puzzleData){
+        var data = (puzzleData && puzzleData.dataObj) ? puzzleData.dataObj : {};
+        var row = [];
+        var puzzleId = puzzleData.id || '000000';
+        var puzzleSize = puzzleData.size;
+        var puzzleLevel = puzzleData.level;
+        var values = data.A;
+        var results = data.T;
+        var symbols = data.S;
+        var rightLines = data.V;
+        var bottomLines = data.H;
+        var lineClass;
+        var result;
+        var i,j;
+
+        // ******* left panel begin
+        row.push('<div>');
+
+            // ******* notes box
+            row.push('<div id="notesContainer">');
+
+            for (i=1; i<=puzzleSize; i+=1){
+                row.push('<div class="notesItem" data-id="'+i+'"><span>'+i+'<\/span><\/div>');
+            }
+            row.push('<div id="notesAll"><span><img src="./public/img/icn_check.png"><\/span><\/div>');
+            row.push('<div id="notesDel"><span><img src="./public/img/ic_close_.png"><\/span><\/div>');
+
+            row.push('<\/div>');
+
+            // ******* first buttons box
+            row.push('<div class="firstBtnBox">');
+                row.push('<button id="btnSolve"><span>Solve Another<\/span><\/button>');
+                row.push('<button id="btnResumeSaved"><span>Resume Saved Puzzle<\/span><\/button>');
+            row.push('<\/div>');
+
+            // ******* second buttons box
+            row.push('<div class="secondBtnBox">');
+                row.push('<button id="btnUndo"><span>Undo<\/span><\/button>');
+                row.push('<button id="btnRedo"><span>Redo<\/span><\/button>');
+                row.push('<button id="btnReset"><span>Reset<\/span><\/button>');
+            row.push('<\/div>');
+
+            // ******* third buttons box
+            row.push('<div class="thirdBtnBox">');
+                row.push('<button id="btnReveal"><span>Reveal<\/span><\/button>');
+                row.push('<button id="btnCheck"><span>Check<\/span><\/button>');
+                row.push('<button id="btnSolution"><span>Solution<\/span><\/button>');
+            row.push('<\/div>');
+
+        // ******* left panel end
+        row.push('<\/div>');
+
+        // ******* main panel begin
+        row.push('<div>');
+
+            // ******* top buttons
+            row.push('<div id="topInfoBox">');
+
+            row.push('<span id="puzzleInfo">Puzzle No. '+puzzleId+', '+puzzleSize+'X'+puzzleSize+', '+puzzleLevel+'<\/span>');
+            row.push('<button id="btnPause"><span>PAUSE<\/span><\/button>');
+            row.push('<div class="timerBox">');
+            row.push('<span id="puzzleTimer">00:00:00<\/span>');
+            row.push('<button id="btnOffTimer"><span>OFF<\/span><\/button>');
+            row.push('<\/div>');
+
+            row.push('<\/div>');
+
+            // ******* main container
+            row.push('<div id="puzzleContainer" class="puzzleContainer'+puzzleSize+'">');
+
+            for (i=1; i<=puzzleSize; i+=1){
+                row.push('<div class="puzzleRow">');
+                for (j=1; j<=puzzleSize; j+=1 ){
+
+                    lineClass = 'puzzleItem';
+
+                    if (+rightLines[i-1][j-1]) {
+                        lineClass += ' rightLineBorder'
+                    }
+
+                    if (+bottomLines[j-1][i-1]) {
+                        lineClass += ' bottomLineBorder'
+                    }
+
+                    //puzzle item
+                    row.push('<div id="p'+i+j+'" class="'+lineClass+'">');
+
+                        //draw symbol and expected result
+                        if (+results[i-1][j-1]){
+                            row.push('<span class="itemResult">'+results[i-1][j-1]+'<\/span>');
+                            if (symbols[i-1][j-1] !== '0' && symbols[i-1][j-1] !== '1'){
+                                row.push('<span class="itemSymbol">'+symbols[i-1][j-1]+'<\/span>');
+                            }
+                        }
+
+                        row.push('<span class="itemValue"><\/span>');
+
+                        row.push('<span class="itemNotes"><\/span>');
+
+                    row.push('<\/div>');
+                }
+                row.push('<\/div>');
+            }
+
+            row.push('<\/div>');
+
+            // ******* bottom container
+            row.push('<div id="bottomInfoBox">');
+            row.push('<div class="autoNotesBox">');
+            row.push('<span>AutoNotes</span>');
+            row.push('<button data-id="1" class="btnNote active"><span>ON<\/span><\/button>');
+            row.push('<button data-id="0" class="btnNote"><span>OFF<\/span><\/button>');
+            row.push('<\/div>');
+
+            row.push('<div class="savePrintBox">');
+            row.push('<button id="btnSave"><span>SAVE<\/span><\/button>');
+            row.push('<button id="btnPrint"><span>PRINT<\/span><\/button>');
+            row.push('<\/div>');
+
+            row.push('<\/div>');
+
+        // ******* main panel end
+        row.push('<\/div>');
+
+        // +++++++ test circle
+
+        row.push('<div id="testCircle">');
+
+        for (i=1; i<=puzzleSize; i+=1){
+            row.push('<div data-id="'+i+'" class="ltlCrcl">');
+            row.push('<span>'+i+'<\/span>');
+            row.push('<\/div>');
+        }
+
+            row.push('<div data-id="cC" class="ltlCrcl"><span><img src="./public/img/icn_eraser_.png"><\/span><\/div>');
+            row.push('<div data-id="cX" class="ltlCrcl"><span><img src="./public/img/ic_close_.png"><\/span><\/div>');
+
+        row.push('<\/div>');
+
+        // +++++++ test circle
+
+        // +++++++ onSolution popup
+        row.push('<div id="onSolution" style="display: none">');
+        row.push('<span>See solution?</span>');
+        row.push('<div class="closeButton"><span>x</span></div>');
+        row.push('<button id="showSolution"><span>OK</span></button>');
+        row.push('<\/div>');
+
+        result = document.createElement('div');
+        result.className = 'mainContainer';
+        result.innerHTML = row.join('');
+
+        document.querySelector('.box-inner-main').appendChild(result);
+
+        circle.drawOurCircles();
+        puzzleEvents();
+    }
+
+    function CurrentStateConstructor(puzzleData) {
+        var size = puzzleData.size;
+        var level = puzzleData.level;
+        var notesItem;
+        var valuesItem;
+        var i = size;
+        var j;
+
+        this.resultValues = puzzleData.dataObj.A;
+        this.values = [];
+        this.notes = [];
+        this.size = size;
+        this.level = level;
+        this.autoNotes = true;
+
+        while (i > 0){
+            j = size;
+            valuesItem = [];
+            while (j > 0){
+                valuesItem.push(0);
+                j -= 1;
+            }
+            this.values.push(valuesItem);
+            i -= 1;
+        }
+
+        i = size*size;
+
+        while (i > 0){
+            j = size;
+            notesItem = [];
+            while (j > 0){
+                notesItem.push(false);
+                j -= 1;
+            }
+            this.notes.push(notesItem);
+            i -= 1;
+        }
+
+        return this;
+    }
+
+    function onSolution() {
+        var popup = $('#onSolution');
+
+        kenken.game.onSolution();
+        popup.show();
+    }
+
+    function hideOnSolutionPopup(event) {
+        $('#onSolution').hide();
+    }
+
+    function showSolution(event) {
+        hideOnSolutionPopup();
+        console.log('>>> show solution');
+    }
+
+    function puzzleEvents() {
+
+        //<editor-fold desc="HELP FUNCTIONS">
+
+        //convert array of boolean values to string
+        var booleanArrayToSting = function (argArray) {
+            var currentArray = argArray;
+            var currentLength = currentArray.length;
+            var result = '';
+            var i = 0;
+
+            while (i < currentLength) {
+                if (currentArray[i]) {
+                    result += (i + 1) + ' ';
+                }
+                i += 1;
+            }
+
+            return result;
+        };
+
+        //take class "active" to buttons in note`s box
+        var drawActiveNotes = function () {
+            var indexValue = (activePuzzleItem.indexX - 1) * currentStateObject.size + activePuzzleItem.indexY;
+            var notesArray = currentStateObject.notes[indexValue - 1];
+            var domArray = $('.notesItem');
+            var size = currentStateObject.size;
+            var i = 1;
+            var currentNote;
+
+            while (i <= size) {
+                currentNote = $(domArray[i - 1]);
+                if (notesArray[i - 1]) {
+                    currentNote.addClass('active');
+                } else {
+                    currentNote.removeClass('active');
+                }
+                i += 1;
+            }
+        };
+
+        //clear notes in currentStateObject, notes box and puzzle square
+        var clearAllNotes = function(){
+            var currentItem = activePuzzleItem.item;
+            var size = currentStateObject.size;
+            var x = activePuzzleItem.indexX;
+            var y = activePuzzleItem.indexY;
+            var currentIndex = (x - 1) * size + y;
+            var notesArray = currentStateObject.notes[currentIndex - 1];
+
+            while (size > 0){
+                notesArray[size-1] = false;
+                size -= 1;
+            }
+
+            currentItem.find('.itemNotes').text('');
+            drawActiveNotes();
+        };
+
+        var prepareStateObjectTo = function (callback) {
+            var resultObject = currentStateObject;
+            var valuesString = resultObject.values.join(',');
+            var notesArray = resultObject.notes;
+            var stateObject = {
+                values: valuesString,
+                notes: notesArray
+            };
+            var result = {
+                id: '',
+                state: stateObject,
+                autosave: ''
+            };
+
+            callback(result);
+        };
+
+        var checkNotesByActiveValue = function (argValues) {
+            var x = argValues.valX;
+            var y = argValues.valY;
+            var value = argValues.valItem;
+
+            var size = currentStateObject.size;
+            var notesArray = currentStateObject.notes;
+            var indexVal = (x - 1) * size + y - 1;
+
+            if (currentStateObject.notes[indexVal][value - 1]) {
+                currentStateObject.notes[indexVal][value - 1] = !currentStateObject.notes[indexVal][value - 1];
+                $('#p' + x + y + ' .itemNotes').text(booleanArrayToSting(currentStateObject.notes[indexVal]));
+            }
+        };
+
+        //</editor-fold>
+
+        //<editor-fold desc="EVENTS">
+
+            //event --- click on puzzle square item
+            $('.puzzleItem').click(function (event) {
+                var target = $(event.target).closest('.puzzleItem');
+                var targetId = target.attr('id');
+                var container = target.closest('#puzzleContainer');
+
+                activePuzzleItem.item = target;
+                activePuzzleItem.indexX = +targetId[1];
+                activePuzzleItem.indexY = +targetId[2];
+
+                drawActiveNotes();
+
+                container.find('.active').removeClass('active');
+                target.addClass('active');
+
+                circle.changeCirclePosition();
+            });
+
+            //event --- click some value on our circle
+            $('.ltlCrcl').click(function (event) {
+                var target = $(event.target).closest('.ltlCrcl');
+                var value = target.attr('data-id');
+                var circle = target.closest('#testCircle');
+
+                var puzzleContainer = $('#puzzleContainer');
+                var currentItem = activePuzzleItem.item;
+
+                var currentState = currentStateObject;
+
+                var size = currentState.size;
+                var valueX = activePuzzleItem.indexX;
+                var valueY = activePuzzleItem.indexY;
+                var i = size;
+
+                if (value !== 'cX') {
+                    if (value === 'cC') {
+                        if (currentState.values[valueX - 1][valueY - 1]){
+                            currentState.values[valueX - 1][valueY - 1] = 0;
+                            currentItem.find('.itemValue').text('');
+                        } else {
+                            clearAllNotes();
+                        }
+                        circle.hide();
+                        return
+                    }
+                    currentItem.find('.itemValue').text(value);
+                    currentState.values[valueX - 1][valueY - 1] = +value;
+
+                    while (i > 0) {
+                        if (currentState.notes[(valueX - 1) * size + i - 1][value - 1]) {
+                            currentState.notes[(valueX - 1) * size + i - 1][value - 1] = !currentState.notes[(valueX - 1) * size + i - 1][value - 1];
+                            puzzleContainer.find('#p' + valueX + i + ' .itemNotes').text(booleanArrayToSting(currentState.notes[(valueX - 1) * size + i - 1]));
+                        }
+                        if (currentState.notes[(i - 1) * size + valueY - 1][value - 1]) {
+                            currentState.notes[(i - 1) * size + valueY - 1][value - 1] = !currentState.notes[(i - 1) * size + valueY - 1][value - 1];
+                            puzzleContainer.find('#p' + i + valueY + ' .itemNotes').text(booleanArrayToSting(currentState.notes[(i - 1) * size + valueY - 1]));
+                        }
+                        i -= 1;
+                    }
+
+                }
+                circle.hide();
+                //prepareStateObjectTo(kenken.game.saveState);
+            });
+
+            //event --- click on button in note`s box
+            $('.notesItem').click(function (event) {
+                    var activeItem = activePuzzleItem.item;
+                    var currentIndex = (activePuzzleItem.indexX - 1) * currentStateObject.size + activePuzzleItem.indexY;
+                    var notesArray = currentStateObject.notes[currentIndex - 1];
+                    var valuesArray = currentStateObject.values;
+                    var target = $(event.target).closest('.notesItem');
+                    var notesValue = +target.attr('data-id');
+                    var x = activePuzzleItem.indexX;
+                    var y = activePuzzleItem.indexY;
+                    var size = currentStateObject.size;
+                var puzzleContainer = $('#puzzleContainer');
+                    var stringResult;
+                    var i = 1;
+                var allItems = [];
+                var el;
+                var notActive = false;
+
+                while (i <= size) {
+                    if (valuesArray[x - 1][i - 1] === notesValue) {
+                        el = puzzleContainer.find('#p' + x + i).addClass('pulseRed');
+                        allItems.push(el[0]);
+                        notActive = true;
+                    }
+                    if (valuesArray[i - 1][y - 1] === notesValue) {
+                        el = puzzleContainer.find('#p' + i + y).addClass('pulseRed');
+                        allItems.push(el[0]);
+                        notActive = true;
+                    }
+                    i += 1;
+                }
+
+                setTimeout(function () {
+                    $(allItems).removeClass('pulseRed');
+                }, 400);
+
+                if (!notActive) {
+                    notesArray[notesValue - 1] = !notesArray[notesValue - 1];
+                    target.toggleClass('active');
+                    stringResult = booleanArrayToSting(notesArray);
+                    activeItem.find('.itemNotes').text(stringResult);
+                }
+            });
+
+            //event --- check true and false values in our puzzle
+            $('#btnCheck').click(function () {
+                var size = currentStateObject.size;
+                var values = currentStateObject.values;
+                var resultValues = currentStateObject.resultValues;
+                var allItems = $('.puzzleItem');
+                var i, j;
+                var activeVal;
+                var activeClass;
+
+                for (i = 1; i <= size; i += 1) {
+                    for (j = 1; j <= size; j += 1) {
+                        if (values[i - 1][j - 1] !== 0) {
+                            activeVal = $('#p' + i + j);
+                            if (values[i - 1][j - 1] == resultValues[i - 1][j - 1]) {
+                                activeClass = 'pulseGreen';
+                            } else {
+                                activeClass = 'pulseRed';
+                            }
+                            activeVal.addClass(activeClass);
+                        }
+                    }
+                }
+                setTimeout(function () {
+                    allItems.removeClass('pulseGreen');
+                    allItems.removeClass('pulseRed');
+                }, 400)
+            });
+
+            //event --- clear notes in currentStateObject, notes box and puzzle square
+            $('#notesDel').click(function(){
+                clearAllNotes();
+            });
+
+            //event --- change autoNotes state
+            $('.btnNote').click(function(event){
+                var target = $(event.target).closest('.btnNote');
+                var notesContainer = target.closest('.autoNotesBox');
+                var targetId = target.attr('data-id');
+
+                notesContainer.find('.active').removeClass('active');
+                target.addClass('active');
+
+                currentStateObject.autoNotes = +targetId ? true : false;
+            });
+
+            //event --- write all valid values of notes to puzzle item
+            $('#notesAll').click(function(){
+                if (currentStateObject.autoNotes) {
+
+                    var currentItem = activePuzzleItem.item;
+                    var size = currentStateObject.size;
+                    var x = activePuzzleItem.indexX;
+                    var y = activePuzzleItem.indexY;
+                    var currentIndex = (x - 1) * size + y;
+                    var notesArray = currentStateObject.notes[currentIndex - 1];
+                    var valuesArray = currentStateObject.values;
+                    var i = size;
+                    var stringResult;
+
+                    while (i > 0) {
+                        notesArray[i - 1] = true;
+                        i -= 1;
+                    }
+
+                    i = size;
+                    while (i > 0) {
+                        if (valuesArray[x - 1][i - 1]) {
+                            notesArray[valuesArray[x - 1][i - 1] - 1] = false
+                        }
+                        if (valuesArray[i - 1][y - 1]) {
+                            notesArray[valuesArray[i - 1][y - 1] - 1] = false
+                        }
+                        i -= 1;
+                    }
+
+                    stringResult = booleanArrayToSting(notesArray);
+                    currentItem.find('.itemNotes').text(stringResult);
+
+                    drawActiveNotes();
+                }
+            });
+
+        // </editor-fold>
+
+        // <editor-fold desc="SHOW SOLUTION">
+        $('#btnSolution').click(onSolution);     //Solution
+        $('#onSolution .closeButton').click(hideOnSolutionPopup);
+        $('#onSolution #showSolution').click(showSolution);
+        // </editor-fold>
+
+        }
+
+
+    function Circle() {
+
+        this.changeCirclePosition = function() {
+            var circleDiv = $('#testCircle');
+            var circlePos = this.findCirclePosition(60);
+
+            circleDiv.css('top', circlePos.y);
+            circleDiv.css('left', circlePos.x);
+            circleDiv.css('display', 'block');
+        };
+
+
+        this.drawOurCircles = function() {
+            var count = testObject.size + 2;
+            var coordinates = this.calculateCircleButtons(60, count);
+            var arrayCircles = $('.ltlCrcl');
+            var top, left;
+
+            for (var i = 1; i <= count; i += 1) {
+                top = coordinates[i - 1].y - 15;
+                left = coordinates[i - 1].x - 15;
+                $(arrayCircles[i - 1]).css({top: top, left: left})
+            }
+        };
+
+
+        this.calculateCircleButtons = function(argRadius, argCount) {
+            var radius = argRadius;
+            var count = argCount;
+            var coordinatesArray = [];
+            var x;
+            var y;
+
+            for (var i = 0; i < count; i++) {
+                x = radius + radius * Math.sin(2 / count * Math.PI * i);
+                y = radius - radius * Math.cos(2 / count * Math.PI * i);
+
+                coordinatesArray.push({x: x, y: y});
+            }
+
+            return coordinatesArray;
+        };
+
+
+        this.findCirclePosition = function(circleRadius) {
+            var activeSquare = $('.puzzleItem.active')[0];
+            var squareWidth = activeSquare.offsetWidth;
+            var squareLeft = activeSquare.offsetLeft;
+            var squareTop = activeSquare.offsetTop;
+
+            return {
+                x: squareLeft + (squareWidth / 2) - circleRadius,
+                y: squareTop + (squareWidth / 2) - circleRadius
+            };
+        };
+
+        return this;
+    }
+
+    var circle = new Circle();
+
+    // *************************************
+
+    drawOurForm(testObject);
+    // *************************************
+</script>
+
+</body>
