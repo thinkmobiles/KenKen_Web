@@ -43,12 +43,12 @@ style.type = 'text/css';
 style.href = scriptLocation + '/assets/puzzleStyle.css';
 document.head.appendChild(style);
 
-//var printStyle = document.createElement('link');
-//printStyle.rel = 'stylesheet';
-//printStyle.media = 'print';
-//printStyle.type = 'text/css';
-//printStyle.href = scriptLocation + '/assets/print-a3cb39a4181d720e4cadbc522b1f94bd.css';
-//document.head.appendChild(printStyle);
+var printStyle = document.createElement('link');
+printStyle.rel = 'stylesheet';
+printStyle.media = 'print';
+printStyle.type = 'text/css';
+printStyle.href = scriptLocation + '/assets/printStyle.css';
+document.head.appendChild(printStyle);
 
 delete kenken.game;
 

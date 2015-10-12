@@ -751,7 +751,7 @@ var KenKenGame = function () {
         kenken.game.onPrint();
 
         window.print() ;
-        document.getElementById('puzzleContainer').print();
+        //document.getElementById('puzzleContainer').print();
         //$('#puzzleContainer').print();
 
     };
