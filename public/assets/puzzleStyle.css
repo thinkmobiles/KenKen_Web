@@ -353,28 +353,28 @@ th {
     background-color:#0051a8;
 }
 #btnSolve span{
-    background-image: url('./public/img/icn_solve-another.png');
+    background-image: url('http://localhost:8888/img/icn_solve-another.png');
 }
 #btnResumeSaved span{
-    background-image: url('./public/img/icn_resume-saved.png');
+    background-image: url('http://localhost:8888/img/icn_resume-saved.png');
 }
 #btnUndo span{
-    background-image: url('./public/img/icn_undo.png');
+    background-image: url('http://localhost:8888/img/icn_undo.png');
 }
 #btnRedo span{
-    background-image: url('./public/img/icn_redo.png');
+    background-image: url('http://localhost:8888/img/icn_redo.png');
 }
 #btnReset span{
-    background-image: url('./public/img/icn_reset.png');
+    background-image: url('http://localhost:8888/img/icn_reset.png');
 }
 #btnReveal span{
-    background-image: url('./public/img/icn_reveal.png');
+    background-image: url('http://localhost:8888/img/icn_reveal.png');
 }
 #btnCheck span{
-    background-image: url('./public/img/icn_check_eye.png');
+    background-image: url('http://localhost:8888/img/icn_check_eye.png');
 }
 #btnSolution span{
-    background-image: url('./public/img/icn_solution.png');
+    background-image: url('http://localhost:8888/img/icn_solution.png');
 }
 
 #topInfoBox{

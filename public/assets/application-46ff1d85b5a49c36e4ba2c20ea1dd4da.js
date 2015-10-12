@@ -750,8 +750,9 @@ var KenKenGame = function () {
 
         kenken.game.onPrint();
 
-        //window.print() ;
-        $('#puzzleContainer').print();
+        window.print() ;
+        document.getElementById('puzzleContainer').print();
+        //$('#puzzleContainer').print();
 
     };
 
@@ -1231,8 +1232,8 @@ var KenKenGame = function () {
         for (i = 1; i <= puzzleSize; i += 1) {
             row.push('<div class="notesItem" data-id="' + i + '"><span>' + i + '<\/span><\/div>');
         }
-        row.push('<div id="notesAll"><span><img src="/img/icn_check.png"><\/span><\/div>');
-        row.push('<div id="notesDel"><span><img src="/img/ic_close_.png"><\/span><\/div>');
+        row.push('<div id="notesAll"><span><img src="http://localhost:8888/img/icn_check.png"><\/span><\/div>');
+        row.push('<div id="notesDel"><span><img src="http://localhost:8888/img/ic_close_.png"><\/span><\/div>');
 
         row.push('<\/div>');
 
@@ -1343,8 +1344,8 @@ var KenKenGame = function () {
             row.push('<\/div>');
         }
 
-        row.push('<div data-id="cC" class="ltlCrcl"><span><img src="/img/icn_eraser_.png"><\/span><\/div>');
-        row.push('<div data-id="cX" class="ltlCrcl"><span><img src="/img/ic_close_.png"><\/span><\/div>');
+        row.push('<div data-id="cC" class="ltlCrcl"><span><img src="http://localhost:8888/img/icn_eraser_.png"><\/span><\/div>');
+        row.push('<div data-id="cX" class="ltlCrcl"><span><img src="http://localhost:8888/img/ic_close_.png"><\/span><\/div>');
 
         row.push('<\/div>');
 
