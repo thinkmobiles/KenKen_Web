@@ -200,13 +200,20 @@ var Steps = function (puzzleData) {
 
     };
 
-    function pullFromHistory(history) {
+    function getNewValueFromHistory(history) {
+        var type = history.type;
+        var target = currentState[type];
+
+        return target[history.x][history.y] = history.newValue;
+    }
+
+    function getOldValueFromHistory(history) {
         var type = history.type;
         var target = currentState[type];
 
         return target[history.x][history.y] = history.oldValue;
-    };
-    
+    }
+
     function pushToHistory(history) {
         var type = history.type;
         var target = currentState[type];
@@ -270,10 +277,10 @@ var Steps = function (puzzleData) {
         if (index !== -1) {
             index--;
 
-            pullFromHistory(data);
+            getOldValueFromHistory(data);
 
             if (data.depends) {
-                data.depends.forEach(pullFromHistory);
+                data.depends.forEach(getOldValueFromHistory);
             }
         }
 
@@ -288,10 +295,10 @@ var Steps = function (puzzleData) {
             index++;
             data = history[index];
 
-            pullFromHistory(data);
+            getNewValueFromHistory(data);
 
             if (data.depends) {
-                data.depends.forEach(pullFromHistory);
+                data.depends.forEach(getNewValueFromHistory);
             }
         }
 
