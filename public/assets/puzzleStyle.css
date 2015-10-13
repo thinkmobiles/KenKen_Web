@@ -402,12 +402,12 @@ th {
     background: #fff;
 }
 #btnPause span{
-    background: no-repeat left center url('./public/img/icn_pause.png');
+    background: no-repeat left center url('/img/icn_pause.png');
     display: block;
     padding-left: 25px;
 }
 #btnPause:hover span{
-    background: no-repeat left center url('./public/img/icn_play.png');
+    background: no-repeat left center url('/img/icn_play.png');
 }
 
 #bottomInfoBox{
@@ -440,10 +440,10 @@ th {
     padding-right: 25px;
 }
 #btnSave > span{
-    background: no-repeat right center url('./public/img/icn_save.png');
+    background: no-repeat right center url('/img/icn_save.png');
 }
 #btnPrint > span{
-    background: no-repeat right center url('./public/img/icn_print.png');
+    background: no-repeat right center url('/img/icn_print.png');
 }
 
 

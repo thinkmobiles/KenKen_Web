@@ -79,3 +79,13 @@ function checkIsFinished() {
 
  congratulation();
 }
+
+/*
+
+Google Ads:
+
+ $.get('', function (d) {console.log('success', d);}, function (e) {console.log('error', e);})
+
+ [{"adTag":"http://googleads.g.doubleclick.net/pagead/ads?ad_type=video&client=ca-games-pub-1905297296465088&description_url=http%3A%2F%2Fwww.kenken.com","image_url":null,"link_url":null,"container_width":"640","container_height":"480","container_x":50,"container_y":50},{"adTag":"http://ap.lijit.com/www/delivery/vst.php?zoneid=206743&loc=www.kenken.com&random=545685&vidtitle=Federated_Media&sovrnid=nextoy&vidmute=0&vidwidth=640&vidheight=480&vidautoplay=1&description=www.kenken.com","image_url":null,"link_url":null,"container_width":"640","container_height":"480","container_x":50,"container_y":50}]
+
+*/

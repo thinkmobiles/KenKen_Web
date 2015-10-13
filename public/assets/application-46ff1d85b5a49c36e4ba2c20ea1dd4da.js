@@ -200,6 +200,13 @@ var Steps = function (puzzleData) {
 
     };
 
+    function updateFromHistory(history) {
+        var type = history.type;
+        var target = currentState[type];
+
+        target[history.x][history.y] = history.oldValue;
+    }
+
     var history = [];
     var index = -1; //empty history
     var self = this;
@@ -209,14 +216,6 @@ var Steps = function (puzzleData) {
     //prepareValues();
 
     initializeFirstStep();
-
-    function save(data, options) {
-        console.log('Steps.saveStep()');
-        index++;
-        history[index] = data;
-    };
-
-    //this.save = save;
 
     this.saveStep = function (data) {
         console.log('Steps.saveStep()');
@@ -252,13 +251,15 @@ var Steps = function (puzzleData) {
     this.undo = function () {
         console.log('Steps.undo();');
         var data = history[index];
-        var type = data.type;
-        var target;
 
         if (index !== -1) {
             index--;
-            target = currentState[type];
-            target[data.x][data.y] = data.oldValue;
+
+            updateFromHistory(data);
+
+            if (data.depends) {
+                data.depends.forEach(updateFromHistory);
+            }
         }
 
         return data;
@@ -475,43 +476,35 @@ var KenKenGame = function () {
         self.timer = timer;
     };
 
-    function startTimer___() {
+    function drawFromHistoryDepends(depends, currentState) {
 
-        function setTime() {
-            var hours;
-            var minutes;
-            var seconds;
-            var str;
+        depends.forEach(function (data) {
+            var type;
+            var selector;
+            var size;
+            var index;
+            var notesArray;
+            var stringResult;
 
-            if (timerState === 'ON') {
-                hours = pad(parseInt(totalSeconds / 3600));
-                minutes = pad(parseInt(totalSeconds / 60));
-                seconds = pad(totalSeconds % 60);
-                str = hours + ":" + minutes + ":" + seconds;
+            type = data.type;
+
+            if (type === 'values') {
+                //selector = "#p" + (history.x + 1) + (history.y + 1) + ' .itemValue';
+                //value = (history.oldValue) ? history.oldValue : ''; //number or ""
+                //$(selector).text(value);
+            } else if (type === 'notes') {
+                size = self.puzzleData.size;
+                index = data.x;
+                notesArray = currentState.notes[index];
+                stringResult = booleanArrayToSting(notesArray);
+                selector = "#p" + (Math.trunc(index / size) + 1) + (index % size + 1) + ' .itemNotes';
+                $(selector).text(stringResult);
+
+                drawActiveNotes();
             } else {
-                str = defaultTimer;
+                console.log('incorrect type');
             }
-
-            puzzleTimer.text(str);
-            totalSeconds = parseInt((new Date - start) / 1000);
-        }
-
-        function pad(val) {
-            var valString = val + "";
-
-            if (valString.length < 2) {
-                return "0" + valString;
-            } else {
-                return valString;
-            }
-        }
-
-
-        var start = new Date;
-        var totalSeconds = 0;
-        var timerInterval = setInterval(setTime, 500);
-
-        return timerInterval;
+        });
     };
 
     function changeTimerState(e) {
@@ -571,18 +564,16 @@ var KenKenGame = function () {
         }
 
         type = history.type;
+        currentState = steps.getCurrentState();
 
         if (type === 'values') {
             selector = "#p" + (history.x + 1) + (history.y + 1) + ' .itemValue';
             value = (history.oldValue) ? history.oldValue : ''; //number or ""
             $(selector).text(value);
         } else if (type === 'notes') {
-            currentState = steps.getCurrentState();
-            console.log(currentState);
             size = self.puzzleData.size;
             index = history.x;
             notesArray = currentState.notes[index];
-
             stringResult = booleanArrayToSting(notesArray);
             selector = "#p" + (Math.trunc(index / size) + 1) + (index % size + 1) + ' .itemNotes';
             $(selector).text(stringResult);
@@ -593,6 +584,12 @@ var KenKenGame = function () {
         }
 
         steps.getInfo(); //TODO: ...
+
+        var historyDepends = history.depends;
+
+        if (historyDepends) {
+            drawFromHistoryDepends(historyDepends, currentState);
+        }
 
     };
 
@@ -1012,17 +1009,17 @@ var KenKenGame = function () {
                     return
                 }
 
-                self.steps.saveStep({
+                /*self.steps.saveStep({
                     type    : 'values',
                     x       : x,
                     y       : y,
                     oldValue: oldValue,
                     newValue: +value
-                });
+                });*/
                 currentItem.find('.itemValue').text(value);
                 currentItem.addClass('withValue');
 
-                while (i > 0) {
+                /*while (i > 0) {
                     if (currentState.notes[x * size + i - 1][value - 1]) {
                         currentState.notes[x * size + i - 1][value - 1] = !currentState.notes[x * size + i - 1][value - 1];
                         puzzleContainer.find('#p' + valueX + i + ' .itemNotes').text(booleanArrayToSting(currentState.notes[x * size + i - 1]));
@@ -1032,7 +1029,65 @@ var KenKenGame = function () {
                         puzzleContainer.find('#p' + i + valueY + ' .itemNotes').text(booleanArrayToSting(currentState.notes[(i - 1) * size + valueY - 1]));
                     }
                     i -= 1;
+                }*/
+
+                var _value = value - 1;
+                var historyDepends = [];
+                var oldNotesValue;
+                var newNotesValue;
+                var _x;
+                var _y;
+
+                while (i > 0) {
+
+                    _x = x * size + i - 1;
+                    _y = (i - 1) * size + valueY - 1;
+
+                    if (currentState.notes[_x][_value]) {
+
+                        oldNotesValue = currentState.notes[_x][_value];
+                        newNotesValue = !oldNotesValue;
+
+                        historyDepends.push({
+                            type: 'notes',
+                            x: _x,
+                            y: _value,
+                            oldValue: oldNotesValue,
+                            newValue: newNotesValue
+                        });
+
+                        currentState.notes[_x][_value] = newNotesValue;
+                        puzzleContainer.find('#p' + valueX + i + ' .itemNotes').text(booleanArrayToSting(currentState.notes[_x]));
+                    }
+
+                    if (currentState.notes[_y][_value]) {
+
+                        oldNotesValue = currentState.notes[_y][_value];
+                        newNotesValue = !oldNotesValue;
+
+                        historyDepends.push({
+                            type: 'notes',
+                            x: _y,
+                            y: _value,
+                            oldValue: oldNotesValue,
+                            newValue: newNotesValue
+                        });
+
+                        currentState.notes[_y][_value] = newNotesValue;
+                        puzzleContainer.find('#p' + i + valueY + ' .itemNotes').text(booleanArrayToSting(currentState.notes[_y]));
+                    }
+
+                    i -= 1;
                 }
+
+                self.steps.saveStep({
+                    type    : 'values',
+                    x       : x,
+                    y       : y,
+                    oldValue: oldValue,
+                    newValue: +value,
+                    depends: historyDepends
+                });
 
                 self.steps.getInfo(); //TODO: ...
 
