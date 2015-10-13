@@ -32,7 +32,7 @@ function getScriptContent() {
     }
 }
 
-console.log('document.appendChild(script); //http://localhost:8829/assets/application-46ff1d85b5a49c36e4ba2c20ea1dd4da.js');
+console.log('document.appendChild(script); //http://192.168.88.250:8888/assets/application-46ff1d85b5a49c36e4ba2c20ea1dd4da.js');
 var script = document.createElement('script');
 script.src = scriptLocation + '/assets/application-46ff1d85b5a49c36e4ba2c20ea1dd4da.js';
 document.head.appendChild(script);
