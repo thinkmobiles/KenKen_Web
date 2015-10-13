@@ -1,12 +1,14 @@
 
 /*
  var script = document.createElement('script');
- script.src = 'http://projects.thinkmobiles.com:8888/js/killFlashPlayer.js';
+ //script.src = 'http://projects.thinkmobiles.com:8888/js/killFlashPlayer.js';
+ script.src = 'http://localhost:8888/js/killFlashPlayer.js';
  document.head.appendChild(script);
  */
 
 //var scriptLocation = "http://projects.thinkmobiles.com:8888";
 var scriptLocation = "http://192.168.88.250:8888";
+//var scriptLocation = "http://localhost:8888";
 
 var flashWarn = document.querySelector('#flash_warn');
 var KenKenFlash = document.querySelector('#KenKen');
