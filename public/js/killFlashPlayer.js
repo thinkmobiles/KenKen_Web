@@ -6,7 +6,7 @@
  */
 
 //var scriptLocation = "http://projects.thinkmobiles.com:8888";
-var scriptLocation = "http://localhost:8888";
+var scriptLocation = "http://192.168.88.250:8888";
 
 var flashWarn = document.querySelector('#flash_warn');
 var KenKenFlash = document.querySelector('#KenKen');
@@ -32,7 +32,7 @@ function getScriptContent() {
     }
 }
 
-console.log('document.appendChild(script); //http://localhost:8829/assets/application-46ff1d85b5a49c36e4ba2c20ea1dd4da.js');
+console.log('document.appendChild(script); //http://192.168.88.250:8888/assets/application-46ff1d85b5a49c36e4ba2c20ea1dd4da.js');
 var script = document.createElement('script');
 script.src = scriptLocation + '/assets/application-46ff1d85b5a49c36e4ba2c20ea1dd4da.js';
 document.head.appendChild(script);
@@ -43,12 +43,12 @@ style.type = 'text/css';
 style.href = scriptLocation + '/assets/puzzleStyle.css';
 document.head.appendChild(style);
 
-//var printStyle = document.createElement('link');
-//printStyle.rel = 'stylesheet';
-//printStyle.media = 'print';
-//printStyle.type = 'text/css';
-//printStyle.href = scriptLocation + '/assets/print-a3cb39a4181d720e4cadbc522b1f94bd.css';
-//document.head.appendChild(printStyle);
+var printStyle = document.createElement('link');
+printStyle.rel = 'stylesheet';
+printStyle.media = 'print';
+printStyle.type = 'text/css';
+printStyle.href = scriptLocation + '/assets/printStyle.css';
+document.head.appendChild(printStyle);
 
 delete kenken.game;
 
@@ -79,3 +79,13 @@ function checkIsFinished() {
 
  congratulation();
 }
+
+/*
+
+Google Ads:
+
+ $.get('', function (d) {console.log('success', d);}, function (e) {console.log('error', e);})
+
+ [{"adTag":"http://googleads.g.doubleclick.net/pagead/ads?ad_type=video&client=ca-games-pub-1905297296465088&description_url=http%3A%2F%2Fwww.kenken.com","image_url":null,"link_url":null,"container_width":"640","container_height":"480","container_x":50,"container_y":50},{"adTag":"http://ap.lijit.com/www/delivery/vst.php?zoneid=206743&loc=www.kenken.com&random=545685&vidtitle=Federated_Media&sovrnid=nextoy&vidmute=0&vidwidth=640&vidheight=480&vidautoplay=1&description=www.kenken.com","image_url":null,"link_url":null,"container_width":"640","container_height":"480","container_x":50,"container_y":50}]
+
+*/

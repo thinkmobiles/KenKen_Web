@@ -1,0 +1,11 @@
+#header {display: none;}
+#myModal {display: none;}
+#container>div:not(#content){display: none;}
+#content>div:not(.row) {display: none;}
+.box-inner-main>div:not(.mainContainer) {display: none;}
+.ad {display: none;}
+.row.bottom {display: none;}
+.footer_text {display: none;}
+#leftPanel {display: none;}
+#topInfoBox {display: none;}
+#bottomInfoBox {display: none;}
