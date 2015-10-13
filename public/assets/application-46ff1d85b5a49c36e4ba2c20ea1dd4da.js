@@ -200,11 +200,18 @@ var Steps = function (puzzleData) {
 
     };
 
-    function updateFromHistory(history) {
+    function pullFromHistory(history) {
         var type = history.type;
         var target = currentState[type];
 
-        target[history.x][history.y] = history.oldValue;
+        return target[history.x][history.y] = history.oldValue;
+    };
+    
+    function pushToHistory(history) {
+        var type = history.type;
+        var target = currentState[type];
+
+        return target[history.x][history.y] = history.newValue;
     }
 
     var history = [];
@@ -223,11 +230,16 @@ var Steps = function (puzzleData) {
         var x = data.x;
         var y = data.y;
         var value = data.newValue;
+        var depends = data.depends;
         var target;
 
         if (type) {
             target = currentState[type];
             target[x][y] = value;
+        }
+
+        if (depends) {
+            depends.forEach(pushToHistory);
         }
 
         index++;
@@ -258,10 +270,10 @@ var Steps = function (puzzleData) {
         if (index !== -1) {
             index--;
 
-            updateFromHistory(data);
+            pullFromHistory(data);
 
             if (data.depends) {
-                data.depends.forEach(updateFromHistory);
+                data.depends.forEach(pullFromHistory);
             }
         }
 
@@ -271,17 +283,16 @@ var Steps = function (puzzleData) {
     this.redo = function () {
         console.log('Steps.redo()');
         var data;
-        var type;
-        var target;
 
         if (index < (history.length - 1)) {
             index++;
-
             data = history[index];
-            type = data.type;
 
-            target = currentState[type];
-            target[data.x][data.y] = data.newValue;
+            pullFromHistory(data);
+
+            if (data.depends) {
+                data.depends.forEach(pullFromHistory);
+            }
         }
 
         return data;
@@ -479,7 +490,8 @@ var KenKenGame = function () {
         self.timer = timer;
     };
 
-    function drawFromHistoryDepends(depends, currentState) {
+    function drawFromHistoryDepends(depends) {
+        var currentState = self.steps.getCurrentState();
 
         depends.forEach(function (data) {
             var type;
@@ -561,6 +573,7 @@ var KenKenGame = function () {
         var index;
         var notesArray;
         var stringResult;
+        var historyDepends;
 
         if (!history) {
             return;
@@ -570,9 +583,14 @@ var KenKenGame = function () {
         currentState = steps.getCurrentState();
 
         if (type === 'values') {
-            selector = "#p" + (history.x + 1) + (history.y + 1) + ' .itemValue';
+            selector = "#p" + (history.x + 1) + (history.y + 1);
+            $(selector).removeClass('withValue');
+
+            selector += ' .itemValue';
             value = (history.oldValue) ? history.oldValue : ''; //number or ""
             $(selector).text(value);
+
+
         } else if (type === 'notes') {
             size = self.puzzleData.size;
             index = history.x;
@@ -580,18 +598,19 @@ var KenKenGame = function () {
             stringResult = booleanArrayToSting(notesArray);
             selector = "#p" + (Math.trunc(index / size) + 1) + (index % size + 1) + ' .itemNotes';
             $(selector).text(stringResult);
-
+            $(selector).addClass('withValue');
             drawActiveNotes();
+
         } else {
             console.log('incorrect type');
         }
 
         steps.getInfo(); //TODO: ...
 
-        var historyDepends = history.depends;
+        historyDepends = history.depends;
 
         if (historyDepends) {
-            drawFromHistoryDepends(historyDepends, currentState);
+            drawFromHistoryDepends(historyDepends);
         }
 
     };
@@ -607,20 +626,21 @@ var KenKenGame = function () {
         var index;
         var notesArray;
         var stringResult;
+        var historyDepends;
 
         if (!history) {
             return;
         }
 
         type = history.type;
+        currentState = steps.getCurrentState();
 
         if (type === 'values') {
             selector = "#p" + (history.x + 1) + (history.y + 1) + ' .itemValue';
             value = (history.newValue) ? history.newValue : ''; //number or ""
             $(selector).text(value);
+
         } else if (type === 'notes') {
-            currentState = steps.getCurrentState();
-            console.log(currentState);
             size = self.puzzleData.size;
             index = history.x;
             notesArray = currentState.notes[index];
@@ -633,7 +653,13 @@ var KenKenGame = function () {
             console.log('incorrect type');
         }
 
-        console.log(history);
+        steps.getInfo(); //TODO: ...
+
+        historyDepends = history.depends;
+
+        if (historyDepends) {
+            drawFromHistoryDepends(historyDepends);
+        }
     };
 
     function onResume(){
@@ -861,6 +887,137 @@ var KenKenGame = function () {
         callback(JSON.stringify(result));
     };
 
+    function onCircleClick(event) {
+        var target = $(event.target).closest('.ltlCrcl');
+        var value = target.attr('data-id');
+        var circle = target.closest('#testCircle');
+        var puzzleContainer = $('#puzzleContainer');
+        var activeItem = self.steps.getActiveItem(); //activePuzzleItem
+        var currentItem = activeItem.content;
+        var currentState = self.steps.getCurrentState();
+        var size = currentState.size;
+        var valueX = activeItem.indexX;
+        var valueY = activeItem.indexY;
+        var x = valueX - 1;
+        var y = valueY - 1;
+        var oldValue = currentState.values[x][y];
+        var i = size;
+
+        if (value !== 'cX') {
+            if (value === 'cC') {
+                if (currentState.values[x][y]){
+                    self.steps.saveStep({
+                        type    : 'values',
+                        x       : x,
+                        y       : y,
+                        oldValue: oldValue,
+                        newValue: 0
+                    });
+                    currentItem.find('.itemValue').text('');
+                    currentItem.removeClass('withValue');
+
+                    prepareStateObjectTo(kenken.game.autoSave);
+                } else {
+                    clearAllNotes();
+                }
+                circle.hide();
+                return
+            }
+
+            /*self.steps.saveStep({
+             type    : 'values',
+             x       : x,
+             y       : y,
+             oldValue: oldValue,
+             newValue: +value
+             });*/
+            currentItem.find('.itemValue').text(value);
+            currentItem.addClass('withValue');
+
+            /*while (i > 0) {
+             if (currentState.notes[x * size + i - 1][value - 1]) {
+             currentState.notes[x * size + i - 1][value - 1] = !currentState.notes[x * size + i - 1][value - 1];
+             puzzleContainer.find('#p' + valueX + i + ' .itemNotes').text(booleanArrayToSting(currentState.notes[x * size + i - 1]));
+             }
+             if (currentState.notes[(i - 1) * size + valueY - 1][value - 1]) {
+             currentState.notes[(i - 1) * size + valueY - 1][value - 1] = !currentState.notes[(i - 1) * size + valueY - 1][value - 1];
+             puzzleContainer.find('#p' + i + valueY + ' .itemNotes').text(booleanArrayToSting(currentState.notes[(i - 1) * size + valueY - 1]));
+             }
+             i -= 1;
+             }*/
+
+            var _value = value - 1;
+            var historyDepends = [];
+            var oldNotesValue;
+            var newNotesValue;
+            var _x;
+            var _y;
+
+            while (i > 0) {
+
+                _x = x * size + i - 1;
+                _y = (i - 1) * size + valueY - 1;
+
+                if (currentState.notes[_x][_value]) {
+
+                    oldNotesValue = currentState.notes[_x][_value];
+                    newNotesValue = !oldNotesValue;
+
+                    historyDepends.push({
+                        type: 'notes',
+                        x: _x,
+                        y: _value,
+                        oldValue: oldNotesValue,
+                        newValue: newNotesValue
+                    });
+
+                    currentState.notes[_x][_value] = newNotesValue;
+                    puzzleContainer.find('#p' + valueX + i + ' .itemNotes').text(booleanArrayToSting(currentState.notes[_x]));
+                }
+
+                if (currentState.notes[_y][_value]) {
+
+                    oldNotesValue = currentState.notes[_y][_value];
+                    newNotesValue = !oldNotesValue;
+
+                    historyDepends.push({
+                        type: 'notes',
+                        x: _y,
+                        y: _value,
+                        oldValue: oldNotesValue,
+                        newValue: newNotesValue
+                    });
+
+                    currentState.notes[_y][_value] = newNotesValue;
+                    puzzleContainer.find('#p' + i + valueY + ' .itemNotes').text(booleanArrayToSting(currentState.notes[_y]));
+                }
+
+                i -= 1;
+            }
+
+            self.steps.saveStep({
+                type    : 'values',
+                x       : x,
+                y       : y,
+                oldValue: oldValue,
+                newValue: +value,
+                depends: historyDepends
+            });
+
+            self.steps.getInfo(); //TODO: ...
+
+            prepareStateObjectTo(kenken.game.autoSave);
+
+            if (areYouWinner()){
+                circle.hide();
+                winnerAction();
+                return
+            }
+        }
+        circle.hide();
+        //prepareStateObjectTo(kenken.game.saveState);
+    }
+
     var booleanArrayToSting = function (argArray) {
         var currentArray = argArray;
         var currentLength = currentArray.length;
@@ -916,7 +1073,6 @@ var KenKenGame = function () {
         currentItem.find('.itemNotes').text('');
         drawActiveNotes();
     };
-
 
     function handleEvents() {
 
@@ -995,138 +1151,7 @@ var KenKenGame = function () {
             self.circle.changeCirclePosition();
         });
 
-        $('.ltlCrcl').click(function (event) {
-            var target = $(event.target).closest('.ltlCrcl');
-            var value = target.attr('data-id');
-            var circle = target.closest('#testCircle');
-            var puzzleContainer = $('#puzzleContainer');
-            var activeItem = self.steps.getActiveItem(); //activePuzzleItem
-            var currentItem = activeItem.content;
-            var currentState = self.steps.getCurrentState();
-            var size = currentState.size;
-            var valueX = activeItem.indexX;
-            var valueY = activeItem.indexY;
-            var x = valueX - 1;
-            var y = valueY - 1;
-            var oldValue = currentState.values[x][y];
-            var newValue;
-            var stepData;
-            var i = size;
-
-            if (value !== 'cX') {
-                if (value === 'cC') {
-                    if (currentState.values[x][y]){
-                        self.steps.saveStep({
-                            type    : 'values',
-                            x       : x,
-                            y       : y,
-                            oldValue: oldValue,
-                            newValue: 0
-                        });
-                        currentItem.find('.itemValue').text('');
-                        currentItem.removeClass('withValue');
-
-                        prepareStateObjectTo(kenken.game.autoSave);
-                    } else {
-                        clearAllNotes();
-                    }
-                    circle.hide();
-                    return
-                }
-
-                /*self.steps.saveStep({
-                    type    : 'values',
-                    x       : x,
-                    y       : y,
-                    oldValue: oldValue,
-                    newValue: +value
-                });*/
-                currentItem.find('.itemValue').text(value);
-                currentItem.addClass('withValue');
-
-                /*while (i > 0) {
-                    if (currentState.notes[x * size + i - 1][value - 1]) {
-                        currentState.notes[x * size + i - 1][value - 1] = !currentState.notes[x * size + i - 1][value - 1];
-                        puzzleContainer.find('#p' + valueX + i + ' .itemNotes').text(booleanArrayToSting(currentState.notes[x * size + i - 1]));
-                    }
-                    if (currentState.notes[(i - 1) * size + valueY - 1][value - 1]) {
-                        currentState.notes[(i - 1) * size + valueY - 1][value - 1] = !currentState.notes[(i - 1) * size + valueY - 1][value - 1];
-                        puzzleContainer.find('#p' + i + valueY + ' .itemNotes').text(booleanArrayToSting(currentState.notes[(i - 1) * size + valueY - 1]));
-                    }
-                    i -= 1;
-                }*/
-
-                var _value = value - 1;
-                var historyDepends = [];
-                var oldNotesValue;
-                var newNotesValue;
-                var _x;
-                var _y;
-
-                while (i > 0) {
-
-                    _x = x * size + i - 1;
-                    _y = (i - 1) * size + valueY - 1;
-
-                    if (currentState.notes[_x][_value]) {
-
-                        oldNotesValue = currentState.notes[_x][_value];
-                        newNotesValue = !oldNotesValue;
-
-                        historyDepends.push({
-                            type: 'notes',
-                            x: _x,
-                            y: _value,
-                            oldValue: oldNotesValue,
-                            newValue: newNotesValue
-                        });
-
-                        currentState.notes[_x][_value] = newNotesValue;
-                        puzzleContainer.find('#p' + valueX + i + ' .itemNotes').text(booleanArrayToSting(currentState.notes[_x]));
-                    }
-
-                    if (currentState.notes[_y][_value]) {
-
-                        oldNotesValue = currentState.notes[_y][_value];
-                        newNotesValue = !oldNotesValue;
-
-                        historyDepends.push({
-                            type: 'notes',
-                            x: _y,
-                            y: _value,
-                            oldValue: oldNotesValue,
-                            newValue: newNotesValue
-                        });
-
-                        currentState.notes[_y][_value] = newNotesValue;
-                        puzzleContainer.find('#p' + i + valueY + ' .itemNotes').text(booleanArrayToSting(currentState.notes[_y]));
-                    }
-
-                    i -= 1;
-                }
-
-                self.steps.saveStep({
-                    type    : 'values',
-                    x       : x,
-                    y       : y,
-                    oldValue: oldValue,
-                    newValue: +value,
-                    depends: historyDepends
-                });
-
-                self.steps.getInfo(); //TODO: ...
-
-                prepareStateObjectTo(kenken.game.autoSave);
-
-                if (areYouWinner()){
-                    circle.hide();
-                    winnerAction();
-                    return
-                }
-            }
-            circle.hide();
-            //prepareStateObjectTo(kenken.game.saveState);
-        });
+        $('.ltlCrcl').click(onCircleClick);
 
         $('.notesItem').click(function (event) {
 
@@ -1311,8 +1336,8 @@ var KenKenGame = function () {
         for (i = 1; i <= puzzleSize; i += 1) {
             row.push('<div class="notesItem" data-id="' + i + '"><span>' + i + '<\/span><\/div>');
         }
-        row.push('<div id="notesAll"><span><img src="http://localhost:8888/img/icn_check.png"><\/span><\/div>');
-        row.push('<div id="notesDel"><span><img src="http://localhost:8888/img/ic_close_.png"><\/span><\/div>');
+        row.push('<div id="notesAll"><span><img src="http://projects.thinkmobiles.com:8888/img/icn_check.png"><\/span><\/div>');
+        row.push('<div id="notesDel"><span><img src="http://projects.thinkmobiles.com:8888/img/ic_close_.png"><\/span><\/div>');
 
         row.push('<\/div>');
 
@@ -1423,8 +1448,8 @@ var KenKenGame = function () {
             row.push('<\/div>');
         }
 
-        row.push('<div data-id="cC" class="ltlCrcl"><span><img src="http://localhost:8888/img/icn_eraser_.png"><\/span><\/div>');
-        row.push('<div data-id="cX" class="ltlCrcl"><span><img src="http://localhost:8888/img/ic_close_.png"><\/span><\/div>');
+        row.push('<div data-id="cC" class="ltlCrcl"><span><img src="http://projects.thinkmobiles.com:8888/img/icn_eraser_.png"><\/span><\/div>');
+        row.push('<div data-id="cX" class="ltlCrcl"><span><img src="http://projects.thinkmobiles.com:8888/img/ic_close_.png"><\/span><\/div>');
 
         row.push('<\/div>');
 
@@ -1489,50 +1514,6 @@ var KenKenGame = function () {
         mainContainer.show();
     }
 
-    function CurrentStateConstructor(puzzleData) {
-        var size = puzzleData.size;
-        var level = puzzleData.level;
-        var notesItem;
-        var valuesItem;
-        var i = size;
-        var j, k;
-
-        this.values = [];
-        this.notes = [];
-        this.size = size;
-        this.level = level;
-
-        while (i > 0) {
-            j = size;
-            valuesItem = [];
-            while (j > 0) {
-                valuesItem.push(0);
-                j -= 1;
-            }
-            this.values.push(valuesItem);
-            i -= 1;
-        }
-
-        i = size * size;
-
-        while (i > 0) {
-            j = size;
-            notesItem = [];
-            while (j > 0) {
-                notesItem.push(false);
-                j -= 1;
-            }
-            this.notes.push(notesItem);
-            i -= 1;
-        }
-
-        return this;
-    }
-
-    //var currentStateObject;// = new CurrentStateConstructor(puzzleData);
-    var activePuzzleItem = {};
-
-    var circle; // = new Circle();
     var defaultTimer = '00:00:00';
     var timerState = 'ON';
     var isPaused = false;
