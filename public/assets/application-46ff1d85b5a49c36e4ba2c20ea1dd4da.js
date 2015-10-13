@@ -220,12 +220,15 @@ var Steps = function (puzzleData) {
     this.saveStep = function (data) {
         console.log('Steps.saveStep()');
         var type = data.type;
-        var target = currentState[type];
         var x = data.x;
         var y = data.y;
         var value = data.newValue;
+        var target;
 
-        target[x][y] = value;
+        if (type) {
+            target = currentState[type];
+            target[x][y] = value;
+        }
 
         index++;
         history[index] = data;
