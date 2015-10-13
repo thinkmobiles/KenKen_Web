@@ -763,6 +763,9 @@ var KenKenGame = function () {
 
     function showSolution() {
         var puzzleData = (self.puzzleData) ? self.puzzleData : null;
+        var currentState = self.steps.getCurrentState();
+        var currentValues = currentState.values;
+        var dependsArray = [];
         var solution;
         var size;
         var selector;
@@ -773,7 +776,7 @@ var KenKenGame = function () {
             return;
         }
 
-        //kenken.game.widgetAdBeforeSolution(); // todo
+        kenken.game.widgetAdBeforeSolution(); // todo
 
         solution = puzzleData.dataObj.A;
         size = puzzleData.size;
@@ -785,11 +788,21 @@ var KenKenGame = function () {
         for (var i = 0; i < size; i++) {
             for (var j = 0; j < size; j++) {
                 selector = '#p' + (i + 1) + (j + 1) + ' .itemValue';
-                //el = $(selector);
                 puzzleContainer.find(selector).text(solution[i][j]);
-                //$(selector).text(solution[i][j]);
+                if (currentValues[i][j] !== +solution[i][j]) {
+                    dependsArray.push({
+                        type: 'values',
+                        x: i+1,
+                        y: j+1,
+                        oldValue: currentValues[i][j],
+                        newValue: +solution[i][j]
+                    });
+                }
             }
         }
+        self.steps.saveStep({
+            depends: dependsArray
+        });
         hidePopup();
     };
 
