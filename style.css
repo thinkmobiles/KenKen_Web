@@ -498,7 +498,7 @@ th {
     height: 58px;
 }
 .puzzleContainer9 .puzzleItem{
-    width: 51.5px;
+    width: 51.3px;
     height: 51.5px;
 }
 
@@ -709,4 +709,14 @@ th {
     padding: 5px 10px;
     border: none;
     color: #fff;
+}
+
+.mainContainer.winnerState > div:first-child+div{
+    width: 380px;
+    float: right;
+    margin-left: 30px;
+}
+.mainContainer.winnerState #puzzleContainer{
+    width: 370px;
+    height: 370px;
 }

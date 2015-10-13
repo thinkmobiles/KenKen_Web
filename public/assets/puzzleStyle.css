@@ -160,7 +160,6 @@ th {
 
 /* Main Block */
 .mainContainer{
-    overflow: hidden;
     position: relative;
     margin-top: 30px;
 }
@@ -353,28 +352,28 @@ th {
     background-color:#0051a8;
 }
 #btnSolve span{
-    background-image: url('http://localhost:8888/img/icn_solve-another.png');
+    background-image: url('../img/icn_solve-another.png');
 }
 #btnResumeSaved span{
-    background-image: url('http://localhost:8888/img/icn_resume-saved.png');
+    background-image: url('../img/icn_resume-saved.png');
 }
 #btnUndo span{
-    background-image: url('http://localhost:8888/img/icn_undo.png');
+    background-image: url('../img/icn_undo.png');
 }
 #btnRedo span{
-    background-image: url('http://localhost:8888/img/icn_redo.png');
+    background-image: url('../img/icn_redo.png');
 }
 #btnReset span{
-    background-image: url('http://localhost:8888/img/icn_reset.png');
+    background-image: url('../img/icn_reset.png');
 }
 #btnReveal span{
-    background-image: url('http://localhost:8888/img/icn_reveal.png');
+    background-image: url('../img/icn_reveal.png');
 }
 #btnCheck span{
-    background-image: url('http://localhost:8888/img/icn_check_eye.png');
+    background-image: url('../img/icn_check_eye.png');
 }
 #btnSolution span{
-    background-image: url('http://localhost:8888/img/icn_solution.png');
+    background-image: url('../img/icn_solution.png');
 }
 
 #topInfoBox{
@@ -402,12 +401,12 @@ th {
     background: #fff;
 }
 #btnPause span{
-    background: no-repeat left center url('http://localhost:8888/img/icn_pause.png');
+    background: no-repeat left center url('../img/icn_pause.png');
     display: block;
     padding-left: 25px;
 }
 #btnPause:hover span{
-    background: no-repeat left center url('http://localhost:8888/img/icn_play.png');
+    background: no-repeat left center url('../img/icn_play.png');
 }
 
 #bottomInfoBox{
@@ -440,10 +439,10 @@ th {
     padding-right: 25px;
 }
 #btnSave > span{
-    background: no-repeat right center url('http://localhost:8888/img/icn_save.png');
+    background: no-repeat right center url('../img/icn_save.png');
 }
 #btnPrint > span{
-    background: no-repeat right center url('http://localhost:8888/img/icn_print.png');
+    background: no-repeat right center url('../img/icn_print.png');
 }
 
 
@@ -498,7 +497,7 @@ th {
     height: 58px;
 }
 .puzzleContainer9 .puzzleItem{
-    width: 51.5px;
+    width: 51.3px;
     height: 51.5px;
 }
 
@@ -671,7 +670,7 @@ th {
 }
 
 
-#onPopup{
+#onSolution{
     background: #fff;
     position: absolute;
     top: 50%;
@@ -685,7 +684,7 @@ th {
     box-shadow:  0 0 10px #000;
     text-align: center;
 }
-#onPopup .closeButton{
+#onSolution .closeButton{
     position: absolute;
     right: -12px;
     top: -12px;
@@ -697,16 +696,62 @@ th {
     color: #ccc;
     cursor: pointer;
 }
-#onPopup > span{
+#onSolution > span{
     display: block;
     font: 400 30px/30px Arial;
     margin-top: 10px;
     color: #2141a9;
 }
-#onPopup button{
+#onSolution button{
     margin-top: 20px;
     background: #2142a9;
     padding: 5px 10px;
     border: none;
     color: #fff;
+}
+
+.game #content .message{
+    top: 52px;
+    left: 22%;
+}
+.choose-box h3 a{
+    padding: 5px 22px 10px 10px;
+}
+
+.mainContainer.winnerState > div:first-child+div{
+    width: 430px;
+    float: right;
+    margin-left: 30px;
+}
+.mainContainer.winnerState #puzzleContainer{
+    width: 420px;
+    height: 420px;
+}
+.mainContainer.winnerState .puzzleItem{
+    width: 138px;
+    height: 138px;
+}
+.mainContainer.winnerState .puzzleContainer4 .puzzleItem{
+    width: 44.6px;
+    height: 44.6px;
+}
+.mainContainer.winnerState .puzzleContainer5 .puzzleItem{
+    width: 44.6px;
+    height: 44.6px;
+}
+.mainContainer.winnerState .puzzleContainer6 .puzzleItem{
+    width: 44.6px;
+    height: 44.6px;
+}
+.mainContainer.winnerState .puzzleContainer7 .puzzleItem{
+    width: 58px;
+    height: 58px;
+}
+.mainContainer.winnerState .puzzleContainer8 .puzzleItem{
+    width: 50.5px;
+    height: 50.5px;
+}
+.mainContainer.winnerState .puzzleContainer9 .puzzleItem{
+    width: 44.6px;
+    height: 44.6px;
 }
