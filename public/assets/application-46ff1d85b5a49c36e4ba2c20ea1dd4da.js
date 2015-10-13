@@ -202,16 +202,24 @@ var Steps = function (puzzleData) {
 
     function getNewValueFromHistory(history) {
         var type = history.type;
-        var target = currentState[type];
+        var target;
 
-        return target[history.x][history.y] = history.newValue;
+        if (type) {
+            target = currentState[type];
+            return target[history.x][history.y] = history.newValue;
+        }
     }
 
     function getOldValueFromHistory(history) {
         var type = history.type;
-        var target = currentState[type];
+        var target;
 
-        return target[history.x][history.y] = history.oldValue;
+        if (type) {
+            target = currentState[type];
+
+            return target[history.x][history.y] = history.oldValue;
+        }
+
     }
 
     function pushToHistory(history) {
@@ -507,13 +515,26 @@ var KenKenGame = function () {
             var index;
             var notesArray;
             var stringResult;
+            var currentValue;
+            var value;
 
             type = data.type;
 
             if (type === 'values') {
-                //selector = "#p" + (history.x + 1) + (history.y + 1) + ' .itemValue';
-                //value = (history.oldValue) ? history.oldValue : ''; //number or ""
-                //$(selector).text(value);
+
+                selector = "#p" + (data.x + 1) + (data.y + 1);
+                currentValue = currentState.values[data.x][data.y];
+                value = currentValue ? currentValue : ''; //number or ""
+
+                if (value) {
+                    $(selector).addClass('withValue');
+                } else {
+                    $(selector).removeClass('withValue');
+                }
+
+                selector += ' .itemValue';
+                $(selector).text(value);
+
             } else if (type === 'notes') {
                 size = self.puzzleData.size;
                 index = data.x;
