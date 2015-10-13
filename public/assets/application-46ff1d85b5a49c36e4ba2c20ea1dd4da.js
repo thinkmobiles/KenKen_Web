@@ -200,11 +200,18 @@ var Steps = function (puzzleData) {
 
     };
 
-    function updateFromHistory(history) {
+    function pullFromHistory(history) {
         var type = history.type;
         var target = currentState[type];
 
-        target[history.x][history.y] = history.oldValue;
+        return target[history.x][history.y] = history.oldValue;
+    };
+    
+    function pushToHistory(history) {
+        var type = history.type;
+        var target = currentState[type];
+
+        return target[history.x][history.y] = history.newValue;
     }
 
     var history = [];
@@ -223,11 +230,16 @@ var Steps = function (puzzleData) {
         var x = data.x;
         var y = data.y;
         var value = data.newValue;
+        var depends = data.depends;
         var target;
 
         if (type) {
             target = currentState[type];
             target[x][y] = value;
+        }
+
+        if (depends) {
+            depends.forEach(pushToHistory);
         }
 
         index++;
@@ -258,10 +270,10 @@ var Steps = function (puzzleData) {
         if (index !== -1) {
             index--;
 
-            updateFromHistory(data);
+            pullFromHistory(data);
 
             if (data.depends) {
-                data.depends.forEach(updateFromHistory);
+                data.depends.forEach(pullFromHistory);
             }
         }
 
@@ -271,17 +283,16 @@ var Steps = function (puzzleData) {
     this.redo = function () {
         console.log('Steps.redo()');
         var data;
-        var type;
-        var target;
 
         if (index < (history.length - 1)) {
             index++;
-
             data = history[index];
-            type = data.type;
 
-            target = currentState[type];
-            target[data.x][data.y] = data.newValue;
+            pullFromHistory(data);
+
+            if (data.depends) {
+                data.depends.forEach(pullFromHistory);
+            }
         }
 
         return data;
@@ -479,7 +490,8 @@ var KenKenGame = function () {
         self.timer = timer;
     };
 
-    function drawFromHistoryDepends(depends, currentState) {
+    function drawFromHistoryDepends(depends) {
+        var currentState = self.steps.getCurrentState();
 
         depends.forEach(function (data) {
             var type;
@@ -561,6 +573,7 @@ var KenKenGame = function () {
         var index;
         var notesArray;
         var stringResult;
+        var historyDepends;
 
         if (!history) {
             return;
@@ -573,6 +586,7 @@ var KenKenGame = function () {
             selector = "#p" + (history.x + 1) + (history.y + 1) + ' .itemValue';
             value = (history.oldValue) ? history.oldValue : ''; //number or ""
             $(selector).text(value);
+
         } else if (type === 'notes') {
             size = self.puzzleData.size;
             index = history.x;
@@ -580,18 +594,18 @@ var KenKenGame = function () {
             stringResult = booleanArrayToSting(notesArray);
             selector = "#p" + (Math.trunc(index / size) + 1) + (index % size + 1) + ' .itemNotes';
             $(selector).text(stringResult);
-
             drawActiveNotes();
+
         } else {
             console.log('incorrect type');
         }
 
         steps.getInfo(); //TODO: ...
 
-        var historyDepends = history.depends;
+        historyDepends = history.depends;
 
         if (historyDepends) {
-            drawFromHistoryDepends(historyDepends, currentState);
+            drawFromHistoryDepends(historyDepends);
         }
 
     };
@@ -607,20 +621,21 @@ var KenKenGame = function () {
         var index;
         var notesArray;
         var stringResult;
+        var historyDepends;
 
         if (!history) {
             return;
         }
 
         type = history.type;
+        currentState = steps.getCurrentState();
 
         if (type === 'values') {
             selector = "#p" + (history.x + 1) + (history.y + 1) + ' .itemValue';
             value = (history.newValue) ? history.newValue : ''; //number or ""
             $(selector).text(value);
+
         } else if (type === 'notes') {
-            currentState = steps.getCurrentState();
-            console.log(currentState);
             size = self.puzzleData.size;
             index = history.x;
             notesArray = currentState.notes[index];
@@ -633,7 +648,13 @@ var KenKenGame = function () {
             console.log('incorrect type');
         }
 
-        console.log(history);
+        steps.getInfo(); //TODO: ...
+
+        historyDepends = history.depends;
+
+        if (historyDepends) {
+            drawFromHistoryDepends(historyDepends);
+        }
     };
 
     function onResume(){
@@ -1289,8 +1310,8 @@ var KenKenGame = function () {
         for (i = 1; i <= puzzleSize; i += 1) {
             row.push('<div class="notesItem" data-id="' + i + '"><span>' + i + '<\/span><\/div>');
         }
-        row.push('<div id="notesAll"><span><img src="http://localhost:8888/img/icn_check.png"><\/span><\/div>');
-        row.push('<div id="notesDel"><span><img src="http://localhost:8888/img/ic_close_.png"><\/span><\/div>');
+        row.push('<div id="notesAll"><span><img src="http://projects.thinkmobiles.com:8888/img/icn_check.png"><\/span><\/div>');
+        row.push('<div id="notesDel"><span><img src="http://projects.thinkmobiles.com:8888/img/ic_close_.png"><\/span><\/div>');
 
         row.push('<\/div>');
 
@@ -1401,8 +1422,8 @@ var KenKenGame = function () {
             row.push('<\/div>');
         }
 
-        row.push('<div data-id="cC" class="ltlCrcl"><span><img src="http://localhost:8888/img/icn_eraser_.png"><\/span><\/div>');
-        row.push('<div data-id="cX" class="ltlCrcl"><span><img src="http://localhost:8888/img/ic_close_.png"><\/span><\/div>');
+        row.push('<div data-id="cC" class="ltlCrcl"><span><img src="http://projects.thinkmobiles.com:8888/img/icn_eraser_.png"><\/span><\/div>');
+        row.push('<div data-id="cX" class="ltlCrcl"><span><img src="http://projects.thinkmobiles.com:8888/img/ic_close_.png"><\/span><\/div>');
 
         row.push('<\/div>');
 
