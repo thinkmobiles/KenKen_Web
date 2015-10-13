@@ -1235,6 +1235,11 @@ var KenKenGame = function () {
             var activeVal;
             var activeClass;
 
+            if (areYouWinner()){
+                //circle.hide();
+                winnerAction();
+            }
+
             for (i = 1; i <= size; i += 1) {
                 for (j = 1; j <= size; j += 1) {
                     if (values[i - 1][j - 1] !== 0) {
