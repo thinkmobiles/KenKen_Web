@@ -744,6 +744,7 @@ var KenKenGame = function () {
         el.closest('.puzzleItem').addClass('withValue');
 
         prepareStateObjectTo(kenken.game.autoSave);
+
         if (areYouWinner()){
             //circle.hide();
             winnerAction();
@@ -801,8 +802,8 @@ var KenKenGame = function () {
                 if (currentValues[i][j] !== +solution[i][j]) {
                     dependsArray.push({
                         type: 'values',
-                        x: i+1,
-                        y: j+1,
+                        x: i,
+                        y: j,
                         oldValue: currentValues[i][j],
                         newValue: +solution[i][j]
                     });
@@ -977,6 +978,8 @@ var KenKenGame = function () {
             if (targetType === 'solve'){
                 letsSolve();
             };
+
+            hidePopup();
         });
 
         $('.puzzleItem').click(function (event) {
