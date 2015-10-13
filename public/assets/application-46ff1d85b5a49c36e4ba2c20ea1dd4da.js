@@ -742,6 +742,12 @@ var KenKenGame = function () {
 
         el.text(obj[randomKey]);
         el.closest('.puzzleItem').addClass('withValue');
+
+        prepareStateObjectTo(kenken.game.autoSave);
+        if (areYouWinner()){
+            //circle.hide();
+            winnerAction();
+        }
     };
 
     function onPrintClick(){
