@@ -1,7 +1,8 @@
 
 /*
  var script = document.createElement('script');
- script.src = 'http://projects.thinkmobiles.com:8888/js/killFlashPlayer.js';
+ //script.src = 'http://projects.thinkmobiles.com:8888/js/killFlashPlayer.js';
+ script.src = 'http://localhost:8888/js/killFlashPlayer.js';
  document.head.appendChild(script);
  */
 
