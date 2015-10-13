@@ -840,6 +840,7 @@ var KenKenGame = function () {
             depends: dependsArray
         });
         hidePopup();
+
     };
 
     function areYouWinner () {
