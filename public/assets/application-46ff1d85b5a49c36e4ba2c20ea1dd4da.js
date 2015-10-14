@@ -495,6 +495,21 @@ var KenKenGame = function () {
         });
     };
 
+    function findValueInRow(rowIndex, value, currentState) {
+        var currentState = currentState || self.steps.getCurrentState();
+        var size = currentState.size;
+        var row = currentState.values[rowIndex];
+
+        return row.indexOf(value);
+
+        /*for (var i=0; i<size; i++) {
+            if (row[i] === value) {
+
+            }
+        }*/
+
+    };
+
     function changeTimerState(e) {
         var target = e.target;
         var span = target.closest('span');
@@ -890,45 +905,52 @@ var KenKenGame = function () {
             var y = activeItem.indexY;
             var currentIndex = (x - 1) * size + y;
             var notesArray = currentState.notes[currentIndex - 1];
-            var oldNotesArray = notesArray.slice(0);
+            var newNotesArray = notesArray.slice(0);
             var valuesArray = currentState.values;
             var i = size;
             var stringResult;
             var stepData;
             var historyDepends = [];
             var historyData;
-            var oldValue;
-            var newValue;
+            var notesIndex;
 
+            //fill with default values:
             while (i > 0) {
-                notesArray[i - 1] = true;
+                newNotesArray[i - 1] = true;
                 i -= 1;
             }
 
             i = size;
+
+            //change values if exist item in column/row:
             while (i > 0) {
 
                 if (valuesArray[x - 1][i - 1]) {
-                    notesArray[valuesArray[x - 1][i - 1] - 1] = false;
-                    newValue = false;
+                    notesIndex = valuesArray[x - 1][i - 1] - 1;
+                    newNotesArray[notesIndex] = false;
                 } else if (valuesArray[i - 1][y - 1]) {
-                    notesArray[valuesArray[i - 1][y - 1] - 1] = false;
-                    newValue = false;
+                    notesIndex = valuesArray[i - 1][y - 1] - 1;
+                    newNotesArray[notesIndex] = false;
                 } else {
-                    newValue = true;
+                    newNotesArray[i - 1] = true;
                 }
 
-                oldValue = oldNotesArray[i -1 ];
-                historyData = {
-                    type: 'notes',
-                    x: currentIndex - 1,
-                    y: i-1,
-                    newValue: newValue,
-                    oldValue: oldValue
-                };
-                historyDepends.push(historyData);
-
                 i -= 1;
+            }
+
+            //save changes to history:
+            for (i=0; i<size; i++) {
+                if (newNotesArray[i] !== notesArray[i]) {
+                    historyData = {
+                        type: 'notes',
+                        x: currentIndex - 1,
+                        y: i,
+                        newValue: newNotesArray[i],
+                        oldValue: notesArray[i]
+                    };
+
+                    historyDepends.push(historyData);
+                }
             }
 
             stepData = {
@@ -937,7 +959,7 @@ var KenKenGame = function () {
 
             self.steps.saveStep(stepData);
 
-            stringResult = booleanArrayToSting(notesArray);
+            stringResult = booleanArrayToSting(newNotesArray);
             currentItem.find('.itemNotes').text(stringResult);
 
             drawActiveNotes();
