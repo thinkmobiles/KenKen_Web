@@ -978,14 +978,18 @@ var KenKenGame = function () {
     function onPuzzleItemClick(event) {
         var target = $(event.target).closest('.puzzleItem');
         var container = target.closest('#puzzleContainer');
-        var activeItem = self.steps.setActiveItem(target);
+        var activeItem;
 
-        drawActiveNotes(activeItem);
+        if (!container.closest('.mainContainer').hasClass('winnerState')) {
+            activeItem = self.steps.setActiveItem(target);
 
-        container.find('.active').removeClass('active');
-        target.addClass('active');
+            drawActiveNotes(activeItem);
 
-        self.circle.changeCirclePosition();
+            container.find('.active').removeClass('active');
+            target.addClass('active');
+
+            self.circle.changeCirclePosition();
+        }
     };
 
     // --- popup methods ---
