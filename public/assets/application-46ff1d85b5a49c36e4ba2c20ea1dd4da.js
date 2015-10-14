@@ -1270,10 +1270,9 @@ var KenKenGame = function () {
         /* --- Circle --- */
         $('.ltlCrcl').click(onCircleClick);
 
-        //TODO: FIXME
         /* --- Popup --- */
-        $('#onPopup .closeButton').click(hidePopup);
-        $('#onPopup #showSolution').click(onPopupAccecpt);
+        $('#popupCloseButton').click(hidePopup);
+        $('#showSolution').click(onPopupAccecpt);
     };
 
     function drawOurForm(puzzleData) {
@@ -1422,7 +1421,7 @@ var KenKenGame = function () {
         // +++++++ Popup
         row.push('<div id="onPopup" style="display: none">');
         row.push('<span class="popupMessage"><\/span>');
-        row.push('<div class="closeButton"><span>x</span></div>');
+        row.push('<div id="popupCloseButton" class="closeButton"><span>x</span></div>');
         row.push('<button id="showSolution"><span>OK</span></button>');
         row.push('<\/div>');
 
