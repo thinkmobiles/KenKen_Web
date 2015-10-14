@@ -219,9 +219,10 @@ var Steps = function (puzzleData) {
         var itemId = content.attr('id');
 
         activeItem = {
-            content: content,
-            indexX: +itemId[1],
-            indexY: +itemId[2]
+            content  : content,
+            indexX   : +itemId[1],
+            indexY   : +itemId[2],
+            isSingle : content.hasClass('singleValue')
         };
 
         return activeItem;
@@ -1227,7 +1228,8 @@ var KenKenGame = function () {
         var currentState = self.steps.getCurrentState();
         var indexValue = (activeItem.indexX - 1) * size + activeItem.indexY;
         var notesArray = currentState.notes[indexValue - 1];
-        var domArray = $('.notesItem');
+        var domContainer = $('#notesContainer');
+        var domArray = domContainer.find('.notesItem');
         var i = 1;
         var currentNote;
 
@@ -1484,7 +1486,9 @@ var KenKenGame = function () {
         kenken.game.puzzleFinished(puzzleTime);
 
         //>>>>>  Congratulating TOP panel |BEGIN|
-        rowT.push('<img src=""http://projects.thinkmobiles.com:8888/img/ken-con.png"">');
+        rowT.push('<div id="kengratulateBox">');
+        rowT.push('<img src="http://localhost:8888/img/ken-con.png">');
+        rowT.push('<\/div>');
         rowT.push('<span>You solved this puzzle in '+puzzleTime+'<\/span>');
 
         topContainer.html(rowT.join(''));
