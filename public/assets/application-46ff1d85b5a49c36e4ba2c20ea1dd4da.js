@@ -5,20 +5,13 @@
 /*
 
  function base64_decode(e) { ...
-...
+ ...
  }, 150, "<>"), this.selected = !1
  }, t
  }(t.EventEmitter)
  }.call(this);
 
-*/
-
-function killFlash() {
-    console.log('>>> killFlash');
-    var script = document.createElement('script');
-    script.src = 'http://localhost:8829/js/killFlashPlayer.js';
-    document.head.appendChild(script);
-}
+ */
 
 // <editor-fold desc="Timer">
 function Timer() {
@@ -30,13 +23,11 @@ function Timer() {
         var str;
         var resultObj;
 
-        //console.log('setTime() totalSeconds = %s, isPaused = %s, pausedTime = %s', totalSeconds, isPaused, pausedTime);
-
         if (!isPaused) {
             totalSeconds = pausedTime + parseInt((new Date - startedAt) / 1000);
 
             hours = pad(parseInt(totalSeconds / 3600));
-            minutes = pad(parseInt(totalSeconds / 60));
+            minutes = pad(parseInt(totalSeconds / 60) % 60);
             seconds = pad(totalSeconds % 60);
             str = hours + ":" + minutes + ":" + seconds;
 
@@ -56,103 +47,57 @@ function Timer() {
 
     function pad(val) {
         var valString = val + "";
-
-        if (valString.length < 2) {
-            return "0" + valString;
-        } else {
-            return valString;
-        }
+        return (valString.length < 2) ? '0' + valString : valString;
     }
 
     var pausedTime = 0;
     var isPaused = false;
-    var startedAt;
     var totalSeconds = 0;
+    var startedAt;
     var timerInterval;
     var tickCallback;
 
     this.start = function () {
-        console.log('start');
-
-        if (timerInterval) {
-            return console.log('timer already was started', timerInterval);
-        } else {
-
+        if (!timerInterval) {
             startedAt = new Date;
             pausedTime = 0;
             isPaused = false;
             totalSeconds = 0;
 
             timerInterval = setInterval(setTime, 500);
-            console.log('... OK');
         }
     };
 
     this.pause = function () {
-        console.log('pause');
-
         if (timerInterval) {
             isPaused = !isPaused;
-        } else {
-            console.log('nothing to pause');
         }
-
     };
 
     this.resume = function () {
-        console.log('resume');
-
         if (timerInterval) {
             isPaused = !isPaused;
             startedAt = new Date;
             pausedTime = totalSeconds;
-        } else {
-            console.log('nothing to resume');
         }
-
     };
 
     this.stop = function () {
-        console.log('stop');
-
         if (timerInterval) {
-            console.log('timerInterval', timerInterval);
             clearInterval(timerInterval);
             timerInterval = null;
             totalSeconds = 0;
-        } else {
-            console.log('nothing to stop');
         }
     };
 
     this.onTick = function (callback) {
         tickCallback = callback;
     };
-
 };
 // </editor-fold>
 
 // <editor-fold desc="Steps">
 var Steps = function (puzzleData) {
-    /*function prepareValues() {
-        var size = puzzleData.size;
-        var valuesItem;
-
-        while (i > 0){
-            j = size;
-            valuesItem = [];
-            while (j > 0){
-                valuesItem.push(0);
-                j -= 1;
-            }
-            this.values.push(valuesItem);
-            i -= 1;
-        }
-    }*/
-
-    function prepareNotes() {
-
-    }
 
     function initializeFirstStep() {
         console.log('Steps >>> initializeFirstStep()');
@@ -208,16 +153,24 @@ var Steps = function (puzzleData) {
 
     function getNewValueFromHistory(history) {
         var type = history.type;
-        var target = currentState[type];
+        var target;
 
-        return target[history.x][history.y] = history.newValue;
+        if (type) {
+            target = currentState[type];
+            return target[history.x][history.y] = history.newValue;
+        }
     }
 
     function getOldValueFromHistory(history) {
         var type = history.type;
-        var target = currentState[type];
+        var target;
 
-        return target[history.x][history.y] = history.oldValue;
+        if (type) {
+            target = currentState[type];
+
+            return target[history.x][history.y] = history.oldValue;
+        }
+
     }
 
     function pushToHistory(history) {
@@ -228,12 +181,10 @@ var Steps = function (puzzleData) {
     }
 
     var history = [];
-    var index = -1; //empty history
+    var index = -1;         //empty history
     var self = this;
     var currentState;
     var activeItem = {};
-
-    //prepareValues();
 
     initializeFirstStep();
 
@@ -321,7 +272,6 @@ var Steps = function (puzzleData) {
 
     this.getCurrentState = function () {
         console.log('Steps.getCurrentState()');
-        //return history[index];
         return currentState;
     };
 
@@ -351,7 +301,6 @@ var Steps = function (puzzleData) {
         console.log('---------------------------------------');
     }
 };
-
 // </editor-fold>
 
 // <editor-fold desc="Circle">
@@ -365,7 +314,6 @@ function Circle(puzzleData) {
         circleDiv.css('left', circlePos.x);
         circleDiv.css('display', 'block');
     };
-
 
     this.drawOurCircles = function () {
         var count = puzzleData.size + 2;
@@ -382,7 +330,6 @@ function Circle(puzzleData) {
             })
         }
     };
-
 
     this.calculateCircleButtons = function (argRadius, argCount) {
         var radius = argRadius;
@@ -403,7 +350,6 @@ function Circle(puzzleData) {
 
         return coordinatesArray;
     };
-
 
     this.findCirclePosition = function (circleRadius) {
         var activeSquare = $('.puzzleItem.active')[0];
@@ -513,13 +459,26 @@ var KenKenGame = function () {
             var index;
             var notesArray;
             var stringResult;
+            var currentValue;
+            var value;
 
             type = data.type;
 
             if (type === 'values') {
-                //selector = "#p" + (history.x + 1) + (history.y + 1) + ' .itemValue';
-                //value = (history.oldValue) ? history.oldValue : ''; //number or ""
-                //$(selector).text(value);
+
+                selector = "#p" + (data.x + 1) + (data.y + 1);
+                currentValue = currentState.values[data.x][data.y];
+                value = currentValue ? currentValue : ''; //number or ""
+
+                if (value) {
+                    $(selector).addClass('withValue');
+                } else {
+                    $(selector).removeClass('withValue');
+                }
+
+                selector += ' .itemValue';
+                $(selector).text(value);
+
             } else if (type === 'notes') {
                 size = self.puzzleData.size;
                 index = data.x;
@@ -675,7 +634,7 @@ var KenKenGame = function () {
         }
     };
 
-    function onResume(){
+    function onResume() {
         kenken.game.resumeSavedPuzzle();
     };
 
@@ -694,38 +653,13 @@ var KenKenGame = function () {
         hidePopup();
     }
 
-    function letsSolve(){
+    function letsSolve() {
         kenken.game.solveAnother();
 
         hidePopup();
     }
 
-    function onSolutionClick() {
-        var popup = $('#onPopup');
-        popup.find('.popupMessage').text('See solution?');
-        popup.find('#showSolution').attr('data-val','solution');
-
-        kenken.game.onSolution();
-        popup.show();
-    };
-
-    function onResetClick(){
-        var popup = $('#onPopup');
-        popup.find('.popupMessage').text('Reset puzzle?');
-        popup.find('#showSolution').attr('data-val','reset');
-
-        popup.show();
-    };
-
-    function onSolveClick (){
-        var popup = $('#onPopup');
-        popup.find('.popupMessage').text('Solve another puzzle?');
-        popup.find('#showSolution').attr('data-val','solve');
-
-        popup.show();
-    };
-
-    function onReveal() {
+    function onRevealClick(event) {
         var puzzleData = (self.puzzleData) ? self.puzzleData : null;
         var currentState = self.steps.getCurrentState();
         var currentValues = currentState.values;
@@ -790,19 +724,118 @@ var KenKenGame = function () {
         }
     };
 
-    function onPrintClick(){
+    function onCheckClick(event) {
+        //check true and false values in our puzzle
+        var puzzleData = self.puzzleData;
+        var size = puzzleData.size;
+        var currentState = self.steps.getCurrentState();
+        var values = currentState.values;
+        var resultValues = puzzleData.dataObj.A;
+        var allItems = $('.puzzleItem');
+        var i, j;
+        var activeVal;
+        var activeClass;
 
-        kenken.game.widgetAdBeforePrint();
+        if (areYouWinner()){
+            winnerAction();
+        }
 
-        kenken.game.onPrint();
-
-        window.print() ;
-        //document.getElementById('puzzleContainer').print();
-        //$('#puzzleContainer').print();
-
+        for (i = 1; i <= size; i += 1) {
+            for (j = 1; j <= size; j += 1) {
+                if (values[i - 1][j - 1] !== 0) {
+                    activeVal = $('#p' + i + j);
+                    if (values[i - 1][j - 1] == resultValues[i - 1][j - 1]) {
+                        activeClass = 'pulseGreen';
+                    } else {
+                        activeClass = 'pulseRed';
+                    }
+                    activeVal.addClass(activeClass);
+                }
+            }
+        }
+        setTimeout(function () {
+            allItems.removeClass('pulseGreen');
+            allItems.removeClass('pulseRed');
+        }, 400);
     };
 
-    function onSave(){
+    function onSolutionClick(event) {
+        var popup = $('#onPopup');
+        popup.find('.popupMessage').text('See solution?');
+        popup.find('#showSolution').attr('data-val','solution');
+
+        kenken.game.onSolution();
+        popup.show();
+    };
+
+    function onResetClick(event) {
+        var popup = $('#onPopup');
+        popup.find('.popupMessage').text('Reset puzzle?');
+        popup.find('#showSolution').attr('data-val','reset');
+
+        popup.show();
+    };
+
+    function onSolveClick (event) {
+        var popup = $('#onPopup');
+        popup.find('.popupMessage').text('Solve another puzzle?');
+        popup.find('#showSolution').attr('data-val','solve');
+
+        popup.show();
+    };
+
+    function onPrintClick(event) {
+        kenken.game.widgetAdBeforePrint();
+        kenken.game.onPrint();
+        window.print() ;
+    };
+
+    function onNotesAllClick(event) {
+        //write all valid values of notes to puzzle item
+        var currentState = self.steps.getCurrentState();
+        var activeItem = self.steps.getActiveItem();
+
+        if (currentState.autoNotes) {
+
+            var currentItem = activeItem.content;
+            var size = self.puzzleData.size;
+            var x = activeItem.indexX;
+            var y = activeItem.indexY;
+            var currentIndex = (x - 1) * size + y;
+            var notesArray = currentState.notes[currentIndex - 1];
+            var valuesArray = currentState.values;
+            var i = size;
+            var stringResult;
+
+            while (i > 0) {
+                notesArray[i - 1] = true;
+                i -= 1;
+            }
+
+            i = size;
+            while (i > 0) {
+                if (valuesArray[x - 1][i - 1]) {
+                    notesArray[valuesArray[x - 1][i - 1] - 1] = false
+                }
+                if (valuesArray[i - 1][y - 1]) {
+                    notesArray[valuesArray[i - 1][y - 1] - 1] = false
+                }
+                i -= 1;
+            }
+
+            stringResult = booleanArrayToSting(notesArray);
+            currentItem.find('.itemNotes').text(stringResult);
+
+            drawActiveNotes();
+        }
+    };
+
+    function onNotesDelClick(event) {
+        //clear notes in currentStateObject, notes box and puzzle square
+        clearAllNotes();
+    };
+
+    function onSaveClick() {
         prepareStateObjectTo(kenken.game.saveState);
     };
 
@@ -856,7 +889,7 @@ var KenKenGame = function () {
 
     };
 
-    function areYouWinner () {
+    function areYouWinner() {
 
         var resultValues = self.puzzleData.dataObj.A;
         var currentState = self.steps.getCurrentState();
@@ -883,13 +916,13 @@ var KenKenGame = function () {
         var currentState = self.steps.getCurrentState();
         var valuesArray = currentState.values;
         var size = currentState.size;
-        var i=1;
-        var valuesString=valuesArray[0].join(',');
+        var i = 1;
+        var valuesString = valuesArray[0].join(',');
         var notesArray = currentState.notes;
         var result;
 
-        while (i<size){
-            valuesString += ','+valuesArray[i].join(',');
+        while ( i< size){
+            valuesString += ',' + valuesArray[i].join(',');
             i += 1;
         }
 
@@ -1033,9 +1066,9 @@ var KenKenGame = function () {
         }
         circle.hide();
         //prepareStateObjectTo(kenken.game.saveState);
-    }
+    };
 
-    var booleanArrayToSting = function (argArray) {
+    function booleanArrayToSting(argArray) {
         var currentArray = argArray;
         var currentLength = currentArray.length;
         var result = '';
@@ -1051,7 +1084,7 @@ var KenKenGame = function () {
         return result;
     };
 
-    var drawActiveNotes = function (activeItem) {
+    function drawActiveNotes(activeItem) {
         var activeItem = activeItem || self.steps.getActiveItem();
         var size = self.puzzleData.size;
         var currentState = self.steps.getCurrentState();
@@ -1072,7 +1105,7 @@ var KenKenGame = function () {
         }
     };
 
-    var clearAllNotes = function(){
+    function clearAllNotes() {
         var currentState = self.steps.getCurrentState();
         var activeItem = self.steps.getActiveItem();
         var currentItem = activeItem.content;
@@ -1093,49 +1126,32 @@ var KenKenGame = function () {
 
     function handleEvents() {
 
-        /*var prepareStateObjectTo = function (callback) {
-            var currentState = self.steps.getCurrentState();
-            var valuesArray = currentState.values;
-            var size = currentState.size;
-            var i=1;
-            var valuesString=valuesArray[0].join(',');
-            var notesArray = currentState.notes;
-            var result;
+        /* --- Timer --- */
+        $('#btnOffTimer').click(changeTimerState); // ON-OFF timer
+        $('#btnPause').click(pauseOrResume);       // Pause
 
-            while (i<size){
-                valuesString += valuesArray[i].join(',');
-                i += 1;
-            }
-
-            result = {
-                values : valuesString,
-                notes  : notesArray
-            };
-
-            callback(result);
-        };*/
-
-        $('#btnResumeSaved').click(onResume); //Resume
-        $('#btnSolve').click(onSolveClick); // Solve
+        /* --- Solve | Resume --- */
+        $('#btnSolve').click(onSolveClick);        //Solve Another
+        $('#btnResumeSaved').click(onResume);      //Resume Saved Puzzle
 
         /* --- Undo | Redo | Reset --- */
-        //$('#btnUndo').click(function () {console.log('Undo is not implemented yet');});       //Undo
-        $('#btnUndo').click(onUndo); //Undo
-        $('#btnRedo').click(onRedo); //Redo
-        $('#btnReset').click(onResetClick); //Reset
+        $('#btnUndo').click(onUndo);               //Undo
+        $('#btnRedo').click(onRedo);               //Redo
+        $('#btnReset').click(onResetClick);        //Reset
 
         /* --- Reveal | Check | Solution --- */
-        $('#btnReveal').click(onReveal); //Reveal
-        //$('#btnCheck').click(kenken.game.onCheck); //Check
-        $('#btnSolution').click(onSolutionClick); //Solution
+        $('#btnReveal').click(onRevealClick);      //Reveal
+        $('#btnCheck').click(onCheckClick);        //Check
+        $('#btnSolution').click(onSolutionClick);  //Solution
 
-        /* --- Timer --- */
-        $('#btnOffTimer').click(changeTimerState); // OFF - ON timer
-        $('#btnPause').click(pauseOrResume); // Pause
-
-        $('#btnSave').click(onSave); //Save
+        $('#btnSave').click(onSaveClick); //Save
         $('#btnPrint').click(onPrintClick);  //Print
 
+        /* --- Notes --- */
+        $('#notesAll').click(onNotesAllClick);
+        $('#notesDel').click(onNotesDelClick);
+
+        //TODO: FIXME
         $('#onPopup .closeButton').click(hidePopup);
         $('#onPopup #showSolution').click(function(event){
             var targetType = $(event.target).closest('#showSolution').attr('data-val');
@@ -1240,46 +1256,6 @@ var KenKenGame = function () {
             }
         });
 
-        //event --- check true and false values in our puzzle
-        $('#btnCheck').click(function () {
-            var size = self.puzzleData.size;
-            var currentState = self.steps.getCurrentState();
-            var values = currentState.values;
-            var resultValues = self.puzzleData.dataObj.A;
-            var allItems = $('.puzzleItem');
-            var i, j;
-            var activeVal;
-            var activeClass;
-
-            if (areYouWinner()){
-                //circle.hide();
-                winnerAction();
-            }
-
-            for (i = 1; i <= size; i += 1) {
-                for (j = 1; j <= size; j += 1) {
-                    if (values[i - 1][j - 1] !== 0) {
-                        activeVal = $('#p' + i + j);
-                        if (values[i - 1][j - 1] == resultValues[i - 1][j - 1]) {
-                            activeClass = 'pulseGreen';
-                        } else {
-                            activeClass = 'pulseRed';
-                        }
-                        activeVal.addClass(activeClass);
-                    }
-                }
-            }
-            setTimeout(function () {
-                allItems.removeClass('pulseGreen');
-                allItems.removeClass('pulseRed');
-            }, 400)
-        });
-
-        //event --- clear notes in currentStateObject, notes box and puzzle square
-        $('#notesDel').click(function(){
-            clearAllNotes();
-        });
-
         //event --- change autoNotes state
         $('.btnNote').click(function(event){
             var currentState = self.steps.getCurrentState();
@@ -1293,45 +1269,6 @@ var KenKenGame = function () {
             currentState.autoNotes = +targetId ? true : false; // todo
         });
 
-        //event --- write all valid values of notes to puzzle item
-        $('#notesAll').click(function(){
-            var currentState = self.steps.getCurrentState();
-            var activeItem = self.steps.getActiveItem();
-
-            if (currentState.autoNotes) {
-
-                var currentItem = activeItem.content;
-                var size = self.puzzleData.size;
-                var x = activeItem.indexX;
-                var y = activeItem.indexY;
-                var currentIndex = (x - 1) * size + y;
-                var notesArray = currentState.notes[currentIndex - 1];
-                var valuesArray = currentState.values;
-                var i = size;
-                var stringResult;
-
-                while (i > 0) {
-                    notesArray[i - 1] = true;
-                    i -= 1;
-                }
-
-                i = size;
-                while (i > 0) {
-                    if (valuesArray[x - 1][i - 1]) {
-                        notesArray[valuesArray[x - 1][i - 1] - 1] = false
-                    }
-                    if (valuesArray[i - 1][y - 1]) {
-                        notesArray[valuesArray[i - 1][y - 1] - 1] = false
-                    }
-                    i -= 1;
-                }
-
-                stringResult = booleanArrayToSting(notesArray);
-                currentItem.find('.itemNotes').text(stringResult);
-
-                drawActiveNotes();
-            }
-        });
     };
 
     function drawOurForm(puzzleData) {
@@ -1593,12 +1530,11 @@ var KenKenGame = function () {
     };
 
     /*this.prototype.changeTimerState = function (e) {
-        console.log('changeTimerState');
-    }*/
+     console.log('changeTimerState');
+     }*/
 
 
 };
-
 // </editor-fold>
 
 var _KenKen = new KenKenGame();
@@ -1607,9 +1543,9 @@ KenKen = _KenKen;
 var kenken = kenken || {};
 // <editor-fold desc="kenken.limitAvaialbleDifficulties">
 kenken.limitAvaialbleDifficulties = function () {
-        $("a.size").click(function () {
-            $("a.level").removeClass("notAvailable");
-            switch ($(this).data("value")) {
+    $("a.size").click(function () {
+        $("a.level").removeClass("notAvailable");
+        switch ($(this).data("value")) {
             case 3:
                 $("a.level.easy").addClass("notAvailable"), $("a.level.medium").addClass("notAvailable"), $("a.level.hard").addClass("notAvailable"), $("a.level.expert-premium").addClass("notAvailable"), $("a.level.expert").addClass("notAvailable");
                 break;
@@ -1621,32 +1557,32 @@ kenken.limitAvaialbleDifficulties = function () {
                 break;
             case 9:
                 $("a.op.selected").data("value") == "dm" && ($("a.level.hard").addClass("notAvailable"), $("a.level.expert").addClass("notAvailable"))
-            }
-        }), $("a.op").click(function () {
-            $("a.level").removeClass("notAvailable"), $("a.size.selected").data("value") == 3 && ($("a.level.easy").addClass("notAvailable"), $("a.level.medium").addClass("notAvailable"), $("a.level.hard").addClass("notAvailable"), $("a.level.expert-premium").addClass("notAvailable"), $("a.level.expert").addClass("notAvailable"));
-            if ($(this).data("value") == "dm") switch ($("a.size.selected").data("value")) {
+        }
+    }), $("a.op").click(function () {
+        $("a.level").removeClass("notAvailable"), $("a.size.selected").data("value") == 3 && ($("a.level.easy").addClass("notAvailable"), $("a.level.medium").addClass("notAvailable"), $("a.level.hard").addClass("notAvailable"), $("a.level.expert-premium").addClass("notAvailable"), $("a.level.expert").addClass("notAvailable"));
+        if ($(this).data("value") == "dm") switch ($("a.size.selected").data("value")) {
             case 8:
             case 9:
                 $("a.level.hard").addClass("notAvailable");
             case 5:
             case 7:
                 $("a.level.expert").addClass("notAvailable")
-            }
-            $("a.size.selected").data("value") == 8 && ($(this).data("value") == "dm" ? $("a.level.hard").addClass("notAvailable") : $("a.level.hard").removeClass("notAvailable"))
-        }), $("a.level").click(function () {
-            $(this).hasClass("notAvailable") == 1 && ($(this).hasClass("hard") == 1 ? $("#no-hard-puzzle-modal").reveal({
-                animation: "fadeAndPop",
-                animationspeed: 300,
-                closeonbackgroundclick: !0,
-                dismissmodalclass: "close-reveal-modal"
-            }) : $(this).hasClass("expert") == 1 && $("#no-expert-puzzle-modal").reveal({
-                animation: "fadeAndPop",
-                animationspeed: 300,
-                closeonbackgroundclick: !0,
-                dismissmodalclass: "close-reveal-modal"
-            }))
-        }), $(document).ready(function () {
-            switch ($("a.size.selected").data("value")) {
+        }
+        $("a.size.selected").data("value") == 8 && ($(this).data("value") == "dm" ? $("a.level.hard").addClass("notAvailable") : $("a.level.hard").removeClass("notAvailable"))
+    }), $("a.level").click(function () {
+        $(this).hasClass("notAvailable") == 1 && ($(this).hasClass("hard") == 1 ? $("#no-hard-puzzle-modal").reveal({
+            animation: "fadeAndPop",
+            animationspeed: 300,
+            closeonbackgroundclick: !0,
+            dismissmodalclass: "close-reveal-modal"
+        }) : $(this).hasClass("expert") == 1 && $("#no-expert-puzzle-modal").reveal({
+            animation: "fadeAndPop",
+            animationspeed: 300,
+            closeonbackgroundclick: !0,
+            dismissmodalclass: "close-reveal-modal"
+        }))
+    }), $(document).ready(function () {
+        switch ($("a.size.selected").data("value")) {
             case 3:
                 $("a.level.easy").addClass("notAvailable"), $("a.level.medium").addClass("notAvailable"), $("a.level.hard").addClass("notAvailable"), $("a.level.expert-premium").addClass("notAvailable"), $("a.level.expert").addClass("notAvailable");
                 break;
@@ -1658,28 +1594,28 @@ kenken.limitAvaialbleDifficulties = function () {
                 break;
             case 9:
                 $("a.op.selected").data("value") == "dm" && ($("a.level.hard").addClass("notAvailable"), $("a.level.expert").addClass("notAvailable"))
-            }
-        })
-    }, kenken.validatePuzzleSelection = function () {
-        $("#play_now").click(function (e) {
-            $("a.size.selected").data("value") == 8 && $("a.level.selected").data("value") == "hard" && $("a.op.selected").data("value") == "dm" ? ($("#no-hard-puzzle-modal").reveal({
-                animation: "fadeAndPop",
-                animationspeed: 300,
-                closeonbackgroundclick: !0,
-                dismissmodalclass: "close-reveal-modal"
-            }), e.preventDefault()) : $("a.size.selected").data("value") == 9 && $("a.level.selected").data("value") == "hard" && $("a.op.selected").data("value") == "dm" ? ($("#no-hard-puzzle-modal").reveal({
-                animation: "fadeAndPop",
-                animationspeed: 300,
-                closeonbackgroundclick: !0,
-                dismissmodalclass: "close-reveal-modal"
-            }), e.preventDefault()) : $("a.level.selected").data("value") == "expert" && $("a.op.selected").data("value") == "dm" && ($("a.size.selected").data("value") == 3 || $("a.size.selected").data("value") == 5 || $("a.size.selected").data("value") == 7 || $("a.size.selected").data("value") == 8 || $("a.size.selected").data("value") == 9) && ($("#no-expert-puzzle-modal").reveal({
-                animation: "fadeAndPop",
-                animationspeed: 300,
-                closeonbackgroundclick: !0,
-                dismissmodalclass: "close-reveal-modal"
-            }), e.preventDefault())
-        })
-    },
+        }
+    })
+}, kenken.validatePuzzleSelection = function () {
+    $("#play_now").click(function (e) {
+        $("a.size.selected").data("value") == 8 && $("a.level.selected").data("value") == "hard" && $("a.op.selected").data("value") == "dm" ? ($("#no-hard-puzzle-modal").reveal({
+            animation: "fadeAndPop",
+            animationspeed: 300,
+            closeonbackgroundclick: !0,
+            dismissmodalclass: "close-reveal-modal"
+        }), e.preventDefault()) : $("a.size.selected").data("value") == 9 && $("a.level.selected").data("value") == "hard" && $("a.op.selected").data("value") == "dm" ? ($("#no-hard-puzzle-modal").reveal({
+            animation: "fadeAndPop",
+            animationspeed: 300,
+            closeonbackgroundclick: !0,
+            dismissmodalclass: "close-reveal-modal"
+        }), e.preventDefault()) : $("a.level.selected").data("value") == "expert" && $("a.op.selected").data("value") == "dm" && ($("a.size.selected").data("value") == 3 || $("a.size.selected").data("value") == 5 || $("a.size.selected").data("value") == 7 || $("a.size.selected").data("value") == 8 || $("a.size.selected").data("value") == 9) && ($("#no-expert-puzzle-modal").reveal({
+            animation: "fadeAndPop",
+            animationspeed: 300,
+            closeonbackgroundclick: !0,
+            dismissmodalclass: "close-reveal-modal"
+        }), e.preventDefault())
+    })
+},
     // </editor-fold>
 
     // <editor-fold desc="kenken.play">
@@ -1781,11 +1717,11 @@ kenken.limitAvaialbleDifficulties = function () {
             $("a.size").click(function () {
                 $("a.level").removeClass("notAvailable");
                 switch ($(this).data("value")) {
-                case 3:
-                    $("a.level.easy").addClass("notAvailable"), $("a.level.medium").addClass("notAvailable"), $("a.level.hard").addClass("notAvailable"), $("a.level.expert-premium").addClass("notAvailable"), $("a.level.expert").addClass("notAvailable");
-                    break;
-                case 4:
-                    $("a.level.medium").addClass("notAvailable"), $("a.level.hard").addClass("notAvailable"), $("a.level.expert-premium").addClass("notAvailable"), $("a.level.expert").addClass("notAvailable")
+                    case 3:
+                        $("a.level.easy").addClass("notAvailable"), $("a.level.medium").addClass("notAvailable"), $("a.level.hard").addClass("notAvailable"), $("a.level.expert-premium").addClass("notAvailable"), $("a.level.expert").addClass("notAvailable");
+                        break;
+                    case 4:
+                        $("a.level.medium").addClass("notAvailable"), $("a.level.hard").addClass("notAvailable"), $("a.level.expert-premium").addClass("notAvailable"), $("a.level.expert").addClass("notAvailable")
                 }
             })
         }
@@ -1810,7 +1746,7 @@ kenken.Game = function (e, t, n) {
 
     function s() { //***
         i().sendPuzzleData(JSON.stringify(e))
-            //i().sendPuzzleData(e)
+        //i().sendPuzzleData(e)
     }
 
     function o(e) {
@@ -1867,8 +1803,8 @@ kenken.Game = function (e, t, n) {
     }
     var r = !1;
     this.chooseAnother = function () {
-            document.location.href = document.location.protocol + "//" + document.location.host + "/play_now"
-        },
+        document.location.href = document.location.protocol + "//" + document.location.host + "/play_now"
+    },
 
         this.getPuzzle = function () {
             s()
@@ -1894,7 +1830,7 @@ kenken.Game = function (e, t, n) {
 
         this.widgetAdBeforePause = function () {
             $.get("http://www.kenkenpuzzle.com/game/widget_ad_before_pause", null, a)
-                //$.get("/game/widget_ad_before_pause", null, a) //TODO: ...
+            //$.get("/game/widget_ad_before_pause", null, a) //TODO: ...
         },
 
         this.widgetAdBeforePrint = function () {
@@ -1910,17 +1846,17 @@ kenken.Game = function (e, t, n) {
         },
 
         this.puzzleSolved = function () {}, this.autoSave = function (t) {
-            $.post("/save_state", {
-                id: e.id,
-                state: t,
-                autosave: 1
-            }), e.state = t
-        },
+        $.post("/save_state", {
+            id: e.id,
+            state: t,
+            autosave: 1
+        }), e.state = t
+    },
 
         this.saveState = function (t) {
             $.get("/request_check", {
-                    id: e.id
-                }),
+                id: e.id
+            }),
 
                 $.post("/save_state", {
                     id: e.id,
@@ -2044,44 +1980,44 @@ kenken.mobile_redirect = function () {
 var kenken = kenken || {};
 // <editor-fold desc="kenken...">
 kenken.showHideTeacherAttributes = function () {
-        $("#user_is_teacher").click(function () {
-            $("#user_is_teacher").attr("checked") ? $("#teacher_attributes").show() : $("#teacher_attributes").hide()
+    $("#user_is_teacher").click(function () {
+        $("#user_is_teacher").attr("checked") ? $("#teacher_attributes").show() : $("#teacher_attributes").hide()
+    })
+}, kenken.updateBundleId = function () {
+    $("input[name=bundle_id]").click(function (e) {
+        var t = $(e.target).attr("value");
+        $("input[id=payment_data_bundle_id]").each(function (e, n) {
+            $(n).attr("value", t)
         })
-    }, kenken.updateBundleId = function () {
-        $("input[name=bundle_id]").click(function (e) {
-            var t = $(e.target).attr("value");
-            $("input[id=payment_data_bundle_id]").each(function (e, n) {
-                $(n).attr("value", t)
-            })
-        })
-    }, kenken.togglePaymentForms = function () {
-        $("#renew_form").toggle(), $("#new_form").toggle()
-    }, kenken.categoryViewAll = function (e, t) {
-        $("#" + e).toggleClass("grid");
-        var n = $("#" + e).hasClass("grid") ? "View Less" : "View All";
-        $("#" + t).html(n)
-    }, kenken.adWatched = function () {
-        $.post("/ad_watched", {})
-    }, kenken.load_email_form = function () {
-        document.cookie.indexOf("saw_gift_form=true") == -1 && ($("#myModal").reveal({
-            animation: "fade",
-            animationspeed: 500,
-            closeonbackgroundclick: !1,
-            dismissmodalclass: "close-reveal-modal"
-        }), $("#dismiss-email-modal-short").click(function () {
-            if (document.cookie.indexOf("saw_gift_form=true") == -1) {
-                var e = 6048e5,
-                    t = new Date((new Date).getTime() + e);
-                document.cookie = "saw_gift_form=true; expires=" + t.toGMTString()
-            }
-        }), $("#dismiss-email-modal-long").click(function () {
-            if (document.cookie.indexOf("saw_gift_form=true") == -1) {
-                var e = 31536e7,
-                    t = new Date((new Date).getTime() + e);
-                document.cookie = "saw_gift_form=true; expires=" + t.toGMTString()
-            }
-        }))
-    }, // </editor-fold>
+    })
+}, kenken.togglePaymentForms = function () {
+    $("#renew_form").toggle(), $("#new_form").toggle()
+}, kenken.categoryViewAll = function (e, t) {
+    $("#" + e).toggleClass("grid");
+    var n = $("#" + e).hasClass("grid") ? "View Less" : "View All";
+    $("#" + t).html(n)
+}, kenken.adWatched = function () {
+    $.post("/ad_watched", {})
+}, kenken.load_email_form = function () {
+    document.cookie.indexOf("saw_gift_form=true") == -1 && ($("#myModal").reveal({
+        animation: "fade",
+        animationspeed: 500,
+        closeonbackgroundclick: !1,
+        dismissmodalclass: "close-reveal-modal"
+    }), $("#dismiss-email-modal-short").click(function () {
+        if (document.cookie.indexOf("saw_gift_form=true") == -1) {
+            var e = 6048e5,
+                t = new Date((new Date).getTime() + e);
+            document.cookie = "saw_gift_form=true; expires=" + t.toGMTString()
+        }
+    }), $("#dismiss-email-modal-long").click(function () {
+        if (document.cookie.indexOf("saw_gift_form=true") == -1) {
+            var e = 31536e7,
+                t = new Date((new Date).getTime() + e);
+            document.cookie = "saw_gift_form=true; expires=" + t.toGMTString()
+        }
+    }))
+}, // </editor-fold>
     function (e, t, n) {
         "use strict";
         var r = e(document),
