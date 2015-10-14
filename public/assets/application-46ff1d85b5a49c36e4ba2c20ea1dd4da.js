@@ -495,21 +495,6 @@ var KenKenGame = function () {
         });
     };
 
-    function findValueInRow(rowIndex, value, currentState) {
-        var currentState = currentState || self.steps.getCurrentState();
-        var size = currentState.size;
-        var row = currentState.values[rowIndex];
-
-        return row.indexOf(value);
-
-        /*for (var i=0; i<size; i++) {
-            if (row[i] === value) {
-
-            }
-        }*/
-
-    };
-
     function changeTimerState(e) {
         var target = e.target;
         var span = target.closest('span');
@@ -1544,7 +1529,7 @@ var KenKenGame = function () {
 
         //>>>>>  Congratulating TOP panel |BEGIN|
         rowT.push('<div id="kengratulateBox">');
-        rowT.push('<img src="http://localhost:8888/img/ken-con.png">');
+        rowT.push('<img src="/img/ken-con.png">');
         rowT.push('<\/div>');
         rowT.push('<span>You solved this puzzle in '+puzzleTime+'<\/span>');
 
