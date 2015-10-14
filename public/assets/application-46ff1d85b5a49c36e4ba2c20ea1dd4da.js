@@ -103,34 +103,40 @@ var Steps = function (puzzleData) {
         console.log('Steps >>> initializeFirstStep()');
         var stateObj = {};
         var size = puzzleData.size;
+        var symbolsArray = puzzleData.dataObj.S;
         var notesItem;
         var valuesItem;
-        var i = size;
+        var i = 1;
         var j;
         var notes = [];
         var values = [];
+        var curVal;
+
+        while (i <= size*size) {
+            j = 1;
+            notesItem = [];
+            while (j <= size) {
+                notesItem.push(false);
+                j += 1;
+            }
+            notes.push(notesItem);
+            i += 1;
+        }
+
+        i = size;
 
         while (i > 0) {
             j = size;
             valuesItem = [];
             while (j > 0) {
+                if (symbolsArray[i-1][j-1] === '1'){
+                    curVal = puzzleData.dataObj.T[i-1][j-1];
+                    notes[(i-1)*size+j-1][+curVal-1] = true;
+                }
                 valuesItem.push(0);
                 j -= 1;
             }
             values.push(valuesItem);
-            i -= 1;
-        }
-
-        i = size * size;
-
-        while (i > 0) {
-            j = size;
-            notesItem = [];
-            while (j > 0) {
-                notesItem.push(false);
-                j -= 1;
-            }
-            notes.push(notesItem);
             i -= 1;
         }
 
@@ -213,9 +219,10 @@ var Steps = function (puzzleData) {
         var itemId = content.attr('id');
 
         activeItem = {
-            content: content,
-            indexX: +itemId[1],
-            indexY: +itemId[2]
+            content  : content,
+            indexX   : +itemId[1],
+            indexY   : +itemId[2],
+            isSingle : content.hasClass('singleValue')
         };
 
         return activeItem;
@@ -1154,38 +1161,41 @@ var KenKenGame = function () {
                 _x = x * size + i - 1;
                 _y = (i - 1) * size + valueY - 1;
 
-                if (currentState.notes[_x][_value]) {
+                if (i !== valueX || i !==valueY) {
 
-                    oldNotesValue = currentState.notes[_x][_value];
-                    newNotesValue = !oldNotesValue;
+                    if (currentState.notes[_x][_value]) {
 
-                    historyDepends.push({
-                        type: 'notes',
-                        x: _x,
-                        y: _value,
-                        oldValue: oldNotesValue,
-                        newValue: newNotesValue
-                    });
+                        oldNotesValue = currentState.notes[_x][_value];
+                        newNotesValue = !oldNotesValue;
 
-                    currentState.notes[_x][_value] = newNotesValue;
-                    puzzleContainer.find('#p' + valueX + i + ' .itemNotes').text(booleanArrayToSting(currentState.notes[_x]));
-                }
+                        historyDepends.push({
+                            type: 'notes',
+                            x: _x,
+                            y: _value,
+                            oldValue: oldNotesValue,
+                            newValue: newNotesValue
+                        });
 
-                if (currentState.notes[_y][_value]) {
+                        currentState.notes[_x][_value] = newNotesValue;
+                        puzzleContainer.find('#p' + valueX + i + ' .itemNotes').text(booleanArrayToSting(currentState.notes[_x]));
+                    }
 
-                    oldNotesValue = currentState.notes[_y][_value];
-                    newNotesValue = !oldNotesValue;
+                    if (currentState.notes[_y][_value]) {
 
-                    historyDepends.push({
-                        type: 'notes',
-                        x: _y,
-                        y: _value,
-                        oldValue: oldNotesValue,
-                        newValue: newNotesValue
-                    });
+                        oldNotesValue = currentState.notes[_y][_value];
+                        newNotesValue = !oldNotesValue;
 
-                    currentState.notes[_y][_value] = newNotesValue;
-                    puzzleContainer.find('#p' + i + valueY + ' .itemNotes').text(booleanArrayToSting(currentState.notes[_y]));
+                        historyDepends.push({
+                            type: 'notes',
+                            x: _y,
+                            y: _value,
+                            oldValue: oldNotesValue,
+                            newValue: newNotesValue
+                        });
+
+                        currentState.notes[_y][_value] = newNotesValue;
+                        puzzleContainer.find('#p' + i + valueY + ' .itemNotes').text(booleanArrayToSting(currentState.notes[_y]));
+                    }
                 }
 
                 i -= 1;
@@ -1236,7 +1246,8 @@ var KenKenGame = function () {
         var currentState = self.steps.getCurrentState();
         var indexValue = (activeItem.indexX - 1) * size + activeItem.indexY;
         var notesArray = currentState.notes[indexValue - 1];
-        var domArray = $('.notesItem');
+        var domContainer = $('#notesContainer');
+        var domArray = domContainer.find('.notesItem');
         var i = 1;
         var currentNote;
 
@@ -1396,6 +1407,10 @@ var KenKenGame = function () {
                     lineClass += ' bottomLineBorder'
                 }
 
+                if (symbols[i - 1][j - 1] === '1') {
+                    lineClass += ' singleValue'
+                }
+
                 //puzzle item
                 row.push('<div id="p' + i + j + '" class="' + lineClass + '">');
 
@@ -1490,7 +1505,9 @@ var KenKenGame = function () {
         kenken.game.puzzleFinished(puzzleTime);
 
         //>>>>>  Congratulating TOP panel |BEGIN|
-        rowT.push('<img src="">');
+        rowT.push('<div id="kengratulateBox">');
+        rowT.push('<img src="http://localhost:8888/img/ken-con.png">');
+        rowT.push('<\/div>');
         rowT.push('<span>You solved this puzzle in '+puzzleTime+'<\/span>');
 
         topContainer.html(rowT.join(''));
