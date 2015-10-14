@@ -593,6 +593,7 @@ var KenKenGame = function () {
         var notesArray;
         var stringResult;
         var historyDepends;
+        var puzzleItem;
 
         if (!history) {
             return;
@@ -602,9 +603,18 @@ var KenKenGame = function () {
         currentState = steps.getCurrentState();
 
         if (type === 'values') {
-            selector = "#p" + (history.x + 1) + (history.y + 1) + ' .itemValue';
+            //selector = "#p" + (history.x + 1) + (history.y + 1) + ' .itemValue';
+            selector = "#p" + (history.x + 1) + (history.y + 1);
+            puzzleItem = $(selector);
             value = (history.newValue) ? history.newValue : ''; //number or ""
-            $(selector).text(value);
+
+            if (value) {
+                puzzleItem.addClass('withValue');
+            } else {
+                puzzleItem.removeClass('withValue');
+            }
+
+            puzzleItem.find('.itemValue').text(value);
 
         } else if (type === 'notes') {
             size = self.puzzleData.size;
