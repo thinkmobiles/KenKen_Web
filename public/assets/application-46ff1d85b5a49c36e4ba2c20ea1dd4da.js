@@ -145,10 +145,7 @@ var Steps = function (puzzleData) {
         stateObj.size = size;
         stateObj.autoNotes = true;
 
-
         currentState = stateObj;
-        //save(stateObj);
-
     };
 
     function getNewValueFromHistory(history) {
@@ -495,25 +492,24 @@ var KenKenGame = function () {
         });
     };
 
-    function changeTimerState(e) {
-        var target = e.target;
-        var span = target.closest('span');
+    function changeTimerState(event) {
+        var span = $(event.target).closest('#btnOffTimer').find('span');
         var puzzleTimer = $('#puzzleTimer');
 
         if (timerState === 'OFF') {
             timerState = 'ON';
-            span.innerHTML = 'OFF';
+            span.text('OFF');
         } else {
             puzzleTimer.text(defaultTimer);
             timerState = 'OFF';
-            span.innerHTML = 'ON';
+            span.text('ON');
         }
     };
 
     function pauseOrResume(event) {
         var puzzleContainer = $("#puzzleContainer");
         var popupContainer = $('.clickToResume');
-        var span = event.target.closest('span');
+        var span = $(event.target).closest('#btnPause').find('span');
         var timer = self.timer;
 
         $('#testCircle').hide();
@@ -521,14 +517,14 @@ var KenKenGame = function () {
         isPaused = !isPaused;
 
         if (isPaused) {
+            span.text('RESUME');
             timer.pause();
             kenken.game.onPause();
             kenken.game.widgetAdBeforePause();
             puzzleContainer.hide();
             popupContainer.show();
-            span.innerHTML = 'RESUME';
         } else {
-            span.innerHTML = 'PAUSE';
+            span.text('PAUSE');
             timer.resume();
             popupContainer.hide();
             puzzleContainer.show();
@@ -661,6 +657,8 @@ var KenKenGame = function () {
         $('#p11').click();
         $('#testCircle').hide();
         $('.notesItem').removeClass('active');
+        $('.btnNote[data-id=0]').removeClass('active');
+        $('.btnNote[data-id=1]').addClass('active');
 
         if (isPaused) {
             $('#puzzleTimer').text(defaultTimer);
@@ -1015,8 +1013,6 @@ var KenKenGame = function () {
         $('#onPopup').hide();
     };
     // --- popup methods ---
-
-
 
     function showSolution() {
         var puzzleData = (self.puzzleData) ? self.puzzleData : null;
