@@ -295,7 +295,6 @@ var Steps = function (puzzleData) {
         console.log('---------------------------------------');
     }
 };
-
 // </editor-fold>
 
 // <editor-fold desc="Circle">
@@ -309,7 +308,6 @@ function Circle(puzzleData) {
         circleDiv.css('left', circlePos.x);
         circleDiv.css('display', 'block');
     };
-
 
     this.drawOurCircles = function () {
         var count = puzzleData.size + 2;
@@ -326,7 +324,6 @@ function Circle(puzzleData) {
             })
         }
     };
-
 
     this.calculateCircleButtons = function (argRadius, argCount) {
         var radius = argRadius;
@@ -347,7 +344,6 @@ function Circle(puzzleData) {
 
         return coordinatesArray;
     };
-
 
     this.findCirclePosition = function (circleRadius) {
         var activeSquare = $('.puzzleItem.active')[0];
@@ -632,7 +628,7 @@ var KenKenGame = function () {
         }
     };
 
-    function onResume(){
+    function onResume() {
         kenken.game.resumeSavedPuzzle();
     };
 
@@ -651,38 +647,13 @@ var KenKenGame = function () {
         hidePopup();
     }
 
-    function letsSolve(){
+    function letsSolve() {
         kenken.game.solveAnother();
 
         hidePopup();
     }
 
-    function onSolutionClick() {
-        var popup = $('#onPopup');
-        popup.find('.popupMessage').text('See solution?');
-        popup.find('#showSolution').attr('data-val','solution');
-
-        kenken.game.onSolution();
-        popup.show();
-    };
-
-    function onResetClick(){
-        var popup = $('#onPopup');
-        popup.find('.popupMessage').text('Reset puzzle?');
-        popup.find('#showSolution').attr('data-val','reset');
-
-        popup.show();
-    };
-
-    function onSolveClick (){
-        var popup = $('#onPopup');
-        popup.find('.popupMessage').text('Solve another puzzle?');
-        popup.find('#showSolution').attr('data-val','solve');
-
-        popup.show();
-    };
-
-    function onReveal() {
+    function onRevealClick(event) {
         var puzzleData = (self.puzzleData) ? self.puzzleData : null;
         var currentState = self.steps.getCurrentState();
         var currentValues = currentState.values;
@@ -747,19 +718,118 @@ var KenKenGame = function () {
         }
     };
 
-    function onPrintClick(){
+    function onCheckClick(event) {
+        //check true and false values in our puzzle
+        var puzzleData = self.puzzleData;
+        var size = puzzleData.size;
+        var currentState = self.steps.getCurrentState();
+        var values = currentState.values;
+        var resultValues = puzzleData.dataObj.A;
+        var allItems = $('.puzzleItem');
+        var i, j;
+        var activeVal;
+        var activeClass;
 
-        kenken.game.widgetAdBeforePrint();
+        if (areYouWinner()){
+            winnerAction();
+        }
 
-        kenken.game.onPrint();
-
-        window.print() ;
-        //document.getElementById('puzzleContainer').print();
-        //$('#puzzleContainer').print();
-
+        for (i = 1; i <= size; i += 1) {
+            for (j = 1; j <= size; j += 1) {
+                if (values[i - 1][j - 1] !== 0) {
+                    activeVal = $('#p' + i + j);
+                    if (values[i - 1][j - 1] == resultValues[i - 1][j - 1]) {
+                        activeClass = 'pulseGreen';
+                    } else {
+                        activeClass = 'pulseRed';
+                    }
+                    activeVal.addClass(activeClass);
+                }
+            }
+        }
+        setTimeout(function () {
+            allItems.removeClass('pulseGreen');
+            allItems.removeClass('pulseRed');
+        }, 400);
     };
 
-    function onSave(){
+    function onSolutionClick(event) {
+        var popup = $('#onPopup');
+        popup.find('.popupMessage').text('See solution?');
+        popup.find('#showSolution').attr('data-val','solution');
+
+        kenken.game.onSolution();
+        popup.show();
+    };
+
+    function onResetClick(event) {
+        var popup = $('#onPopup');
+        popup.find('.popupMessage').text('Reset puzzle?');
+        popup.find('#showSolution').attr('data-val','reset');
+
+        popup.show();
+    };
+
+    function onSolveClick (event) {
+        var popup = $('#onPopup');
+        popup.find('.popupMessage').text('Solve another puzzle?');
+        popup.find('#showSolution').attr('data-val','solve');
+
+        popup.show();
+    };
+
+    function onPrintClick(event) {
+        kenken.game.widgetAdBeforePrint();
+        kenken.game.onPrint();
+        window.print() ;
+    };
+
+    function onNotesAllClick(event) {
+        //write all valid values of notes to puzzle item
+        var currentState = self.steps.getCurrentState();
+        var activeItem = self.steps.getActiveItem();
+
+        if (currentState.autoNotes) {
+
+            var currentItem = activeItem.content;
+            var size = self.puzzleData.size;
+            var x = activeItem.indexX;
+            var y = activeItem.indexY;
+            var currentIndex = (x - 1) * size + y;
+            var notesArray = currentState.notes[currentIndex - 1];
+            var valuesArray = currentState.values;
+            var i = size;
+            var stringResult;
+
+            while (i > 0) {
+                notesArray[i - 1] = true;
+                i -= 1;
+            }
+
+            i = size;
+            while (i > 0) {
+                if (valuesArray[x - 1][i - 1]) {
+                    notesArray[valuesArray[x - 1][i - 1] - 1] = false
+                }
+                if (valuesArray[i - 1][y - 1]) {
+                    notesArray[valuesArray[i - 1][y - 1] - 1] = false
+                }
+                i -= 1;
+            }
+
+            stringResult = booleanArrayToSting(notesArray);
+            currentItem.find('.itemNotes').text(stringResult);
+
+            drawActiveNotes();
+        }
+    };
+
+    function onNotesDelClick(event) {
+        //clear notes in currentStateObject, notes box and puzzle square
+        clearAllNotes();
+    };
+
+    function onSaveClick() {
         prepareStateObjectTo(kenken.game.saveState);
     };
 
@@ -813,7 +883,7 @@ var KenKenGame = function () {
 
     };
 
-    function areYouWinner () {
+    function areYouWinner() {
 
         var resultValues = self.puzzleData.dataObj.A;
         var currentState = self.steps.getCurrentState();
@@ -840,13 +910,13 @@ var KenKenGame = function () {
         var currentState = self.steps.getCurrentState();
         var valuesArray = currentState.values;
         var size = currentState.size;
-        var i=1;
-        var valuesString=valuesArray[0].join(',');
+        var i = 1;
+        var valuesString = valuesArray[0].join(',');
         var notesArray = currentState.notes;
         var result;
 
-        while (i<size){
-            valuesString += ','+valuesArray[i].join(',');
+        while ( i< size){
+            valuesString += ',' + valuesArray[i].join(',');
             i += 1;
         }
 
@@ -987,9 +1057,9 @@ var KenKenGame = function () {
         }
         circle.hide();
         //prepareStateObjectTo(kenken.game.saveState);
-    }
+    };
 
-    var booleanArrayToSting = function (argArray) {
+    function booleanArrayToSting(argArray) {
         var currentArray = argArray;
         var currentLength = currentArray.length;
         var result = '';
@@ -1005,7 +1075,7 @@ var KenKenGame = function () {
         return result;
     };
 
-    var drawActiveNotes = function (activeItem) {
+    function drawActiveNotes(activeItem) {
         var activeItem = activeItem || self.steps.getActiveItem();
         var size = self.puzzleData.size;
         var currentState = self.steps.getCurrentState();
@@ -1026,7 +1096,7 @@ var KenKenGame = function () {
         }
     };
 
-    var clearAllNotes = function(){
+    function clearAllNotes() {
         var currentState = self.steps.getCurrentState();
         var activeItem = self.steps.getActiveItem();
         var currentItem = activeItem.content;
@@ -1047,49 +1117,32 @@ var KenKenGame = function () {
 
     function handleEvents() {
 
-        /*var prepareStateObjectTo = function (callback) {
-         var currentState = self.steps.getCurrentState();
-         var valuesArray = currentState.values;
-         var size = currentState.size;
-         var i=1;
-         var valuesString=valuesArray[0].join(',');
-         var notesArray = currentState.notes;
-         var result;
+        /* --- Timer --- */
+        $('#btnOffTimer').click(changeTimerState); // ON-OFF timer
+        $('#btnPause').click(pauseOrResume);       // Pause
 
-         while (i<size){
-         valuesString += valuesArray[i].join(',');
-         i += 1;
-         }
-
-         result = {
-         values : valuesString,
-         notes  : notesArray
-         };
-
-         callback(result);
-         };*/
-
-        $('#btnResumeSaved').click(onResume); //Resume
-        $('#btnSolve').click(onSolveClick); // Solve
+        /* --- Solve | Resume --- */
+        $('#btnSolve').click(onSolveClick);        //Solve Another
+        $('#btnResumeSaved').click(onResume);      //Resume Saved Puzzle
 
         /* --- Undo | Redo | Reset --- */
-        //$('#btnUndo').click(function () {console.log('Undo is not implemented yet');});       //Undo
-        $('#btnUndo').click(onUndo); //Undo
-        $('#btnRedo').click(onRedo); //Redo
-        $('#btnReset').click(onResetClick); //Reset
+        $('#btnUndo').click(onUndo);               //Undo
+        $('#btnRedo').click(onRedo);               //Redo
+        $('#btnReset').click(onResetClick);        //Reset
 
         /* --- Reveal | Check | Solution --- */
-        $('#btnReveal').click(onReveal); //Reveal
-        //$('#btnCheck').click(kenken.game.onCheck); //Check
-        $('#btnSolution').click(onSolutionClick); //Solution
+        $('#btnReveal').click(onRevealClick);      //Reveal
+        $('#btnCheck').click(onCheckClick);        //Check
+        $('#btnSolution').click(onSolutionClick);  //Solution
 
-        /* --- Timer --- */
-        $('#btnOffTimer').click(changeTimerState); // OFF - ON timer
-        $('#btnPause').click(pauseOrResume); // Pause
-
-        $('#btnSave').click(onSave); //Save
+        $('#btnSave').click(onSaveClick); //Save
         $('#btnPrint').click(onPrintClick);  //Print
 
+        /* --- Notes --- */
+        $('#notesAll').click(onNotesAllClick);
+        $('#notesDel').click(onNotesDelClick);
+
+        //TODO: FIXME
         $('#onPopup .closeButton').click(hidePopup);
         $('#onPopup #showSolution').click(function(event){
             var targetType = $(event.target).closest('#showSolution').attr('data-val');
@@ -1194,46 +1247,6 @@ var KenKenGame = function () {
             }
         });
 
-        //event --- check true and false values in our puzzle
-        $('#btnCheck').click(function () {
-            var size = self.puzzleData.size;
-            var currentState = self.steps.getCurrentState();
-            var values = currentState.values;
-            var resultValues = self.puzzleData.dataObj.A;
-            var allItems = $('.puzzleItem');
-            var i, j;
-            var activeVal;
-            var activeClass;
-
-            if (areYouWinner()){
-                //circle.hide();
-                winnerAction();
-            }
-
-            for (i = 1; i <= size; i += 1) {
-                for (j = 1; j <= size; j += 1) {
-                    if (values[i - 1][j - 1] !== 0) {
-                        activeVal = $('#p' + i + j);
-                        if (values[i - 1][j - 1] == resultValues[i - 1][j - 1]) {
-                            activeClass = 'pulseGreen';
-                        } else {
-                            activeClass = 'pulseRed';
-                        }
-                        activeVal.addClass(activeClass);
-                    }
-                }
-            }
-            setTimeout(function () {
-                allItems.removeClass('pulseGreen');
-                allItems.removeClass('pulseRed');
-            }, 400)
-        });
-
-        //event --- clear notes in currentStateObject, notes box and puzzle square
-        $('#notesDel').click(function(){
-            clearAllNotes();
-        });
-
         //event --- change autoNotes state
         $('.btnNote').click(function(event){
             var currentState = self.steps.getCurrentState();
@@ -1247,45 +1260,6 @@ var KenKenGame = function () {
             currentState.autoNotes = +targetId ? true : false; // todo
         });
 
-        //event --- write all valid values of notes to puzzle item
-        $('#notesAll').click(function(){
-            var currentState = self.steps.getCurrentState();
-            var activeItem = self.steps.getActiveItem();
-
-            if (currentState.autoNotes) {
-
-                var currentItem = activeItem.content;
-                var size = self.puzzleData.size;
-                var x = activeItem.indexX;
-                var y = activeItem.indexY;
-                var currentIndex = (x - 1) * size + y;
-                var notesArray = currentState.notes[currentIndex - 1];
-                var valuesArray = currentState.values;
-                var i = size;
-                var stringResult;
-
-                while (i > 0) {
-                    notesArray[i - 1] = true;
-                    i -= 1;
-                }
-
-                i = size;
-                while (i > 0) {
-                    if (valuesArray[x - 1][i - 1]) {
-                        notesArray[valuesArray[x - 1][i - 1] - 1] = false
-                    }
-                    if (valuesArray[i - 1][y - 1]) {
-                        notesArray[valuesArray[i - 1][y - 1] - 1] = false
-                    }
-                    i -= 1;
-                }
-
-                stringResult = booleanArrayToSting(notesArray);
-                currentItem.find('.itemNotes').text(stringResult);
-
-                drawActiveNotes();
-            }
-        });
     };
 
     function drawOurForm(puzzleData) {
@@ -1552,7 +1526,6 @@ var KenKenGame = function () {
 
 
 };
-
 // </editor-fold>
 
 var _KenKen = new KenKenGame();
