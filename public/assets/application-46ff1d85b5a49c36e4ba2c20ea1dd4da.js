@@ -520,14 +520,14 @@ var KenKenGame = function () {
         isPaused = !isPaused;
 
         if (isPaused) {
+            span.text('RESUME');
             timer.pause();
             kenken.game.onPause();
             kenken.game.widgetAdBeforePause();
             puzzleContainer.hide();
             popupContainer.show();
-            span.innerHTML = 'RESUME';
         } else {
-            span.innerHTML = 'PAUSE';
+            span.text('PAUSE');
             timer.resume();
             popupContainer.hide();
             puzzleContainer.show();
