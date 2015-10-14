@@ -145,10 +145,7 @@ var Steps = function (puzzleData) {
         stateObj.size = size;
         stateObj.autoNotes = true;
 
-
         currentState = stateObj;
-        //save(stateObj);
-
     };
 
     function getNewValueFromHistory(history) {
@@ -660,6 +657,8 @@ var KenKenGame = function () {
         $('#p11').click();
         $('#testCircle').hide();
         $('.notesItem').removeClass('active');
+        $('.btnNote[data-id=0]').removeClass('active');
+        $('.btnNote[data-id=1]').addClass('active');
 
         if (isPaused) {
             $('#puzzleTimer').text(defaultTimer);
@@ -1010,8 +1009,6 @@ var KenKenGame = function () {
         $('#onPopup').hide();
     };
     // --- popup methods ---
-
-
 
     function showSolution() {
         var puzzleData = (self.puzzleData) ? self.puzzleData : null;
