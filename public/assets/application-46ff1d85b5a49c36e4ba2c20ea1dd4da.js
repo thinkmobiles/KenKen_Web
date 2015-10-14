@@ -13,13 +13,6 @@
 
 */
 
-function killFlash() {
-    console.log('>>> killFlash');
-    var script = document.createElement('script');
-    script.src = 'http://localhost:8829/js/killFlashPlayer.js';
-    document.head.appendChild(script);
-}
-
 // <editor-fold desc="Timer">
 function Timer() {
 
@@ -30,13 +23,11 @@ function Timer() {
         var str;
         var resultObj;
 
-        //console.log('setTime() totalSeconds = %s, isPaused = %s, pausedTime = %s', totalSeconds, isPaused, pausedTime);
-
         if (!isPaused) {
             totalSeconds = pausedTime + parseInt((new Date - startedAt) / 1000);
 
             hours = pad(parseInt(totalSeconds / 3600));
-            minutes = pad(parseInt(totalSeconds / 60));
+            minutes = pad(parseInt(totalSeconds / 60) % 60);
             seconds = pad(totalSeconds % 60);
             str = hours + ":" + minutes + ":" + seconds;
 
@@ -83,6 +74,13 @@ function Timer() {
             isPaused = false;
             totalSeconds = 0;
 
+            /*
+            //Testing Timer:
+            startedAt.setHours(startedAt.getHours() - 25);
+            startedAt.setMinutes(startedAt.getMinutes() - 15);
+            startedAt.setSeconds(startedAt.getSeconds() - 15);
+            */
+
             timerInterval = setInterval(setTime, 500);
             console.log('... OK');
         }
@@ -96,7 +94,6 @@ function Timer() {
         } else {
             console.log('nothing to pause');
         }
-
     };
 
     this.resume = function () {
@@ -109,7 +106,6 @@ function Timer() {
         } else {
             console.log('nothing to resume');
         }
-
     };
 
     this.stop = function () {
@@ -128,31 +124,11 @@ function Timer() {
     this.onTick = function (callback) {
         tickCallback = callback;
     };
-
 };
 // </editor-fold>
 
 // <editor-fold desc="Steps">
 var Steps = function (puzzleData) {
-    /*function prepareValues() {
-        var size = puzzleData.size;
-        var valuesItem;
-
-        while (i > 0){
-            j = size;
-            valuesItem = [];
-            while (j > 0){
-                valuesItem.push(0);
-                j -= 1;
-            }
-            this.values.push(valuesItem);
-            i -= 1;
-        }
-    }*/
-
-    function prepareNotes() {
-
-    }
 
     function initializeFirstStep() {
         console.log('Steps >>> initializeFirstStep()');
@@ -230,12 +206,10 @@ var Steps = function (puzzleData) {
     }
 
     var history = [];
-    var index = -1; //empty history
+    var index = -1;         //empty history
     var self = this;
     var currentState;
     var activeItem = {};
-
-    //prepareValues();
 
     initializeFirstStep();
 
@@ -323,7 +297,6 @@ var Steps = function (puzzleData) {
 
     this.getCurrentState = function () {
         console.log('Steps.getCurrentState()');
-        //return history[index];
         return currentState;
     };
 
