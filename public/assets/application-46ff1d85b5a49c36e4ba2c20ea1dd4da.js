@@ -647,21 +647,23 @@ var KenKenGame = function () {
 
     function letsReset() {
         var timer = self.timer;
+        var mainContainer = $('.mainContainer');
 
         kenken.game.puzzleReset();
         self.steps.reset();
         timer.stop();
         timer.start();
 
-        $('.itemValue, .itemNotes').text('');
-        $('#p11').click();
-        $('#testCircle').hide();
-        $('.notesItem').removeClass('active');
-        $('.btnNote[data-id=0]').removeClass('active');
-        $('.btnNote[data-id=1]').addClass('active');
+        mainContainer.find('.itemValue').text('');
+        mainContainer.find('.itemNotes').text('');
+        mainContainer.find('#p11').click();
+        mainContainer.find('#testCircle').hide();
+        mainContainer.find('.notesItem').removeClass('active');
+        mainContainer.find('.btnNote[data-id=0]').removeClass('active');
+        mainContainer.find('.btnNote[data-id=1]').addClass('active');
 
         if (isPaused) {
-            $('#puzzleTimer').text(defaultTimer);
+            mainContainer.find('#puzzleTimer').text(defaultTimer);
             timer.pause();
         } else {
             timer.start();
@@ -1001,19 +1003,19 @@ var KenKenGame = function () {
     function onPopupAccept(event) {
         var targetType = $(event.target).closest('#showSolution').attr('data-val');
 
-        if (targetType === 'solution'){
-            showSolution();
-        };
-
-        if (targetType === 'reset'){
-            letsReset();
-        };
-
-        if (targetType === 'solve'){
-            letsSolve();
-        };
-
-        hidePopup();
+        switch (targetType) {
+            case 'solution':
+                showSolution();
+                hidePopup();
+                break;
+            case 'reset':
+                letsReset();
+                hidePopup();
+                break;
+            case 'solve':
+                letsSolve();
+                hidePopup();
+        }
     };
 
     function hidePopup(event) {
@@ -1128,6 +1130,12 @@ var KenKenGame = function () {
         var y = valueY - 1;
         var oldValue = currentState.values[x][y];
         var i = size;
+        var _value;
+        var historyDepends = [];
+        var oldNotesValue;
+        var newNotesValue;
+        var _x;
+        var _y;
 
         if (value !== 'cX') {
             if (value === 'cC') {
@@ -1152,34 +1160,10 @@ var KenKenGame = function () {
                 return
             }
 
-            /*self.steps.saveStep({
-             type    : 'values',
-             x       : x,
-             y       : y,
-             oldValue: oldValue,
-             newValue: +value
-             });*/
             currentItem.find('.itemValue').text(value);
             currentItem.addClass('withValue');
 
-            /*while (i > 0) {
-             if (currentState.notes[x * size + i - 1][value - 1]) {
-             currentState.notes[x * size + i - 1][value - 1] = !currentState.notes[x * size + i - 1][value - 1];
-             puzzleContainer.find('#p' + valueX + i + ' .itemNotes').text(booleanArrayToSting(currentState.notes[x * size + i - 1]));
-             }
-             if (currentState.notes[(i - 1) * size + valueY - 1][value - 1]) {
-             currentState.notes[(i - 1) * size + valueY - 1][value - 1] = !currentState.notes[(i - 1) * size + valueY - 1][value - 1];
-             puzzleContainer.find('#p' + i + valueY + ' .itemNotes').text(booleanArrayToSting(currentState.notes[(i - 1) * size + valueY - 1]));
-             }
-             i -= 1;
-             }*/
-
-            var _value = value - 1;
-            var historyDepends = [];
-            var oldNotesValue;
-            var newNotesValue;
-            var _x;
-            var _y;
+            _value = value - 1;
 
             while (i > 0) {
 
@@ -1238,7 +1222,7 @@ var KenKenGame = function () {
                 depends: historyDepends
             });
 
-            self.steps.getInfo(); //TODO: ...
+            //self.steps.getInfo(); //TODO: ...
 
             prepareStateObjectTo(kenken.game.autoSave);
 
