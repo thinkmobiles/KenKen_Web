@@ -199,7 +199,7 @@ th {
 .notesItem.active span{
     background-color: #b3b3ff;
 }
-.notesItem:nth-child(3n){
+.notesItem:nth-child(3n+1){
     padding-right: 0;
 }
 .notesItem span,
@@ -241,6 +241,21 @@ th {
     margin-right: 54px;
 }
 
+#notesContainer.singleState .notesItem,
+#notesContainer.singleState #notesAll,
+#notesContainer.singleState #notesDel{
+    display: none;
+}
+#notesContainer.singleState .notesItem.active{
+    display: block;
+}
+
+#notesContainer .title{
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #000;
+}
 
 
 
