@@ -1143,9 +1143,7 @@ var KenKenGame = function () {
                 _x = x * size + i - 1;
                 _y = (i - 1) * size + valueY - 1;
 
-                if (i !== valueX || i !==valueY) {
-
-                    if (currentState.notes[_x][_value]) {
+                    if (currentState.notes[_x][_value] && i !== valueY) {
 
                         oldNotesValue = currentState.notes[_x][_value];
                         newNotesValue = !oldNotesValue;
@@ -1162,7 +1160,7 @@ var KenKenGame = function () {
                         puzzleContainer.find('#p' + valueX + i + ' .itemNotes').text(booleanArrayToSting(currentState.notes[_x]));
                     }
 
-                    if (currentState.notes[_y][_value]) {
+                    if (currentState.notes[_y][_value] && i !== valueX) {
 
                         oldNotesValue = currentState.notes[_y][_value];
                         newNotesValue = !oldNotesValue;
@@ -1178,7 +1176,6 @@ var KenKenGame = function () {
                         currentState.notes[_y][_value] = newNotesValue;
                         puzzleContainer.find('#p' + i + valueY + ' .itemNotes').text(booleanArrayToSting(currentState.notes[_y]));
                     }
-                }
 
                 i -= 1;
             }
@@ -1232,6 +1229,12 @@ var KenKenGame = function () {
         var domArray = domContainer.find('.notesItem');
         var i = 1;
         var currentNote;
+
+        if (activeItem.isSingle){
+            domContainer.addClass('singleState');
+        } else {
+            domContainer.removeClass('singleState');
+        }
 
         while (i <= size) {
             currentNote = $(domArray[i - 1]);
