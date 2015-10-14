@@ -495,25 +495,24 @@ var KenKenGame = function () {
         });
     };
 
-    function changeTimerState(e) {
-        var target = e.target;
-        var span = target.closest('span');
+    function changeTimerState(event) {
+        var span = $(event.target).closest('#btnOffTimer').find('span');
         var puzzleTimer = $('#puzzleTimer');
 
         if (timerState === 'OFF') {
             timerState = 'ON';
-            span.innerHTML = 'OFF';
+            span.text('OFF');
         } else {
             puzzleTimer.text(defaultTimer);
             timerState = 'OFF';
-            span.innerHTML = 'ON';
+            span.text('ON');
         }
     };
 
     function pauseOrResume(event) {
         var puzzleContainer = $("#puzzleContainer");
         var popupContainer = $('.clickToResume');
-        var span = event.target.closest('span');
+        var span = $(event.target).closest('#btnPause').find('span');
         var timer = self.timer;
 
         $('#testCircle').hide();
