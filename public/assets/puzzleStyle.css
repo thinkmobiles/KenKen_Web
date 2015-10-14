@@ -732,16 +732,16 @@ th {
     height: 138px;
 }
 .mainContainer.winnerState .puzzleContainer4 .puzzleItem{
-    width: 44.6px;
-    height: 44.6px;
+    width: 103px;
+    height: 103px;
 }
 .mainContainer.winnerState .puzzleContainer5 .puzzleItem{
-    width: 44.6px;
-    height: 44.6px;
+    width: 82px;
+    height: 82px;
 }
 .mainContainer.winnerState .puzzleContainer6 .puzzleItem{
-    width: 44.6px;
-    height: 44.6px;
+    width: 68px;
+    height: 68px;
 }
 .mainContainer.winnerState .puzzleContainer7 .puzzleItem{
     width: 58px;
@@ -754,4 +754,9 @@ th {
 .mainContainer.winnerState .puzzleContainer9 .puzzleItem{
     width: 44.6px;
     height: 44.6px;
+}
+
+#kengratulateBox{
+    text-align: center;
+    margin-bottom: 10px;
 }
