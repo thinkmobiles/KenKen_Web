@@ -652,15 +652,15 @@ var KenKenGame = function () {
     function letsReset() {
         var timer = self.timer;
 
-        $('.itemValue, .itemNotes').text('');
-        $('#p11').click();
-        $('#testCircle').hide();
-        $('.notesItem').removeClass('active');
-
         kenken.game.puzzleReset();
         self.steps.reset();
         timer.stop();
         timer.start();
+
+        $('.itemValue, .itemNotes').text('');
+        $('#p11').click();
+        $('#testCircle').hide();
+        $('.notesItem').removeClass('active');
 
         if (isPaused) {
             $('#puzzleTimer').text(defaultTimer);
@@ -884,16 +884,21 @@ var KenKenGame = function () {
         var activeItem = self.steps.getActiveItem();
 
         if (currentState.autoNotes) {
-
             var currentItem = activeItem.content;
             var size = self.puzzleData.size;
             var x = activeItem.indexX;
             var y = activeItem.indexY;
             var currentIndex = (x - 1) * size + y;
             var notesArray = currentState.notes[currentIndex - 1];
+            var oldNotesArray = notesArray.slice(0);
             var valuesArray = currentState.values;
             var i = size;
             var stringResult;
+            var stepData;
+            var historyDepends = [];
+            var historyData;
+            var oldValue;
+            var newValue;
 
             while (i > 0) {
                 notesArray[i - 1] = true;
@@ -902,14 +907,35 @@ var KenKenGame = function () {
 
             i = size;
             while (i > 0) {
+
                 if (valuesArray[x - 1][i - 1]) {
-                    notesArray[valuesArray[x - 1][i - 1] - 1] = false
+                    notesArray[valuesArray[x - 1][i - 1] - 1] = false;
+                    newValue = false;
+                } else if (valuesArray[i - 1][y - 1]) {
+                    notesArray[valuesArray[i - 1][y - 1] - 1] = false;
+                    newValue = false;
+                } else {
+                    newValue = true;
                 }
-                if (valuesArray[i - 1][y - 1]) {
-                    notesArray[valuesArray[i - 1][y - 1] - 1] = false
-                }
+
+                oldValue = oldNotesArray[i -1 ];
+                historyData = {
+                    type: 'notes',
+                    x: currentIndex - 1,
+                    y: i-1,
+                    newValue: newValue,
+                    oldValue: oldValue
+                };
+                historyDepends.push(historyData);
+
                 i -= 1;
             }
+
+            stepData = {
+                depends: historyDepends
+            };
+
+            self.steps.saveStep(stepData);
 
             stringResult = booleanArrayToSting(notesArray);
             currentItem.find('.itemNotes').text(stringResult);
@@ -954,7 +980,6 @@ var KenKenGame = function () {
     };
 
     // --- popup methods ---
-
     function onPopupAccept(event) {
         var targetType = $(event.target).closest('#showSolution').attr('data-val');
 
@@ -976,7 +1001,6 @@ var KenKenGame = function () {
     function hidePopup(event) {
         $('#onPopup').hide();
     };
-
     // --- popup methods ---
 
 
@@ -1327,6 +1351,7 @@ var KenKenGame = function () {
 
         // ******* notes box
         row.push('<div id="notesContainer">');
+        row.push('<div class="title"><span>Notes<span></div>');
 
         for (i = 1; i <= puzzleSize; i += 1) {
             row.push('<div class="notesItem" data-id="' + i + '"><span>' + i + '<\/span><\/div>');
