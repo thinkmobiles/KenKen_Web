@@ -1513,22 +1513,16 @@ var KenKenGame = function () {
     this.sendPuzzleData = function (puzzleData) {
         var e = JSON.parse(puzzleData);
         var data = normalizeData(e);
-        var dataObj = data.dataObj;
 
         self.puzzleData = data;
         self.steps = new Steps(data);
-
-        self.steps.getInfo(); //TODO: ...
-
-        //currentStateObject = new CurrentStateConstructor(data); //TODO: fix;
-
-        console.log('KenKenGame.sendPuzzleData');
-        console.log(dataObj);
 
         drawOurForm(data);
         handleEvents();
         startTimer();
 
+        $('#p11').click();
+        $('#testCircle').hide();
     };
 
     this.sendWidgetAdBeforeGame = function (puzzleData) {
