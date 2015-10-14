@@ -890,6 +890,7 @@ var KenKenGame = function () {
             var y = activeItem.indexY;
             var currentIndex = (x - 1) * size + y;
             var notesArray = currentState.notes[currentIndex - 1];
+            var oldNotesArray = notesArray.slice(0);
             var valuesArray = currentState.values;
             var i = size;
             var stringResult;
@@ -900,8 +901,24 @@ var KenKenGame = function () {
             var newValue;
 
             while (i > 0) {
-                oldValue = notesArray[i-1];
-                newValue = true;
+                notesArray[i - 1] = true;
+                i -= 1;
+            }
+
+            i = size;
+            while (i > 0) {
+
+                if (valuesArray[x - 1][i - 1]) {
+                    notesArray[valuesArray[x - 1][i - 1] - 1] = false;
+                    newValue = false;
+                } else if (valuesArray[i - 1][y - 1]) {
+                    notesArray[valuesArray[i - 1][y - 1] - 1] = false;
+                    newValue = false;
+                } else {
+                    newValue = true;
+                }
+
+                oldValue = oldNotesArray[i -1 ];
                 historyData = {
                     type: 'notes',
                     x: currentIndex - 1,
@@ -910,18 +927,7 @@ var KenKenGame = function () {
                     oldValue: oldValue
                 };
                 historyDepends.push(historyData);
-                notesArray[i - 1] = true;
-                i -= 1;
-            }
 
-            i = size;
-            while (i > 0) {
-                if (valuesArray[x - 1][i - 1]) {
-                    notesArray[valuesArray[x - 1][i - 1] - 1] = false
-                }
-                if (valuesArray[i - 1][y - 1]) {
-                    notesArray[valuesArray[i - 1][y - 1] - 1] = false
-                }
                 i -= 1;
             }
 
