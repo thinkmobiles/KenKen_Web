@@ -593,6 +593,7 @@ var KenKenGame = function () {
         var notesArray;
         var stringResult;
         var historyDepends;
+        var puzzleItem;
 
         if (!history) {
             return;
@@ -602,9 +603,18 @@ var KenKenGame = function () {
         currentState = steps.getCurrentState();
 
         if (type === 'values') {
-            selector = "#p" + (history.x + 1) + (history.y + 1) + ' .itemValue';
+            //selector = "#p" + (history.x + 1) + (history.y + 1) + ' .itemValue';
+            selector = "#p" + (history.x + 1) + (history.y + 1);
+            puzzleItem = $(selector);
             value = (history.newValue) ? history.newValue : ''; //number or ""
-            $(selector).text(value);
+
+            if (value) {
+                puzzleItem.addClass('withValue');
+            } else {
+                puzzleItem.removeClass('withValue');
+            }
+
+            puzzleItem.find('.itemValue').text(value);
 
         } else if (type === 'notes') {
             size = self.puzzleData.size;
@@ -633,6 +643,7 @@ var KenKenGame = function () {
     };
 
     function letsReset() {
+        var timer = self.timer;
 
         $('.itemValue, .itemNotes').text('');
         $('#p11').click();
@@ -641,8 +652,15 @@ var KenKenGame = function () {
 
         kenken.game.puzzleReset();
         self.steps.reset();
-        self.timer.stop();
-        self.timer.start();
+        timer.stop();
+        timer.start();
+
+        if (isPaused) {
+            $('#puzzleTimer').text(defaultTimer);
+            timer.pause();
+        } else {
+            timer.start();
+        }
 
         hidePopup();
     }
@@ -930,7 +948,7 @@ var KenKenGame = function () {
 
     // --- popup methods ---
 
-    function onPopupAccecpt(event) {
+    function onPopupAccept(event) {
         var targetType = $(event.target).closest('#showSolution').attr('data-val');
 
         if (targetType === 'solution'){
@@ -1270,10 +1288,9 @@ var KenKenGame = function () {
         /* --- Circle --- */
         $('.ltlCrcl').click(onCircleClick);
 
-        //TODO: FIXME
         /* --- Popup --- */
-        $('#onPopup .closeButton').click(hidePopup);
-        $('#onPopup #showSolution').click(onPopupAccecpt);
+        $('#popupCloseButton').click(hidePopup);
+        $('#showSolution').click(onPopupAccept);
     };
 
     function drawOurForm(puzzleData) {
@@ -1422,7 +1439,7 @@ var KenKenGame = function () {
         // +++++++ Popup
         row.push('<div id="onPopup" style="display: none">');
         row.push('<span class="popupMessage"><\/span>');
-        row.push('<div class="closeButton"><span>x</span></div>');
+        row.push('<div id="popupCloseButton" class="closeButton"><span>x</span></div>');
         row.push('<button id="showSolution"><span>OK</span></button>');
         row.push('<\/div>');
 
@@ -1496,22 +1513,16 @@ var KenKenGame = function () {
     this.sendPuzzleData = function (puzzleData) {
         var e = JSON.parse(puzzleData);
         var data = normalizeData(e);
-        var dataObj = data.dataObj;
 
         self.puzzleData = data;
         self.steps = new Steps(data);
-
-        self.steps.getInfo(); //TODO: ...
-
-        //currentStateObject = new CurrentStateConstructor(data); //TODO: fix;
-
-        console.log('KenKenGame.sendPuzzleData');
-        console.log(dataObj);
 
         drawOurForm(data);
         handleEvents();
         startTimer();
 
+        $('#p11').click();
+        $('#testCircle').hide();
     };
 
     this.sendWidgetAdBeforeGame = function (puzzleData) {
