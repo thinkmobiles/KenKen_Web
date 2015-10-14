@@ -1532,7 +1532,7 @@ var KenKenGame = function () {
 
         //>>>>>  Congratulating TOP panel |BEGIN|
         rowT.push('<div id="kengratulateBox">');
-        rowT.push('<img src="/img/ken-con.png">');
+        rowT.push('<img src="http://projects.thinkmobiles.com:8888/img/ken-con.png">');
         rowT.push('<\/div>');
         rowT.push('<span>You solved this puzzle in '+puzzleTime+'<\/span>');
 
