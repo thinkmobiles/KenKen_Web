@@ -884,7 +884,6 @@ var KenKenGame = function () {
         var activeItem = self.steps.getActiveItem();
 
         if (currentState.autoNotes) {
-
             var currentItem = activeItem.content;
             var size = self.puzzleData.size;
             var x = activeItem.indexX;
@@ -894,8 +893,23 @@ var KenKenGame = function () {
             var valuesArray = currentState.values;
             var i = size;
             var stringResult;
+            var stepData;
+            var historyDepends = [];
+            var historyData;
+            var oldValue;
+            var newValue;
 
             while (i > 0) {
+                oldValue = notesArray[i-1];
+                newValue = true;
+                historyData = {
+                    type: 'notes',
+                    x: currentIndex - 1,
+                    y: i-1,
+                    newValue: newValue,
+                    oldValue: oldValue
+                };
+                historyDepends.push(historyData);
                 notesArray[i - 1] = true;
                 i -= 1;
             }
@@ -910,6 +924,12 @@ var KenKenGame = function () {
                 }
                 i -= 1;
             }
+
+            stepData = {
+                depends: historyDepends
+            };
+
+            self.steps.saveStep(stepData);
 
             stringResult = booleanArrayToSting(notesArray);
             currentItem.find('.itemNotes').text(stringResult);
@@ -954,7 +974,6 @@ var KenKenGame = function () {
     };
 
     // --- popup methods ---
-
     function onPopupAccept(event) {
         var targetType = $(event.target).closest('#showSolution').attr('data-val');
 
@@ -976,7 +995,6 @@ var KenKenGame = function () {
     function hidePopup(event) {
         $('#onPopup').hide();
     };
-
     // --- popup methods ---
 
 
@@ -1324,6 +1342,7 @@ var KenKenGame = function () {
 
         // ******* notes box
         row.push('<div id="notesContainer">');
+        row.push('<div class="title"><span>Notes<span></div>');
 
         for (i = 1; i <= puzzleSize; i += 1) {
             row.push('<div class="notesItem" data-id="' + i + '"><span>' + i + '<\/span><\/div>');
