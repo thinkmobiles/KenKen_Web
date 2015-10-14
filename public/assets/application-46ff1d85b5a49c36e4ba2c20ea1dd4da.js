@@ -74,13 +74,6 @@ function Timer() {
             isPaused = false;
             totalSeconds = 0;
 
-            /*
-            //Testing Timer:
-            startedAt.setHours(startedAt.getHours() - 25);
-            startedAt.setMinutes(startedAt.getMinutes() - 15);
-            startedAt.setSeconds(startedAt.getSeconds() - 15);
-            */
-
             timerInterval = setInterval(setTime, 500);
             console.log('... OK');
         }
