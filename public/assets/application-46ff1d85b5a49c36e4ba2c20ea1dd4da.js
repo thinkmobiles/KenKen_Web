@@ -692,6 +692,7 @@ var KenKenGame = function () {
         var el;
 
         kenken.game.onReveal();
+        $('#testCircle').hide();
 
         if (!puzzleData || !currentValues) {
             return;
@@ -738,7 +739,6 @@ var KenKenGame = function () {
         prepareStateObjectTo(kenken.game.autoSave);
 
         if (areYouWinner()){
-            //circle.hide();
             winnerAction();
         }
     };
@@ -780,6 +780,9 @@ var KenKenGame = function () {
 
     function onSolutionClick(event) {
         var popup = $('#onPopup');
+
+        $('#testCircle').hide();
+
         popup.find('.popupMessage').text('See solution?');
         popup.find('#showSolution').attr('data-val','solution');
 
