@@ -1325,9 +1325,9 @@ var KenKenGame = function () {
         $('#btnPrint').click(onPrintClick);        //Print
 
         /* --- Notes --- */
-        $('.notesItem').click(onNotesItemClick);
-        $('#notesAll').click(onNotesAllClick);
-        $('#notesDel').click(onNotesDelClick);
+        $('.notesItem').click(onNotesItemClick);   //Add/Remove Note
+        $('#notesAll').click(onNotesAllClick);     //Show All notes
+        $('#notesDel').click(onNotesDelClick);     //Remove All Notes
 
         /* --- Puzzle Item --- */
         $('.puzzleItem').click(onPuzzleItemClick);
