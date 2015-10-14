@@ -832,3 +832,7 @@ th {
 #testCircle{
     z-index: 10;
 }
+
+#puzzle_id{
+    color: #000;
+}
