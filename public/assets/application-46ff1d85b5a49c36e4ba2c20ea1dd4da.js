@@ -652,15 +652,15 @@ var KenKenGame = function () {
     function letsReset() {
         var timer = self.timer;
 
-        $('.itemValue, .itemNotes').text('');
-        $('#p11').click();
-        $('#testCircle').hide();
-        $('.notesItem').removeClass('active');
-
         kenken.game.puzzleReset();
         self.steps.reset();
         timer.stop();
         timer.start();
+
+        $('.itemValue, .itemNotes').text('');
+        $('#p11').click();
+        $('#testCircle').hide();
+        $('.notesItem').removeClass('active');
 
         if (isPaused) {
             $('#puzzleTimer').text(defaultTimer);
