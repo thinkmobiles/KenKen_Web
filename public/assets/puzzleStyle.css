@@ -826,3 +826,9 @@ th {
     padding-right: 50px;
     text-transform: uppercase;
 }
+#choose-puzzle-box{
+    z-index: 1;
+}
+#testCircle{
+    z-index: 10;
+}
