@@ -643,6 +643,7 @@ var KenKenGame = function () {
     };
 
     function letsReset() {
+        var timer = self.timer;
 
         $('.itemValue, .itemNotes').text('');
         $('#p11').click();
@@ -651,8 +652,15 @@ var KenKenGame = function () {
 
         kenken.game.puzzleReset();
         self.steps.reset();
-        self.timer.stop();
-        self.timer.start();
+        timer.stop();
+        timer.start();
+
+        if (isPaused) {
+            $('#puzzleTimer').text(defaultTimer);
+            timer.pause();
+        } else {
+            timer.start();
+        }
 
         hidePopup();
     }
@@ -940,7 +948,7 @@ var KenKenGame = function () {
 
     // --- popup methods ---
 
-    function onPopupAccecpt(event) {
+    function onPopupAccept(event) {
         var targetType = $(event.target).closest('#showSolution').attr('data-val');
 
         if (targetType === 'solution'){
@@ -1282,7 +1290,7 @@ var KenKenGame = function () {
 
         /* --- Popup --- */
         $('#popupCloseButton').click(hidePopup);
-        $('#showSolution').click(onPopupAccecpt);
+        $('#showSolution').click(onPopupAccept);
     };
 
     function drawOurForm(puzzleData) {
