@@ -130,7 +130,7 @@ var Steps = function (puzzleData) {
             valuesItem = [];
             while (j > 0) {
                 if (symbolsArray[i-1][j-1] === '1'){
-                    curVal = puzzleData.dataObj.H[i-1][j-1];
+                    curVal = puzzleData.dataObj.T[i-1][j-1];
                     notes[(i-1)*size+j-1][+curVal-1] = true;
                 }
                 valuesItem.push(0);
@@ -1355,6 +1355,10 @@ var KenKenGame = function () {
                     lineClass += ' bottomLineBorder'
                 }
 
+                if (symbols[i - 1][j - 1] === '1') {
+                    lineClass += ' singleValue'
+                }
+
                 //puzzle item
                 row.push('<div id="p' + i + j + '" class="' + lineClass + '">');
 
@@ -1449,7 +1453,7 @@ var KenKenGame = function () {
         kenken.game.puzzleFinished(puzzleTime);
 
         //>>>>>  Congratulating TOP panel |BEGIN|
-        rowT.push('<img src="">');
+        rowT.push('<img src=""http://projects.thinkmobiles.com:8888/img/ken-con.png"">');
         rowT.push('<span>You solved this puzzle in '+puzzleTime+'<\/span>');
 
         topContainer.html(rowT.join(''));
