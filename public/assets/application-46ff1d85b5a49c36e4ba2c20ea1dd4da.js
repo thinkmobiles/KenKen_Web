@@ -904,9 +904,9 @@ var KenKenGame = function () {
         if (currentState.autoNotes) {
             var currentItem = activeItem.content;
             var size = self.puzzleData.size;
-            var x = activeItem.indexX;
-            var y = activeItem.indexY;
-            var currentIndex = (x - 1) * size + y;
+            var x = activeItem.indexX-1;
+            var y = activeItem.indexY-1;
+            var currentIndex = (x) * size + y + 1;
             var notesArray = currentState.notes[currentIndex - 1];
             var newNotesArray = notesArray.slice(0);
             var valuesArray = currentState.values;
@@ -928,14 +928,13 @@ var KenKenGame = function () {
             //change values if exist item in column/row:
             while (i > 0) {
 
-                if (valuesArray[x - 1][i - 1]) {
-                    notesIndex = valuesArray[x - 1][i - 1] - 1;
+                if (valuesArray[x][i - 1]) {
+                    notesIndex = valuesArray[x][i - 1] - 1;
                     newNotesArray[notesIndex] = false;
-                } else if (valuesArray[i - 1][y - 1]) {
-                    notesIndex = valuesArray[i - 1][y - 1] - 1;
+                }
+                if (valuesArray[i - 1][y]) {
+                    notesIndex = valuesArray[i - 1][y] - 1;
                     newNotesArray[notesIndex] = false;
-                } else {
-                    newNotesArray[i - 1] = true;
                 }
 
                 i -= 1;
@@ -945,9 +944,9 @@ var KenKenGame = function () {
             for (i=0; i<size; i++) {
                 if (newNotesArray[i] !== notesArray[i]) {
                     historyData = {
-                        type: 'notes',
-                        x: currentIndex - 1,
-                        y: i,
+                        type    : 'notes',
+                        x       : currentIndex - 1,
+                        y       : i,
                         newValue: newNotesArray[i],
                         oldValue: notesArray[i]
                     };
