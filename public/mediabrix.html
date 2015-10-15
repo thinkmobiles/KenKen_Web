@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>MediaBrix Publisher Bridge File</title>
+
+	<script type="text/javascript">
+		var ord = function(){var n = Math.random()*10000000000000000;return n;}
+		var getJS = function(){
+			var script = document.createElement("script");
+			script.id = "psf_bridge";	
+			script.src = "https://mediabrix.hs.llnwd.net/o38/v1_7/psf_bridge.js?ord="+ ord();
+
+			var container = document.getElementsByTagName("head")[0];
+			container.appendChild(script);
+		}
+		getJS();
+	</script>
+	
+</head>
+<body style="background-color:#000;">
+
+
+
+</body></html>
