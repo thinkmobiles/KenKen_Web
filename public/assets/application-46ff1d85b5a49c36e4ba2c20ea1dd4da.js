@@ -393,6 +393,8 @@ var KenKenGame = function () {
 
     function normalizeData(e) {
         var str = e.data;
+        var state = e.state;
+        var size = e.size;
         var newline = '\r\n';
         var arr = str.split(newline);
         var arrLength = arr.length - 2; // without /r/n/r/n
@@ -402,8 +404,13 @@ var KenKenGame = function () {
         var row;
         var item;
         var key;
+        var values;
+        var stateJSON;
+        var i;
+        var j;
+        var valuesLen;
 
-        for (var i = 0; i < arrLength; i++) {
+        for (i = 0; i < arrLength; i++) {
             item = arr[i];
 
             if (keys.indexOf(item) !== -1) {
@@ -430,8 +437,62 @@ var KenKenGame = function () {
 
         e.dataObj = obj;
 
+        if (!state) {
+            return e;
+        }
+
+        try {
+            stateJSON = JSON.parse(state);
+
+            if (stateJSON.values) {
+                values = stateJSON.values.split(',');
+                stateJSON.values = [];
+
+                valuesLen = values.length;
+                stateJSON.values.push([]);
+                i=0;
+                j=0;
+
+                while (i<valuesLen) {
+                    if (Math.trunc(i / size) !== j) {
+                        stateJSON.values.push([]);
+                        j = Math.trunc(i / size);
+                    }
+
+                    stateJSON.values[j].push(+values[i]);
+
+                    i++;
+                }
+
+                e.state = stateJSON;
+            }
+
+        } catch (e) {
+            console.log('Invalid value of "state"');
+        }
+
         return e;
+
     };
+
+    function parseState(stateString) {
+        var stateJSON;
+        var values;
+        var size;
+
+        try {
+            stateJSON = JSON.parse(stateString);
+
+            if (stateJSON.values) {
+                stateJSON.values = stateJSON.values.split(',');
+            }
+
+        } catch (e) {
+            console.log('Invalid value of "state"');
+        }
+
+        return stateJSON;
+    }
 
     function startTimer() {
         var timer = new Timer();
@@ -1362,6 +1423,7 @@ var KenKenGame = function () {
         var puzzleId = puzzleData.id || '000000';
         var puzzleSize = puzzleData.size;
         var puzzleLevel = puzzleData.level;
+        var state = puzzleData.state;
         //var values = data.A;
         var results = data.T;
         var symbols = data.S;
@@ -1370,6 +1432,7 @@ var KenKenGame = function () {
         var lineClass;
         var result;
         var i, j;
+        var stateValue;
 
         // ******* left panel begin
         row.push('<div id="leftPanel">');
@@ -1445,6 +1508,14 @@ var KenKenGame = function () {
                     lineClass += ' singleValue'
                 }
 
+                if (state) {
+                    stateValue = state.values[i-1][j-1];
+                }
+
+                if (stateValue) {
+                    lineClass += ' withValue';
+                }
+
                 //puzzle item
                 row.push('<div id="p' + i + j + '" class="' + lineClass + '">');
 
@@ -1456,7 +1527,11 @@ var KenKenGame = function () {
                     }
                 }
 
-                row.push('<span class="itemValue"><\/span>');
+                row.push('<span class="itemValue">');
+                    if (stateValue) {
+                        row.push(stateValue);
+                    }
+                row.push('<\/span>');
 
                 row.push('<span class="itemNotes"><\/span>');
 
