@@ -21,8 +21,36 @@
             "adInstance" : "[The publisher’s name for the ad instance]",
             "gameName" : "kenken",
             //"psf" : "https://www.site.com/mediabrix.html"
-            "psf" : "http://localhost:8888/mediabrix.html"
+            "psf" : "http://projects.thinkmobiles.com:8888/mediabrix.html"
         }
     </script>
+
+
+
+
+    <script>
+        function show1() {
+            var div = document.getElementById('flashContainer');
+            var flash = document.createElement('object');
+
+            flash.type = 'application/x-shockwave-flash';
+            flash.data = 'http://htmlka.com/wp-content/uploads/2011/08/bubble.swf';
+            flash.width = '450';
+            flash.height = '300';
+
+            div.appendChild(flash);
+        }
+        function show2() {}
+    </script>
+
+    <div id="flashContainer"></div>
+
+    <button onclick="show1()">Start 1</button>
+    <br/>
+    <button onclick="show2()">Start 2</button>
+
+    <!--<object type=application/x-shockwave-flash data=http://htmlka.com/wp-content/uploads/2011/08/bubble.swf width=450 height=300><param name=movie value=http://htmlka.com/wp-content/uploads/2011/08/bubble.swf></object>-->
+
+
 </body>
 </html>
