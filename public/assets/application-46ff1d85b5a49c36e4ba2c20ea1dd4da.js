@@ -1008,7 +1008,7 @@ var KenKenGame = function () {
     };
 
     function onAutoNotesClick(event) {
-        //change autoNotes state
+        //change autoNotes state:
         var currentState = self.steps.getCurrentState();
         var target = $(event.target).closest('.btnNote');
         var notesContainer = target.closest('.autoNotesBox');
@@ -1017,7 +1017,7 @@ var KenKenGame = function () {
         notesContainer.find('.active').removeClass('active');
         target.addClass('active');
 
-        currentState.autoNotes = +targetId ? true : false; // todo
+        currentState.autoNotes = +targetId ? true : false;
     };
 
     function onSaveClick(event) {
@@ -1078,17 +1078,14 @@ var KenKenGame = function () {
         var size;
         var selector;
         var puzzleContainer;
-        //var el;
 
         if (!puzzleData) {
             return;
         }
 
-        kenken.game.widgetAdBeforeSolution(); // todo
-
+        kenken.game.widgetAdBeforeSolution();
         solution = puzzleData.dataObj.A;
         size = puzzleData.size;
-
         puzzleContainer = $('#puzzleContainer');
         puzzleContainer.find('.puzzleItem').addClass('withValue');
 
@@ -1403,11 +1400,12 @@ var KenKenGame = function () {
         var stateValue;
         var notesIndex;
         var notesString;
+        var circle;
 
-        // ******* left panel begin
+        // --- left panel begin ---
         row.push('<div id="leftPanel">');
 
-        // ******* notes box
+        // --- notes box ---
         row.push('<div id="notesContainer">');
         row.push('<div class="title"><span>Notes<span></div>');
 
@@ -1419,33 +1417,33 @@ var KenKenGame = function () {
 
         row.push('<\/div>');
 
-        // ******* first buttons box
+        // --- first buttons box ---
         row.push('<div class="firstBtnBox">');
         row.push('<button id="btnSolve"><span>Solve Another<\/span><\/button>');
         row.push('<button id="btnResumeSaved"><span>Resume Saved Puzzle<\/span><\/button>');
         row.push('<\/div>');
 
-        // ******* second buttons box
+        // --- second buttons box ---
         row.push('<div class="secondBtnBox">');
         row.push('<button id="btnUndo"><span>Undo<\/span><\/button>');
         row.push('<button id="btnRedo"><span>Redo<\/span><\/button>');
         row.push('<button id="btnReset"><span>Reset<\/span><\/button>');
         row.push('<\/div>');
 
-        // ******* third buttons box
+        // --- third buttons box ---
         row.push('<div class="thirdBtnBox">');
         row.push('<button id="btnReveal"><span>Reveal<\/span><\/button>');
         row.push('<button id="btnCheck"><span>Check<\/span><\/button>');
         row.push('<button id="btnSolution"><span>Solution<\/span><\/button>');
         row.push('<\/div>');
 
-        // ******* left panel end
+        // --- left panel end ---
         row.push('<\/div>');
 
-        // ******* main panel begin
+        // --- main panel begin ---
         row.push('<div>');
 
-        // ******* top buttons
+        // --- top buttons ---
         row.push('<div id="topInfoBox">');
 
         row.push('<span id="puzzleInfo">Puzzle No. ' + puzzleId + ', ' + size + 'X' + size + ', ' + level + '<\/span>');
@@ -1457,7 +1455,7 @@ var KenKenGame = function () {
 
         row.push('<\/div>');
 
-        // ******* main container
+        // --- main container ---
         row.push('<div id="puzzleContainer" class="puzzleContainer' + size + '">');
 
         for (i = 1; i <= size; i += 1) {
@@ -1486,10 +1484,10 @@ var KenKenGame = function () {
                     lineClass += ' withValue';
                 }
 
-                //puzzle item
+                //puzzle item:
                 row.push('<div id="p' + i + j + '" class="' + lineClass + '">');
 
-                //draw symbol and expected result
+                //draw symbol and expected result:
                 if (+results[i - 1][j - 1]) {
                     row.push('<span class="itemResult">' + results[i - 1][j - 1] + '<\/span>');
                     if (symbols[i - 1][j - 1] !== '0' && symbols[i - 1][j - 1] !== '1') {
@@ -1521,7 +1519,7 @@ var KenKenGame = function () {
 
         row.push('<div class="clickToResume" style="display: none;"><span>Click</span> <img src="http://projects.thinkmobiles.com:8888/img/play.png" alt="play.png"/> <span>to Resume</span><\/div>');
 
-        // ******* bottom container
+        // --- bottom container ---
         row.push('<div id="bottomInfoBox">');
         row.push('<div class="autoNotesBox">');
         row.push('<span>AutoNotes</span>');
@@ -1536,10 +1534,10 @@ var KenKenGame = function () {
 
         row.push('<\/div>');
 
-        // ******* main panel end
+        // --- main panel end ---
         row.push('<\/div>');
 
-        // +++++++ circle
+        // --- circle ---
 
         row.push('<div id="circle">');
 
@@ -1554,9 +1552,7 @@ var KenKenGame = function () {
 
         row.push('<\/div>');
 
-        // +++++++ circle
-
-        // +++++++ Popup
+        // --- Popup ---
         row.push('<div id="onPopup" style="display: none">');
         row.push('<span class="popupMessage"><\/span>');
         row.push('<div id="popupCloseButton" class="closeButton"><span>x</span></div>');
@@ -1569,7 +1565,7 @@ var KenKenGame = function () {
 
         document.querySelector('.box-inner-main').appendChild(result);
 
-        var circle = new Circle(puzzleData);
+        circle = new Circle(puzzleData);
         circle.drawOurCircles();
         self.circle = circle;
 
@@ -1590,29 +1586,26 @@ var KenKenGame = function () {
         mainContainer.addClass('winnerState');
         kenken.game.puzzleFinished(puzzleTime);
 
-        //>>>>>  Congratulating TOP panel |BEGIN|
+        // --- Congratulating TOP panel ---
         rowT.push('<div id="kengratulateBox">');
         rowT.push('<img src="http://projects.thinkmobiles.com:8888/img/ken-con.png">');
         rowT.push('<\/div>');
         rowT.push('<span>You solved this puzzle in '+puzzleTime+'<\/span>');
 
         topContainer.html(rowT.join(''));
-        //>>>>>  Congratulating TOP panel |END|
 
-        //>>>>>  Congratulating LEFT panel |BEGIN|
+        // ---  Congratulating LEFT panel ---
         rowL.push('<img width="300" height="300" id="winImage" src="/assets/get-kenken-Add-widget.jpg">');
         rowL.push('<span>Want KenKen Ad-Free?<\/span>');
         rowL.push('<a href="/membership">FIND OUT MORE<\/a>');
 
         leftContainer.html(rowL.join(''));
-        //>>>>>  Congratulating LEFT panel |END|
 
-        //>>>>>  Congratulating BOTTOM panel |BEGIN|
+        // --- Congratulating BOTTOM panel ---
         rowB.push('<span>'+puzzleInfo+'<\/span>');
-        rowB.push('<button onclick="function(){kenken.game.solveAnother()}"><span>Solve another puzzle<\/span><\/button>'); //todo
+        rowB.push('<button onclick="function(){kenken.game.solveAnother()}"><span>Solve another puzzle<\/span><\/button>');
 
         bottomContainer.html(rowB.join(''));
-        //>>>>>  Congratulating BOTTOM panel |END|
 
         mainContainer.show();
     };
