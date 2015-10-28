@@ -476,6 +476,7 @@ th {
     display: table-cell;
     position: relative;
     background-color: #ffffff;
+    color: #000;
     float: left;
     border: solid 1px #000;
     cursor: pointer;
@@ -667,7 +668,7 @@ th {
 }
 .ltlCrcl img{
     display: inline-block;
-    margin-top: 2px;
+    margin-top: 5px;
     -webkit-transition: all 0.3s ease-out 0.1s;
     -moz-transition: all 0.3s ease-out 0.1s;
     -o-transition: all 0.3s ease-out 0.1s;
@@ -679,7 +680,7 @@ th {
     font: bold 20px/35px Arial;
 }
 .ltlCrcl:hover img{
-    margin-top: 5px;
+    margin-top: 9px;
 }
 .ltlCrcl[data-id="cX"],
 .ltlCrcl[data-id="cC"]{
