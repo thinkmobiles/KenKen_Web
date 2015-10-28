@@ -195,7 +195,6 @@ var Steps = function (puzzleData) {
     initializeFirstStep();
 
     this.saveStep = function (data) {
-        console.log('Steps.saveStep()');
         var type = data.type;
         var x = data.x;
         var y = data.y;
@@ -235,7 +234,6 @@ var Steps = function (puzzleData) {
     };
 
     this.undo = function () {
-        console.log('Steps.undo();');
         var data = history[index];
 
         if (index !== -1) {
@@ -252,7 +250,6 @@ var Steps = function (puzzleData) {
     };
 
     this.redo = function () {
-        console.log('Steps.redo()');
         var data;
 
         if (index < (history.length - 1)) {
@@ -270,7 +267,6 @@ var Steps = function (puzzleData) {
     };
 
     this.reset = function () {
-        console.log('Steps.reset()');
         index = -1;
         history = [];
         activeItem = null;
@@ -278,17 +274,14 @@ var Steps = function (puzzleData) {
     };
 
     this.getCurrentState = function () {
-        console.log('Steps.getCurrentState()');
         return currentState;
     };
 
     this.getCurrentIndex = function () {
-        console.log('Steps.currentIndex()');
         return index;
     };
 
     this.getHistory = function () {
-        console.log('Steps.getHistory()');
         return history;
     };
 
@@ -314,7 +307,7 @@ var Steps = function (puzzleData) {
 function Circle(puzzleData) {
 
     this.changeCirclePosition = function () {
-        var circleDiv = $('#testCircle');
+        var circleDiv = $('#circle');
         var circlePos = this.findCirclePosition(60);
 
         circleDiv.css('top', circlePos.y);
@@ -476,7 +469,7 @@ var KenKenGame = function () {
             }
 
         } catch (e) {
-            console.log('Invalid value of "state"');
+            console.error('Invalid value of "state"');
         }
 
         return e;
@@ -535,7 +528,7 @@ var KenKenGame = function () {
 
                 drawActiveNotes();
             } else {
-                console.log('incorrect type');
+                console.error('incorrect type');
             }
         });
     };
@@ -560,7 +553,7 @@ var KenKenGame = function () {
         var span = $(event.target).closest('#btnPause').find('span');
         var timer = self.timer;
 
-        $('#testCircle').hide();
+        $('#circle').hide();
 
         isPaused = !isPaused;
 
@@ -621,10 +614,8 @@ var KenKenGame = function () {
             drawActiveNotes();
 
         } else {
-            console.log('incorrect type');
+            console.error('incorrect type');
         }
-
-        //steps.getInfo();
 
         historyDepends = history.depends;
 
@@ -678,10 +669,8 @@ var KenKenGame = function () {
             drawActiveNotes();
 
         } else {
-            console.log('incorrect type');
+            console.error('incorrect type');
         }
-
-        //steps.getInfo();
 
         historyDepends = history.depends;
 
@@ -706,7 +695,7 @@ var KenKenGame = function () {
         mainContainer.find('.itemValue').text('');
         mainContainer.find('.itemNotes').text('');
         mainContainer.find('#p11').click();
-        mainContainer.find('#testCircle').hide();
+        mainContainer.find('#circle').hide();
         mainContainer.find('.notesItem').removeClass('active');
         mainContainer.find('.autoNotesBox').find('.active').removeClass('active');
         mainContainer.find('.btnNote:first').addClass('active');
@@ -741,7 +730,7 @@ var KenKenGame = function () {
         var el;
 
         kenken.game.onReveal();
-        $('#testCircle').hide();
+        $('#circle').hide();
 
         if (!puzzleData || !currentValues) {
             return;
@@ -830,7 +819,7 @@ var KenKenGame = function () {
     function onSolutionClick(event) {
         var popup = $('#onPopup');
 
-        $('#testCircle').hide();
+        $('#circle').hide();
 
         popup.find('.popupMessage').text('See solution?');
         popup.find('#showSolution').attr('data-val','solution');
@@ -1015,7 +1004,7 @@ var KenKenGame = function () {
     };
 
     function onAutoNotesClick(event) {
-        //change autoNotes state
+        //change autoNotes state:
         var currentState = self.steps.getCurrentState();
         var target = $(event.target).closest('.btnNote');
         var notesContainer = target.closest('.autoNotesBox');
@@ -1024,7 +1013,7 @@ var KenKenGame = function () {
         notesContainer.find('.active').removeClass('active');
         target.addClass('active');
 
-        currentState.autoNotes = +targetId ? true : false; // todo
+        currentState.autoNotes = +targetId ? true : false;
     };
 
     function onSaveClick(event) {
@@ -1085,17 +1074,14 @@ var KenKenGame = function () {
         var size;
         var selector;
         var puzzleContainer;
-        //var el;
 
         if (!puzzleData) {
             return;
         }
 
-        kenken.game.widgetAdBeforeSolution(); // todo
-
+        kenken.game.widgetAdBeforeSolution();
         solution = puzzleData.dataObj.A;
         size = puzzleData.size;
-
         puzzleContainer = $('#puzzleContainer');
         puzzleContainer.find('.puzzleItem').addClass('withValue');
 
@@ -1168,7 +1154,7 @@ var KenKenGame = function () {
     function onCircleClick(event) {
         var target = $(event.target).closest('.ltlCrcl');
         var value = target.attr('data-id');
-        var circle = target.closest('#testCircle');
+        var circle = target.closest('#circle');
         var puzzleContainer = $('#puzzleContainer');
         var activeItem = self.steps.getActiveItem(); //activePuzzleItem
         var currentItem = activeItem.content;
@@ -1410,11 +1396,12 @@ var KenKenGame = function () {
         var stateValue;
         var notesIndex;
         var notesString;
+        var circle;
 
-        // ******* left panel begin
+        // --- left panel begin ---
         row.push('<div id="leftPanel">');
 
-        // ******* notes box
+        // --- notes box ---
         row.push('<div id="notesContainer">');
         row.push('<div class="title"><span>Notes<span></div>');
 
@@ -1426,33 +1413,33 @@ var KenKenGame = function () {
 
         row.push('<\/div>');
 
-        // ******* first buttons box
+        // --- first buttons box ---
         row.push('<div class="firstBtnBox">');
         row.push('<button id="btnSolve"><span>Solve Another<\/span><\/button>');
         row.push('<button id="btnResumeSaved"><span>Resume Saved Puzzle<\/span><\/button>');
         row.push('<\/div>');
 
-        // ******* second buttons box
+        // --- second buttons box ---
         row.push('<div class="secondBtnBox">');
         row.push('<button id="btnUndo"><span>Undo<\/span><\/button>');
         row.push('<button id="btnRedo"><span>Redo<\/span><\/button>');
         row.push('<button id="btnReset"><span>Reset<\/span><\/button>');
         row.push('<\/div>');
 
-        // ******* third buttons box
+        // --- third buttons box ---
         row.push('<div class="thirdBtnBox">');
         row.push('<button id="btnReveal"><span>Reveal<\/span><\/button>');
         row.push('<button id="btnCheck"><span>Check<\/span><\/button>');
         row.push('<button id="btnSolution"><span>Solution<\/span><\/button>');
         row.push('<\/div>');
 
-        // ******* left panel end
+        // --- left panel end ---
         row.push('<\/div>');
 
-        // ******* main panel begin
+        // --- main panel begin ---
         row.push('<div>');
 
-        // ******* top buttons
+        // --- top buttons ---
         row.push('<div id="topInfoBox">');
 
         row.push('<span id="puzzleInfo">Puzzle No. ' + puzzleId + ', ' + size + 'X' + size + ', ' + level + '<\/span>');
@@ -1464,7 +1451,7 @@ var KenKenGame = function () {
 
         row.push('<\/div>');
 
-        // ******* main container
+        // --- main container ---
         row.push('<div id="puzzleContainer" class="puzzleContainer' + size + '">');
 
         for (i = 1; i <= size; i += 1) {
@@ -1493,10 +1480,10 @@ var KenKenGame = function () {
                     lineClass += ' withValue';
                 }
 
-                //puzzle item
+                //puzzle item:
                 row.push('<div id="p' + i + j + '" class="' + lineClass + '">');
 
-                //draw symbol and expected result
+                //draw symbol and expected result:
                 if (+results[i - 1][j - 1]) {
                     row.push('<span class="itemResult">' + results[i - 1][j - 1] + '<\/span>');
                     if (symbols[i - 1][j - 1] !== '0' && symbols[i - 1][j - 1] !== '1') {
@@ -1528,7 +1515,7 @@ var KenKenGame = function () {
 
         row.push('<div class="clickToResume" style="display: none;"><span>Click</span> <img src="http://projects.thinkmobiles.com:8888/img/play.png" alt="play.png"/> <span>to Resume</span><\/div>');
 
-        // ******* bottom container
+        // --- bottom container ---
         row.push('<div id="bottomInfoBox">');
         row.push('<div class="autoNotesBox">');
         row.push('<span>AutoNotes</span>');
@@ -1543,12 +1530,12 @@ var KenKenGame = function () {
 
         row.push('<\/div>');
 
-        // ******* main panel end
+        // --- main panel end ---
         row.push('<\/div>');
 
-        // +++++++ test circle
+        // --- circle ---
 
-        row.push('<div id="testCircle">');  //TODO: FIXME: change id
+        row.push('<div id="circle">');
 
         for (i = 1; i <= size; i += 1) {
             row.push('<div data-id="' + i + '" class="ltlCrcl">');
@@ -1561,9 +1548,7 @@ var KenKenGame = function () {
 
         row.push('<\/div>');
 
-        // +++++++ test circle
-
-        // +++++++ Popup
+        // --- Popup ---
         row.push('<div id="onPopup" style="display: none">');
         row.push('<span class="popupMessage"><\/span>');
         row.push('<div id="popupCloseButton" class="closeButton"><span>x</span></div>');
@@ -1576,7 +1561,7 @@ var KenKenGame = function () {
 
         document.querySelector('.box-inner-main').appendChild(result);
 
-        var circle = new Circle(puzzleData);
+        circle = new Circle(puzzleData);
         circle.drawOurCircles();
         self.circle = circle;
 
@@ -1597,29 +1582,26 @@ var KenKenGame = function () {
         mainContainer.addClass('winnerState');
         kenken.game.puzzleFinished(puzzleTime);
 
-        //>>>>>  Congratulating TOP panel |BEGIN|
+        // --- Congratulating TOP panel ---
         rowT.push('<div id="kengratulateBox">');
         rowT.push('<img src="http://projects.thinkmobiles.com:8888/img/ken-con.png">');
         rowT.push('<\/div>');
         rowT.push('<span>You solved this puzzle in '+puzzleTime+'<\/span>');
 
         topContainer.html(rowT.join(''));
-        //>>>>>  Congratulating TOP panel |END|
 
-        //>>>>>  Congratulating LEFT panel |BEGIN|
+        // ---  Congratulating LEFT panel ---
         rowL.push('<img width="300" height="300" id="winImage" src="/assets/get-kenken-Add-widget.jpg">');
         rowL.push('<span>Want KenKen Ad-Free?<\/span>');
         rowL.push('<a href="/membership">FIND OUT MORE<\/a>');
 
         leftContainer.html(rowL.join(''));
-        //>>>>>  Congratulating LEFT panel |END|
 
-        //>>>>>  Congratulating BOTTOM panel |BEGIN|
+        // --- Congratulating BOTTOM panel ---
         rowB.push('<span>'+puzzleInfo+'<\/span>');
-        rowB.push('<button onclick="function(){kenken.game.solveAnother()}"><span>Solve another puzzle<\/span><\/button>'); //todo
+        rowB.push('<button onclick="function(){kenken.game.solveAnother()}"><span>Solve another puzzle<\/span><\/button>');
 
         bottomContainer.html(rowB.join(''));
-        //>>>>>  Congratulating BOTTOM panel |END|
 
         mainContainer.show();
     };
@@ -1635,8 +1617,6 @@ var KenKenGame = function () {
     this.puzzleData = null;
 
     this.loadPuzzleState = function (state) {
-        console.log('KenKen.loadPuzzleState');
-        console.log(state);
     };
 
     this.sendPuzzleData = function (puzzleData) {
@@ -1651,33 +1631,20 @@ var KenKenGame = function () {
         startTimer();
 
         $('#p11').click();
-        $('#testCircle').hide();
+        $('#circle').hide();
     };
 
     this.sendWidgetAdBeforeGame = function (puzzleData) {
-        console.log('KenKenGame.sendWidgetAdBeforeGame');
-        console.log(puzzleData);
     };
 
     this.sendWidgetAdBeforeSolution = function (puzzleData) {
-        console.log('KenKenGame.sendWidgetAdBeforeSolution');
-        console.log(puzzleData);
     };
 
     this.sendWidgetAdOnKengratulations = function (puzzleData) {
-        console.log('KenKenGame.sendWidgetAdOnKengratulations');
-        console.log(puzzleData);
     };
 
     this.sendWidgetAdBeforePrint = function (puzzleData) {
-        console.log('KenKenGame.sendWidgetAdBeforePrint');
-        console.log(puzzleData);
     };
-
-    /*this.prototype.changeTimerState = function (e) {
-     console.log('changeTimerState');
-     }*/
-
 
 };
 // </editor-fold>
@@ -1889,7 +1856,7 @@ kenken.Game = function (e, t, n) {
         return _kenken;
     }
 
-    function s() { //***
+    function s() {
         i().sendPuzzleData(JSON.stringify(e))
         //i().sendPuzzleData(e)
     }
@@ -1974,8 +1941,7 @@ kenken.Game = function (e, t, n) {
         },
 
         this.widgetAdBeforePause = function () {
-            $.get("http://www.kenkenpuzzle.com/game/widget_ad_before_pause", null, a)
-            //$.get("/game/widget_ad_before_pause", null, a) //TODO: ...
+            $.get("/game/widget_ad_before_pause", null, a)
         },
 
         this.widgetAdBeforePrint = function () {
@@ -2044,8 +2010,7 @@ kenken.Game = function (e, t, n) {
         },
 
         this.onPause = function () {
-            $.get("http://www.kenkenpuzzle.com/show_ad_on_pause", {}, v), $.get("http://www.kenkenpuzzle.com/request_check", {
-                //$.get("/show_ad_on_pause", {}, v), $.get("/request_check", { //TODO: ...
+            $.get("/show_ad_on_pause", {}, v), $.get("/request_check", {
                 id: e.id
             })
         },

@@ -626,7 +626,7 @@ th {
     box-shadow: inset -4px -4px 0 #000000;
 }
 
-#testCircle {
+#circle {
     position: absolute;
     width: 120px;
     height: 120px;
