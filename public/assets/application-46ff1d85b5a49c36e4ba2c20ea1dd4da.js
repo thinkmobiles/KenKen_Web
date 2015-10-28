@@ -195,7 +195,6 @@ var Steps = function (puzzleData) {
     initializeFirstStep();
 
     this.saveStep = function (data) {
-        console.log('Steps.saveStep()');
         var type = data.type;
         var x = data.x;
         var y = data.y;
@@ -235,7 +234,6 @@ var Steps = function (puzzleData) {
     };
 
     this.undo = function () {
-        console.log('Steps.undo();');
         var data = history[index];
 
         if (index !== -1) {
@@ -252,7 +250,6 @@ var Steps = function (puzzleData) {
     };
 
     this.redo = function () {
-        console.log('Steps.redo()');
         var data;
 
         if (index < (history.length - 1)) {
@@ -270,7 +267,6 @@ var Steps = function (puzzleData) {
     };
 
     this.reset = function () {
-        console.log('Steps.reset()');
         index = -1;
         history = [];
         activeItem = null;
@@ -278,17 +274,14 @@ var Steps = function (puzzleData) {
     };
 
     this.getCurrentState = function () {
-        console.log('Steps.getCurrentState()');
         return currentState;
     };
 
     this.getCurrentIndex = function () {
-        console.log('Steps.currentIndex()');
         return index;
     };
 
     this.getHistory = function () {
-        console.log('Steps.getHistory()');
         return history;
     };
 
@@ -476,7 +469,7 @@ var KenKenGame = function () {
             }
 
         } catch (e) {
-            console.log('Invalid value of "state"');
+            console.error('Invalid value of "state"');
         }
 
         return e;
@@ -535,7 +528,7 @@ var KenKenGame = function () {
 
                 drawActiveNotes();
             } else {
-                console.log('incorrect type');
+                console.error('incorrect type');
             }
         });
     };
@@ -621,7 +614,7 @@ var KenKenGame = function () {
             drawActiveNotes();
 
         } else {
-            console.log('incorrect type');
+            console.error('incorrect type');
         }
 
         //steps.getInfo();
@@ -678,7 +671,7 @@ var KenKenGame = function () {
             drawActiveNotes();
 
         } else {
-            console.log('incorrect type');
+            console.error('incorrect type');
         }
 
         //steps.getInfo();
@@ -1635,8 +1628,6 @@ var KenKenGame = function () {
     this.puzzleData = null;
 
     this.loadPuzzleState = function (state) {
-        console.log('KenKen.loadPuzzleState');
-        console.log(state);
     };
 
     this.sendPuzzleData = function (puzzleData) {
@@ -1655,29 +1646,16 @@ var KenKenGame = function () {
     };
 
     this.sendWidgetAdBeforeGame = function (puzzleData) {
-        console.log('KenKenGame.sendWidgetAdBeforeGame');
-        console.log(puzzleData);
     };
 
     this.sendWidgetAdBeforeSolution = function (puzzleData) {
-        console.log('KenKenGame.sendWidgetAdBeforeSolution');
-        console.log(puzzleData);
     };
 
     this.sendWidgetAdOnKengratulations = function (puzzleData) {
-        console.log('KenKenGame.sendWidgetAdOnKengratulations');
-        console.log(puzzleData);
     };
 
     this.sendWidgetAdBeforePrint = function (puzzleData) {
-        console.log('KenKenGame.sendWidgetAdBeforePrint');
-        console.log(puzzleData);
     };
-
-    /*this.prototype.changeTimerState = function (e) {
-     console.log('changeTimerState');
-     }*/
-
 
 };
 // </editor-fold>
