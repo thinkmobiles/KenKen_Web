@@ -617,8 +617,6 @@ var KenKenGame = function () {
             console.error('incorrect type');
         }
 
-        //steps.getInfo();
-
         historyDepends = history.depends;
 
         if (historyDepends) {
@@ -673,8 +671,6 @@ var KenKenGame = function () {
         } else {
             console.error('incorrect type');
         }
-
-        //steps.getInfo();
 
         historyDepends = history.depends;
 
@@ -1860,7 +1856,7 @@ kenken.Game = function (e, t, n) {
         return _kenken;
     }
 
-    function s() { //***
+    function s() {
         i().sendPuzzleData(JSON.stringify(e))
         //i().sendPuzzleData(e)
     }
@@ -1945,8 +1941,7 @@ kenken.Game = function (e, t, n) {
         },
 
         this.widgetAdBeforePause = function () {
-            $.get("http://www.kenkenpuzzle.com/game/widget_ad_before_pause", null, a)
-            //$.get("/game/widget_ad_before_pause", null, a) //TODO: ...
+            $.get("/game/widget_ad_before_pause", null, a)
         },
 
         this.widgetAdBeforePrint = function () {
@@ -2015,8 +2010,7 @@ kenken.Game = function (e, t, n) {
         },
 
         this.onPause = function () {
-            $.get("http://www.kenkenpuzzle.com/show_ad_on_pause", {}, v), $.get("http://www.kenkenpuzzle.com/request_check", {
-                //$.get("/show_ad_on_pause", {}, v), $.get("/request_check", { //TODO: ...
+            $.get("/show_ad_on_pause", {}, v), $.get("/request_check", {
                 id: e.id
             })
         },
