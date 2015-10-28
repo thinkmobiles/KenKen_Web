@@ -477,7 +477,7 @@
             $('.ltlCrcl').click(function (event) {
                 var target = $(event.target).closest('.ltlCrcl');
                 var value = target.attr('data-id');
-                var circle = target.closest('#testCircle');
+                var circle = target.closest('#circle');
 
                 var puzzleContainer = $('#puzzleContainer');
                 var currentItem = activePuzzleItem.item;
@@ -661,7 +661,7 @@
     function Circle() {
 
         this.changeCirclePosition = function() {
-            var circleDiv = $('#testCircle');
+            var circleDiv = $('#circle');
             var circlePos = this.findCirclePosition(60);
 
             circleDiv.css('top', circlePos.y);

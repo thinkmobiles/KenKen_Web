@@ -314,7 +314,7 @@ var Steps = function (puzzleData) {
 function Circle(puzzleData) {
 
     this.changeCirclePosition = function () {
-        var circleDiv = $('#testCircle');
+        var circleDiv = $('#circle');
         var circlePos = this.findCirclePosition(60);
 
         circleDiv.css('top', circlePos.y);
@@ -560,7 +560,7 @@ var KenKenGame = function () {
         var span = $(event.target).closest('#btnPause').find('span');
         var timer = self.timer;
 
-        $('#testCircle').hide();
+        $('#circle').hide();
 
         isPaused = !isPaused;
 
@@ -706,7 +706,7 @@ var KenKenGame = function () {
         mainContainer.find('.itemValue').text('');
         mainContainer.find('.itemNotes').text('');
         mainContainer.find('#p11').click();
-        mainContainer.find('#testCircle').hide();
+        mainContainer.find('#circle').hide();
         mainContainer.find('.notesItem').removeClass('active');
         mainContainer.find('.autoNotesBox').find('.active').removeClass('active');
         mainContainer.find('.btnNote:first').addClass('active');
@@ -741,7 +741,7 @@ var KenKenGame = function () {
         var el;
 
         kenken.game.onReveal();
-        $('#testCircle').hide();
+        $('#circle').hide();
 
         if (!puzzleData || !currentValues) {
             return;
@@ -830,7 +830,7 @@ var KenKenGame = function () {
     function onSolutionClick(event) {
         var popup = $('#onPopup');
 
-        $('#testCircle').hide();
+        $('#circle').hide();
 
         popup.find('.popupMessage').text('See solution?');
         popup.find('#showSolution').attr('data-val','solution');
@@ -1168,7 +1168,7 @@ var KenKenGame = function () {
     function onCircleClick(event) {
         var target = $(event.target).closest('.ltlCrcl');
         var value = target.attr('data-id');
-        var circle = target.closest('#testCircle');
+        var circle = target.closest('#circle');
         var puzzleContainer = $('#puzzleContainer');
         var activeItem = self.steps.getActiveItem(); //activePuzzleItem
         var currentItem = activeItem.content;
@@ -1546,9 +1546,9 @@ var KenKenGame = function () {
         // ******* main panel end
         row.push('<\/div>');
 
-        // +++++++ test circle
+        // +++++++ circle
 
-        row.push('<div id="testCircle">');  //TODO: FIXME: change id
+        row.push('<div id="circle">');
 
         for (i = 1; i <= size; i += 1) {
             row.push('<div data-id="' + i + '" class="ltlCrcl">');
@@ -1561,7 +1561,7 @@ var KenKenGame = function () {
 
         row.push('<\/div>');
 
-        // +++++++ test circle
+        // +++++++ circle
 
         // +++++++ Popup
         row.push('<div id="onPopup" style="display: none">');
@@ -1651,7 +1651,7 @@ var KenKenGame = function () {
         startTimer();
 
         $('#p11').click();
-        $('#testCircle').hide();
+        $('#circle').hide();
     };
 
     this.sendWidgetAdBeforeGame = function (puzzleData) {
