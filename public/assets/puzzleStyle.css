@@ -1,5 +1,5 @@
 html {
-    font-family: sans-serif;
+    font-family: Arial Black Black;
     -ms-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
 }
@@ -212,7 +212,7 @@ th {
     -moz-border-radius: 10px;
     border-radius: 10px;
     text-align: center;
-    font: bold 16px/24px Arial;
+    font: bold 16px/24px Arial Black;
     background-color: #fff;
     width: 24px;
     height: 24px;
@@ -228,7 +228,7 @@ th {
     height: 28px;
     border-radius: 13px;
     cursor: pointer;
-    font: bold 19px/28px Arial;
+    font: bold 19px/28px Arial Black;
 }
 #notesAll,
 #notesDel{
@@ -275,7 +275,7 @@ th {
     display: inline-block;
     cursor: pointer;
     color: #fff;
-    font: bold 11px Arial;
+    font: bold 11px Arial Black;
     padding: 7px 10px 7px 10px;
     text-decoration: none;
     width: 100%;
@@ -396,10 +396,10 @@ th {
     overflow: hidden;
 }
 #topInfoBox span#puzzleInfo{
-    font: normal 10px/12px Arial;
+    font: normal 10px/12px Arial Black Black;
 }
 #topInfoBox span#puzzleTimer{
-    font: bold 13px/12px Arial;
+    font: bold 13px/12px Arial Black Black;
 }
 .timerBox{
     float: right;
@@ -433,7 +433,7 @@ th {
     float: left;
 }
 .autoNotesBox > span{
-    font: bold 13px/12px Arial;
+    font: bold 13px/12px Arial Black;
     margin-right: 5px;
 }
 .autoNotesBox > button{
@@ -533,7 +533,7 @@ th {
 
 .itemValue {
     display: block;
-    font: 700 55px Arial;
+    font: 700 55px Arial Black;
     position: absolute;
     left: 50%;
     top: 50%;
@@ -545,11 +545,11 @@ th {
 }
 .itemResult,
 .itemSymbol{
-    font: 400 28px/40px Arial;
+    font: 400 28px/40px Arial Black Black;
 }
 .itemNotes{
     display: block;
-    font: 500 20px Arial;
+    font: 500 20px Arial Black;
     position: absolute;
     right: 30px;
     top: 60%;
@@ -557,27 +557,27 @@ th {
 
 /*.puzzleContainer4 .puzzleItem .itemResult,*/
 /*.puzzleContainer4 .puzzleItem .itemSymbol{*/
-/*font: 400 28px/40px Arial;*/
+/*font: 900 28px/40px Arial Black;*/
 /*}*/
 .puzzleContainer5 .puzzleItem .itemResult,
 .puzzleContainer5 .puzzleItem .itemSymbol{
-    font: 400 24px/35px Arial;
+    font: 900 24px/35px Arial Black;
 }
 .puzzleContainer6 .puzzleItem .itemResult,
 .puzzleContainer6 .puzzleItem .itemSymbol{
-    font: 400 22px/30px Arial;
+    font: 900 22px/30px Arial Black;
 }
 .puzzleContainer7 .puzzleItem .itemResult,
 .puzzleContainer7 .puzzleItem .itemSymbol{
-    font: 400 20px/25px Arial;
+    font: 900 20px/25px Arial Black;
 }
 .puzzleContainer8 .puzzleItem .itemResult,
 .puzzleContainer8 .puzzleItem .itemSymbol{
-    font: 400 17px/23px Arial;
+    font: 900 17px/23px Arial Black;
 }
 .puzzleContainer9 .puzzleItem .itemResult,
 .puzzleContainer9 .puzzleItem .itemSymbol{
-    font: 400 15px/20px Arial;
+    font: 900 15px/20px Arial Black;
 }
 
 .puzzleContainer4 .puzzleItem .itemResult{
@@ -662,7 +662,7 @@ th {
     background-color: #000;
     color: white;
     box-shadow: 0 0 5px blue;
-    font: bold 18px/30px Arial;
+    font: bold 18px/30px Arial Black;
     cursor: pointer;
     -webkit-transition: all 0.3s ease-out 0.1s;
     -moz-transition: all 0.3s ease-out 0.1s;
@@ -680,7 +680,7 @@ th {
 .ltlCrcl:hover{
     height: 36px;
     width: 36px;
-    font: bold 20px/35px Arial;
+    font: bold 20px/35px Arial Black;
 }
 .ltlCrcl:hover img{
     margin-top: 9px;
@@ -719,7 +719,7 @@ th {
 }
 #onPopup > span{
     display: block;
-    font: 400 27px/30px Arial;
+    font: 400 27px/30px Arial Black;
     margin-top: 20px;
     color: #2141a9;
 }
@@ -795,7 +795,7 @@ th {
 .mainContainer.winnerState #bottomInfoBox > span{
     display: block;
     text-align: right;
-    font: 400 13px/12px Arial;
+    font: 400 13px/12px Arial Black;
     padding: 5px 0 10px;
 }
 .mainContainer.winnerState #bottomInfoBox button{
@@ -825,7 +825,7 @@ th {
 }
 .mainContainer.winnerState #bottomInfoBox button span{
     color: #fff;
-    font: 700 22px/50px Arial;
+    font: 700 22px/50px Arial Black;
     background: url("../img/next-ico.png") no-repeat right center;
     padding-right: 50px;
     text-transform: uppercase;
