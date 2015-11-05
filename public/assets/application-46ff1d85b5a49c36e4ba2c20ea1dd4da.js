@@ -1412,6 +1412,7 @@ var KenKenGame = function () {
         var notesIndex;
         var notesString;
         var circle;
+        var isSingleValue;
 
         // --- left panel begin ---
         row.push('<div id="leftPanel">');
@@ -1484,7 +1485,10 @@ var KenKenGame = function () {
                 }
 
                 if (symbols[i - 1][j - 1] === '1') {
-                    lineClass += ' singleValue'
+                    lineClass += ' singleValue';
+                    isSingleValue = true
+                } else {
+                    isSingleValue = false;
                 }
 
                 if (state) {
@@ -1513,7 +1517,7 @@ var KenKenGame = function () {
                 row.push('<\/span>');
 
                 row.push('<span class="itemNotes">');
-                    if (state && state.notes) {
+                    if (state && state.notes && !isSingleValue) {
                         notesIndex = (i-1) * size + (j-1);
                         notesString = booleanArrayToSting(state.notes[notesIndex]);
                         row.push(notesString);
