@@ -1379,6 +1379,20 @@ var KenKenGame = function () {
         $('.clickToResume').click(onClickToResume);
     };
 
+    function getOperationSymbol(s) {
+        if (s === '+') {
+            return '+';
+        } else if (s === '-') {
+            return '-';
+        } else if (s === '/') {
+            return '&divide';
+        } else if (s === '*') {
+            return '&#10005'; //'x'; //TODO
+        } else {
+            return '';
+        }
+    };
+
     function drawOurForm(puzzleData) {
         var data = (puzzleData && puzzleData.dataObj) ? puzzleData.dataObj : {};
         var row = [];
@@ -1487,7 +1501,7 @@ var KenKenGame = function () {
                 if (+results[i - 1][j - 1]) {
                     row.push('<span class="itemResult">' + results[i - 1][j - 1] + '<\/span>');
                     if (symbols[i - 1][j - 1] !== '0' && symbols[i - 1][j - 1] !== '1') {
-                        row.push('<span class="itemSymbol">' + symbols[i - 1][j - 1] + '<\/span>');
+                        row.push('<span class="itemSymbol">' + getOperationSymbol(symbols[i - 1][j - 1]) + '<\/span>');
                     }
                 }
 
