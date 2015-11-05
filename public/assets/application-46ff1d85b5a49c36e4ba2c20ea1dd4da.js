@@ -1063,6 +1063,7 @@ var KenKenGame = function () {
     function hidePopup(event) {
         $('#onPopup').hide();
     };
+
     // --- popup methods ---
 
     function showSolution() {
@@ -1613,7 +1614,7 @@ var KenKenGame = function () {
 
         // --- Congratulating BOTTOM panel ---
         rowB.push('<span>'+puzzleInfo+'<\/span>');
-        rowB.push('<button onclick="function(){kenken.game.solveAnother()}"><span>Solve another puzzle<\/span><\/button>');
+        rowB.push('<button onclick="kenken.game.solveAnother()"><span>Solve another puzzle<\/span><\/button>');
 
         bottomContainer.html(rowB.join(''));
 
