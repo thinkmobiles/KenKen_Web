@@ -497,6 +497,9 @@ th {
     color: #0000FF;
     font-weight: bold;
 }
+.active.puzzleItem  .itemNotes{
+    color: #4C4CB3;
+}
 .puzzleContainer4 .puzzleItem{
     width: 118px;
     height: 118px;
