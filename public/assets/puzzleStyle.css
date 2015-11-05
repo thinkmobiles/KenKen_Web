@@ -493,7 +493,10 @@ th {
 .withValue .itemNotes{
     display: none !important;
 }
-
+.puzzleItem  .itemNotes{
+    color: #0000FF;
+    font-weight: bold;
+}
 .puzzleContainer4 .puzzleItem{
     width: 118px;
     height: 118px;
