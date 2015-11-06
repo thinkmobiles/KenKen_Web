@@ -179,8 +179,9 @@ th {
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
-    width: 110px;
-    padding: 20px;
+    width: 150px;
+    padding: 15px 24px;
+    box-sizing: border-box;
     overflow: hidden;
     height: 175px;
 }
@@ -188,8 +189,8 @@ th {
     float: left;
     width: 28px;
     height: 28px;
-    padding-right: 13px;
-    padding-bottom: 12px;
+    padding-right: 7px;
+    padding-bottom: 5px;
     text-align: center;
     line-height: 28px;
     -webkit-transition: all 0.3s ease-out 0.1s;
@@ -207,10 +208,10 @@ th {
 #notesAll span,
 #notesDel span{
     display: inline-block;
-    border: 1px solid #000;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    border-radius: 10px;
+    border: 2px solid #000;
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    border-radius: 50px;
     text-align: center;
     font: bold 16px/24px Arial Black;
     background-color: #fff;
@@ -226,7 +227,6 @@ th {
 #notesDel span:hover{
     width: 28px;
     height: 28px;
-    border-radius: 13px;
     cursor: pointer;
     font: bold 19px/28px Arial Black;
 }
@@ -239,7 +239,7 @@ th {
     line-height: 28px;
 }
 #notesAll{
-    margin-right: 54px;
+    margin-right: 41px;
 }
 
 #notesContainer.singleState .notesItem,
@@ -467,7 +467,7 @@ th {
     display: table;
     width: 480px;
     height: 480px;
-    border: 4px solid #000;
+    border: 6px solid #000;
 }
 .puzzleRow{
     display: table-row;
@@ -555,7 +555,7 @@ th {
     font: 500 20px Arial Black;
     position: absolute;
     right: 30px;
-    top: 60%;
+    top: 36%;
 }
 
 /*.puzzleContainer4 .puzzleItem .itemResult,*/
@@ -637,16 +637,16 @@ th {
 
 .puzzleRow .bottomLineBorder {
     border-bottom: 1px solid #000000;
-    box-shadow: inset 0 -2px 0 #000000;
+    box-shadow: inset 0 -5px 0 #000000;
 }
 
 .puzzleRow .rightLineBorder {
     border-right: 1px solid #000000;
-    box-shadow: inset -2px 0 0 #000000;
+    box-shadow: inset -5px 0 0 #000000;
 }
 .puzzleRow .rightLineBorder.bottomLineBorder{
     border: 1px solid #000000;
-    box-shadow: inset -2px -2px 0 #000000;
+    box-shadow: inset -5px -5px 0 #000000;
 }
 
 #circle {
@@ -664,7 +664,7 @@ th {
     border-radius: 50%;
     background-color: #000;
     color: white;
-    box-shadow: 0 0 5px blue;
+    box-shadow: 0 0 4px 2px #2E4DAE;
     font: bold 18px/30px Arial Black;
     cursor: pointer;
     -webkit-transition: all 0.3s ease-out 0.1s;
@@ -834,7 +834,7 @@ th {
     text-transform: uppercase;
 }
 #choose-puzzle-box{
-    z-index: 1;
+    z-index: 20;
 }
 #circle{
     z-index: 10;
