@@ -168,17 +168,15 @@ th {
     float: left;
 }
 .mainContainer > div:first-child+div{
-    width: 475px;
+    width: 492px;
     float: left;
     margin-left: 30px;
 }
 
 #notesContainer{
-    background: #d7f4de;
     border: 2px solid #000;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
+    border-radius: 10px;
+    background-color: #D7F5DE;
     width: 150px;
     padding: 15px 24px;
     box-sizing: border-box;
@@ -272,23 +270,14 @@ th {
 .firstBtnBox button,
 .secondBtnBox button,
 .thirdBtnBox button{
-    -moz-border-radius: 6px;
-    -webkit-border-radius: 6px;
-    border-radius: 6px;
     display: inline-block;
     cursor: pointer;
-    color: #fff;
-    font: bold 11px Arial Black;
-    padding: 7px 10px 7px 10px;
-    text-decoration: none;
     width: 100%;
     border: none;
-    text-align: left;
     outline: none;
-    -webkit-transition: all 0.3s ease-out 0.1s;
-    -moz-transition: all 0.3s ease-out 0.1s;
-    -o-transition: all 0.3s ease-out 0.1s;
-    transition: all 0.3s ease-out 0.1s;
+    margin-top: 5px;
+    text-indent: -9999px;
+    height: 31px;
 }
 .firstBtnBox button span,
 .secondBtnBox button span,
@@ -299,20 +288,13 @@ th {
     background-repeat: no-repeat;
 }
 .firstBtnBox button{
-    -moz-box-shadow: inset 0px 3px 3px 0px #c0ebca;
-    -webkit-box-shadow: inset 0px 3px 3px 0px #c0ebca;
-    box-shadow: inset 0px 3px 3px 0px #c0ebca;
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #24b844), color-stop(1, #125d23));
-    background: -moz-linear-gradient(top, #24b844 5%, #125d23 100%);
-    background: -webkit-linear-gradient(top, #24b844 5%, #125d23 100%);
-    background: -o-linear-gradient(top, #24b844 5%, #125d23 100%);
-    background: -ms-linear-gradient(top, #24b844 5%, #125d23 100%);
-    background: linear-gradient(to bottom, #24b844 5%, #125d23 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#24b844', endColorstr='#125d23',GradientType=0);
-    background-color: #24b844;
-
+    background: url(../img/solve-another-button.png) no-repeat 100% 100%;
 }
-.firstBtnBox button:hover {
+.firstBtnBox button#btnResumeSaved{
+    background: url(../img/resume-saved-puzzle.png) no-repeat 100% 100%;
+    height: 40px;
+}
+/*.firstBtnBox button:hover {
     background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #125d23), color-stop(1, #24b844));
     background:-moz-linear-gradient(top, #125d23 5%, #24b844 100%);
     background:-webkit-linear-gradient(top, #125d23 5%, #24b844 100%);
@@ -321,62 +303,41 @@ th {
     background:linear-gradient(to bottom, #125d23 5%, #24b844 100%);
     filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#125d23', endColorstr='#24b844',GradientType=0);
     background-color:#125d23;
+}*/
+.secondBtnBox button#btnUndo {
+    background: url("../img/undo-button.png") no-repeat;
+    background-size: 100% 100%;
 }
-.secondBtnBox button{
-    -moz-box-shadow: inset 0px 3px 3px 0px #caf0f8;
-    -webkit-box-shadow: inset 0px 3px 3px 0px #caf0f8;
-    box-shadow: inset 0px 3px 3px 0px #caf0f8;
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #01b7de), color-stop(1, #0093b2));
-    background: -moz-linear-gradient(top, #01b7de 5%, #0093b2 100%);
-    background: -webkit-linear-gradient(top, #01b7de 5%, #0093b2 100%);
-    background: -o-linear-gradient(top, #01b7de 5%, #0093b2 100%);
-    background: -ms-linear-gradient(top, #01b7de 5%, #0093b2 100%);
-    background: linear-gradient(to bottom, #01b7de 5%, #0093b2 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#01b7de', endColorstr='#0093b2',GradientType=0);
-    background-color: #01b7de;
+.secondBtnBox button#btnRedo {
+    background: url("../img/redo-button.png") no-repeat;
+    background-size: 100% 100%;
+}
+.secondBtnBox button#btnReset {
+    background: url("../img/reset-button.png") no-repeat;
+    background-size: 100% 100%;
+}
 
+.thirdBtnBox button#btnReveal{
+    background: url("../img/reveal-button.png") no-repeat;
+    background-size: 100% 100%;
 }
-.secondBtnBox button:hover {
-    background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #0093b2), color-stop(1, #01b7de));
-    background:-moz-linear-gradient(top, #0093b2 5%, #01b7de 100%);
-    background:-webkit-linear-gradient(top, #0093b2 5%, #01b7de 100%);
-    background:-o-linear-gradient(top, #0093b2 5%, #01b7de 100%);
-    background:-ms-linear-gradient(top, #0093b2 5%, #01b7de 100%);
-    background:linear-gradient(to bottom, #0093b2 5%, #01b7de 100%);
-    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#0093b2', endColorstr='#01b7de',GradientType=0);
-    background-color:#0093b2;
+.thirdBtnBox button#btnCheck{
+    background: url("../img/check-button.png") no-repeat;
+    background-size: 100% 100%;
 }
-.thirdBtnBox button{
-    -moz-box-shadow: inset 0px 3px 3px 0px #b6d3f2;
-    -webkit-box-shadow: inset 0px 3px 3px 0px #b6d3f2;
-    box-shadow: inset 0px 3px 3px 0px #b6d3f2;
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #0065d1), color-stop(1, #0051a8));
-    background: -moz-linear-gradient(top, #0065d1 5%, #0051a8 100%);
-    background: -webkit-linear-gradient(top, #0065d1 5%, #0051a8 100%);
-    background: -o-linear-gradient(top, #0065d1 5%, #0051a8 100%);
-    background: -ms-linear-gradient(top, #0065d1 5%, #0051a8 100%);
-    background: linear-gradient(to bottom, #0065d1 5%, #0051a8 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#0065d1', endColorstr='#0051a8',GradientType=0);
-    background-color: #0065d1;
+.thirdBtnBox button#btnSolution{
+    background: url("../img/solution-button.png") no-repeat;
+    background-size: 100% 100%;
+}
 
-}
-.thirdBtnBox button:hover {
-    background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #0051a8), color-stop(1, #0065d1));
-    background:-moz-linear-gradient(top, #0051a8 5%, #0065d1 100%);
-    background:-webkit-linear-gradient(top, #0051a8 5%, #0065d1 100%);
-    background:-o-linear-gradient(top, #0051a8 5%, #0065d1 100%);
-    background:-ms-linear-gradient(top, #0051a8 5%, #0065d1 100%);
-    background:linear-gradient(to bottom, #0051a8 5%, #0065d1 100%);
-    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#0051a8', endColorstr='#0065d1',GradientType=0);
-    background-color:#0051a8;
-}
-#btnSolve span{
+
+/*#btnSolve span{
     background-image: url('../img/icn_solve-another.png');
-}
-#btnResumeSaved span{
+}*/
+/*#btnResumeSaved span{
     background-image: url('../img/icn_resume-saved.png');
-}
-#btnUndo span{
+}*/
+/*#btnUndo span{
     background-image: url('../img/icn_undo.png');
 }
 #btnRedo span{
@@ -393,7 +354,7 @@ th {
 }
 #btnSolution span{
     background-image: url('../img/icn_solution.png');
-}
+}*/
 
 #topInfoBox{
     overflow: hidden;
@@ -407,6 +368,7 @@ th {
 .timerBox{
     float: right;
     margin-right: 100px;
+    margin-bottom: 2px;
 }
 #btnOffTimer{
     border: 1px solid #000;
@@ -430,6 +392,7 @@ th {
 }
 
 #bottomInfoBox{
+    margin-top: 5px;
     /*overflow: hidden;*/
 }
 .autoNotesBox{
@@ -442,6 +405,9 @@ th {
 .autoNotesBox > button{
     border: 1px solid #000;
     background: #fff;
+}
+.autoNotesBox button:nth-child(2){
+    border-right: none;
 }
 .autoNotesBox > button:hover,
 .autoNotesBox > button.active{
@@ -768,7 +734,7 @@ th {
     left: 22%;
 }
 .choose-box h3 a{
-    padding: 5px 22px 10px 10px;
+    padding: 9px 22px 10px 10px;
 }
 
 .mainContainer.winnerState > div:first-child+div{
@@ -864,6 +830,7 @@ th {
 }
 #choose-puzzle-box{
     z-index: 20;
+    height: 34px;
 }
 #circle{
     z-index: 10;
