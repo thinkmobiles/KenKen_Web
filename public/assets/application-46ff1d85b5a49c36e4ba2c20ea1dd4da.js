@@ -306,6 +306,8 @@ var Steps = function (puzzleData) {
 // <editor-fold desc="Circle">
 function Circle(puzzleData) {
 
+    this.isHidden = false;
+
     this.changeCirclePosition = function () {
         var circleDiv = $('#circle');
         var circlePos = this.findCirclePosition(60);
@@ -1378,6 +1380,7 @@ var KenKenGame = function () {
 
         /* --- Click to Resume --- */
         $('.clickToResume').click(onClickToResume);
+
     };
 
     function getOperationSymbol(s) {
