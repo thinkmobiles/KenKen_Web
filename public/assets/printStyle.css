@@ -7,5 +7,6 @@
 .row.bottom {display: none;}
 .footer_text {display: none;}
 #leftPanel {display: none;}
-#topInfoBox {display: none;}
-#bottomInfoBox {display: none;}
+#topInfoBox>button,#topInfoBox>div {display: none;}
+#bottomInfoBox{display: none;}
+#puzzleContainer{float: left;width: 100%;}
