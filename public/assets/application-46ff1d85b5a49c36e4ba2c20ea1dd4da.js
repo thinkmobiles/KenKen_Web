@@ -1205,52 +1205,54 @@ var KenKenGame = function () {
 
             _value = value - 1;
 
-            while (i > 0) {
+            if (currentState.autoNotes) { //remove notes if AutoNotes turned ON
+                while (i > 0) {
+                    _x = x * size + i - 1;
 
-                _x = x * size + i - 1;
-                _y = (i - 1) * size + valueY - 1;
+                    _y = (i - 1) * size + valueY - 1;
 
                     if (currentState.notes[_x][_value] && i !== valueY) {
 
                         if (symbolArray[x][i-1] !== '1') {
+                                oldNotesValue = currentState.notes[_x][_value];
 
-                            oldNotesValue = currentState.notes[_x][_value];
                             newNotesValue = !oldNotesValue;
+                                historyDepends.push({
+                                    type: 'notes',
+                                    x: _x,
+                                    y: _value,
+                                    oldValue: oldNotesValue,
+                                    newValue: newNotesValue
+                                });
 
-                            historyDepends.push({
-                                type: 'notes',
-                                x: _x,
-                                y: _value,
-                                oldValue: oldNotesValue,
-                                newValue: newNotesValue
-                            });
 
                             currentState.notes[_x][_value] = newNotesValue;
+
                             puzzleContainer.find('#p' + valueX + i).find('.itemNotes').text(booleanArrayToSting(currentState.notes[_x]));
                         }
-                    }
-
-                    if (currentState.notes[_y][_value] && i !== valueX) {
-
-                        if (symbolArray[i-1][y] !== '1') {
-
-                            oldNotesValue = currentState.notes[_y][_value];
-                            newNotesValue = !oldNotesValue;
-
-                            historyDepends.push({
-                                type: 'notes',
-                                x: _y,
-                                y: _value,
-                                oldValue: oldNotesValue,
-                                newValue: newNotesValue
-                            });
-
-                            currentState.notes[_y][_value] = newNotesValue;
-                            puzzleContainer.find('#p' + i + valueY).find('.itemNotes').text(booleanArrayToSting(currentState.notes[_y]));
                         }
-                    }
 
-                i -= 1;
+                        if (currentState.notes[_y][_value] && i !== valueX) {
+
+                            if (symbolArray[i-1][y] !== '1') {
+
+                                oldNotesValue = currentState.notes[_y][_value];
+                                newNotesValue = !oldNotesValue;
+
+                                historyDepends.push({
+                                    type: 'notes',
+                                    x: _y,
+                                    y: _value,
+                                    oldValue: oldNotesValue,
+                                    newValue: newNotesValue
+                                });
+
+                                currentState.notes[_y][_value] = newNotesValue;
+                                puzzleContainer.find('#p' + i + valueY).find('.itemNotes').text(booleanArrayToSting(currentState.notes[_y]));
+                            }
+                        }
+                    i -= 1;
+                }
             }
 
             self.steps.saveStep({
