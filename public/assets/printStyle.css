@@ -9,4 +9,4 @@
 #leftPanel {display: none;}
 #topInfoBox>button,#topInfoBox>div {display: none;}
 #bottomInfoBox{display: none;}
-#puzzleContainer{float: left;width: 100%;}
+#puzzleContainer{width: 480px}

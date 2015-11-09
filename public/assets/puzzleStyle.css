@@ -375,6 +375,7 @@ th {
     background: #fff;
     margin-left: 5px;
     width: 48px;
+    font-weight: bold;
 }
 #btnPause{
     float: right;
@@ -386,6 +387,7 @@ th {
     display: block;
     padding-left: 25px;
     width: 70px;
+    font-weight: bold;
 }
 #btnPause:hover span{
     background: no-repeat left center url('../img/icn_play.png');
@@ -508,7 +510,7 @@ th {
     font: 700 55px Arial Black;
     position: absolute;
     left: 50%;
-    top: 50%;
+    top: 40%;
     margin-top: -30px;
     margin-left: -15px;
 }
@@ -702,6 +704,7 @@ th {
     -moz-box-shadow:  0 0 10px #000;
     box-shadow:  0 0 10px #000;
     text-align: center;
+    z-index: 20;
 }
 #onPopup .closeButton{
     position: absolute;
