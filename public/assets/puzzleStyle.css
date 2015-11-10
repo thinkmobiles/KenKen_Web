@@ -529,6 +529,11 @@ th {
 .itemSymbol{
     font: 400 28px/40px Arial Black Black;
 }
+.itemSymbol{
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+}
 .itemNotes{
     display: block;
     font: 500 20px Arial Black;
@@ -871,4 +876,16 @@ th {
 }
 .printLink{
     display: none;
+}
+.add{
+    background: url(../img/add.png) no-repeat center;
+}
+.subscr{
+    background: url(../img/subscr.PNG) no-repeat center;
+}
+.division{
+    background: url(../img/division.png) no-repeat center;
+}
+.mult{
+    background: url(../img/mult.png) no-repeat center;
 }

@@ -313,7 +313,18 @@ html {
 #puzzle_id{
     color: #000;
 }
-
+.add{
+    background: url(../img/add.png) no-repeat center;
+}
+.subscr{
+    background: url(../img/subscr.PNG) no-repeat center;
+}
+.division{
+    background: url(../img/division.png) no-repeat center;
+}
+.mult{
+    background: url(../img/mult.png) no-repeat center;
+}
 #header, #circle {display: none!important;}
 #myModal {display: none;}
 #container>div:not(#content){display: none;}
