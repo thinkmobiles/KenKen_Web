@@ -1511,7 +1511,7 @@ var KenKenGame = function () {
                 if (+results[i - 1][j - 1]) {
                     row.push('<span class="itemResult">' + results[i - 1][j - 1] + '<\/span>');
                     if (symbols[i - 1][j - 1] !== '0' && symbols[i - 1][j - 1] !== '1') {
-                        row.push('<span class="itemSymbol "' + getOperationSymbol(symbols[i - 1][j - 1]) + ' ><\/span>');
+                        row.push('<span class="itemSymbol ' + getOperationSymbol(symbols[i - 1][j - 1]) + '"><\/span>');
                     }
                 }
 
