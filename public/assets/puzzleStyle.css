@@ -869,3 +869,6 @@ th {
 .clickToResume span:last-child{
     color: #f51627;
 }
+.printLink{
+    display: none;
+}

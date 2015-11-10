@@ -9,4 +9,6 @@
 #leftPanel {display: none;}
 #topInfoBox>button,#topInfoBox>div {display: none;}
 #bottomInfoBox{display: none;}
-#puzzleContainer{margin: 0 auto;}
+#puzzleContainer{margin: 0 auto;display: table;}
+.puzzleRow {display: table-row;}
+.puzzleItem {display: table-cell;}
