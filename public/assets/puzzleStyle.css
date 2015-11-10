@@ -434,10 +434,10 @@ th {
     color: #000;
 }
 #btnSave > span{
-    background: no-repeat right center url('../img/icn_save.png');
+    background: no-repeat right center url('../img/save.png');
 }
 #btnPrint > span{
-    background: no-repeat right center url('../img/icn_print.png');
+    background: no-repeat right center url('../img/print.png');
     padding-right: 45px;
 }
 
