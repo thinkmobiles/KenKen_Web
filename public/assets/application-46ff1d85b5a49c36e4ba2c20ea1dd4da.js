@@ -1387,13 +1387,13 @@ var KenKenGame = function () {
 
     function getOperationSymbol(s) {
         if (s === '+') {
-            return '+';
+            return 'add'; //'+';
         } else if (s === '-') {
-            return '-';
+            return 'subscr'; //'-';
         } else if (s === '/') {
-            return '&divide';
+            return 'division'; //'&divide';
         } else if (s === '*') {
-            return '&#10005'; //'x'; //TODO
+            return 'mult'; //'&#10005'; //'x'; //TODO
         } else {
             return '';
         }
@@ -1429,8 +1429,8 @@ var KenKenGame = function () {
         for (i = 1; i <= size; i += 1) {
             row.push('<div class="notesItem" data-id="' + i + '"><span>' + i + '<\/span><\/div>');
         }
-        row.push('<div id="notesAll"><span><img src="http://projects.thinkmobiles.com:8888/img/icn_check.png"><\/span><\/div>');
-        row.push('<div id="notesDel"><span><img src="http://projects.thinkmobiles.com:8888/img/ic_close_.png"><\/span><\/div>');
+        row.push('<div id="notesAll"><span><img src="img/icn_check.png"><\/span><\/div>');
+        row.push('<div id="notesDel"><span><img src="img/ic_close_.png"><\/span><\/div>');
 
         row.push('<\/div>');
 
@@ -1511,7 +1511,7 @@ var KenKenGame = function () {
                 if (+results[i - 1][j - 1]) {
                     row.push('<span class="itemResult">' + results[i - 1][j - 1] + '<\/span>');
                     if (symbols[i - 1][j - 1] !== '0' && symbols[i - 1][j - 1] !== '1') {
-                        row.push('<span class="itemSymbol">' + getOperationSymbol(symbols[i - 1][j - 1]) + '<\/span>');
+                        row.push('<span class="itemSymbol "' + getOperationSymbol(symbols[i - 1][j - 1]) + ' ><\/span>');
                     }
                 }
 
