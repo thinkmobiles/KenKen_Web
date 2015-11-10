@@ -396,9 +396,8 @@ th {
     background: no-repeat left center url('../img/icn_play.png');
 }
 
-#bottomInfoBox{
+.autoNotesBox{
     margin-top: 5px;
-    /*overflow: hidden;*/
 }
 .autoNotesBox{
     float: left;
@@ -410,6 +409,7 @@ th {
 .autoNotesBox > button{
     border: 1px solid #000;
     background: #fff;
+    font-weight: bold;
 }
 .autoNotesBox button:nth-child(2){
     border-right: none;
@@ -424,16 +424,21 @@ th {
 .savePrintBox > button{
     border: 1px solid #000;
     background: #fff;
+    height: 35px;
+    line-height: 32px;
 }
 .savePrintBox > button > span{
     display: block;
-    padding-right: 25px;
+    padding-right: 30px;
+    font-weight: bold;
+    color: #000;
 }
 #btnSave > span{
     background: no-repeat right center url('../img/icn_save.png');
 }
 #btnPrint > span{
     background: no-repeat right center url('../img/icn_print.png');
+    padding-right: 45px;
 }
 
 
