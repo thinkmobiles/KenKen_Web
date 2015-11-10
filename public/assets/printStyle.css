@@ -1,4 +1,320 @@
-#header {display: none;}
+html {
+    font-family: Arial Black Black;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+#puzzleContainer {
+    display: table;
+    width: 480px;
+    height: 480px;
+    border: 6px solid #000;
+}
+.puzzleRow{
+    display: table-row;
+}
+.puzzleItem {
+    display: table-cell;
+    position: relative;
+    background-color: #ffffff;
+    color: #000;
+    float: left;
+    border: solid 1px #000;
+    cursor: pointer;
+    width: 158px;
+    height: 158px;
+}
+.pulseGreen{
+    background-color: #b3ffb3 !important;
+}
+.pulseRed{
+    background-color: #ffb3b3 !important;
+}
+
+.withValue .itemNotes{
+    display: none !important;
+}
+.puzzleItem  .itemNotes{
+    color: #0000FF;
+    font-weight: bold;
+}
+.active.puzzleItem  .itemNotes{
+    color: #4C4CB3;
+}
+.puzzleContainer4 .puzzleItem{
+    width: 118px;
+    height: 118px;
+}
+.puzzleContainer5 .puzzleItem{
+    width: 94px;
+    height: 94px;
+}
+.puzzleContainer6 .puzzleItem{
+    width: 78px;
+    height: 78px;
+}
+.puzzleContainer7 .puzzleItem{
+    width: 66.5px;
+    height: 66.5px;
+}
+.puzzleContainer8 .puzzleItem{
+    width: 58px;
+    height: 58px;
+}
+.puzzleContainer9 .puzzleItem{
+    width: 51.3px;
+    height: 51.5px;
+}
+
+
+.puzzleItem:hover{
+    background-color: #b3b3ff;
+}
+
+.puzzleItem.active {
+    background-color: #ffffb3;
+}
+
+.itemValue {
+    display: block;
+    font: 700 55px Arial Black;
+    position: absolute;
+    left: 50%;
+    top: 40%;
+    margin-top: -30px;
+    margin-left: -15px;
+}
+.itemResult{
+    margin-left: 20px;
+}
+.itemResult,
+.itemSymbol{
+    font: 400 28px/40px Arial Black Black;
+}
+.itemNotes{
+    display: block;
+    font: 500 20px Arial Black;
+    position: absolute;
+    right: 30px;
+    top: 36%;
+}
+
+/*.puzzleContainer4 .puzzleItem .itemResult,*/
+/*.puzzleContainer4 .puzzleItem .itemSymbol{*/
+/*font: 900 28px/40px Arial Black;*/
+/*}*/
+.puzzleContainer5 .puzzleItem .itemResult,
+.puzzleContainer5 .puzzleItem .itemSymbol{
+    font: 900 24px/35px Arial Black;
+}
+.puzzleContainer6 .puzzleItem .itemResult,
+.puzzleContainer6 .puzzleItem .itemSymbol{
+    font: 900 22px/30px Arial Black;
+}
+.puzzleContainer7 .puzzleItem .itemResult,
+.puzzleContainer7 .puzzleItem .itemSymbol{
+    font: 900 20px/25px Arial Black;
+}
+.puzzleContainer8 .puzzleItem .itemResult,
+.puzzleContainer8 .puzzleItem .itemSymbol{
+    font: 900 17px/23px Arial Black;
+}
+.puzzleContainer9 .puzzleItem .itemResult,
+.puzzleContainer9 .puzzleItem .itemSymbol{
+    font: 900 15px/20px Arial Black;
+}
+
+.puzzleContainer4 .puzzleItem .itemResult{
+    margin-left: 15px;
+}
+.puzzleContainer5 .puzzleItem .itemResult{
+    margin-left: 10px;
+}
+.puzzleContainer6 .puzzleItem .itemResult,
+.puzzleContainer7 .puzzleItem .itemResult,
+.puzzleContainer8 .puzzleItem .itemResult,
+.puzzleContainer9 .puzzleItem .itemResult{
+    margin-left: 5px;
+}
+
+.puzzleContainer5 .puzzleItem .itemNotes{
+    font-size: 17px;
+    right: 10px;
+}
+.puzzleContainer6 .puzzleItem .itemNotes{
+    font-size: 13px;
+    right: 10px;
+}
+.puzzleContainer7 .puzzleItem .itemNotes,
+.puzzleContainer8 .puzzleItem .itemNotes,
+.puzzleContainer9 .puzzleItem .itemNotes{
+    font-size: 14px;
+    right: 5px;
+    top: 40%;
+    text-align: right;
+}
+.puzzleContainer9 .puzzleItem .itemNotes{
+    font-size: 11px;
+}
+
+.puzzleContainer6 .puzzleItem .itemValue,
+.puzzleContainer7 .puzzleItem .itemValue{
+    font-size: 35px;
+    margin-top: -19px;
+    margin-left: -11px;
+}
+.puzzleContainer8 .puzzleItem .itemValue,
+.puzzleContainer9 .puzzleItem .itemValue{
+    font-size: 27px;
+    margin-top: -16px;
+    margin-left: -7px;
+}
+.puzzleContainer9 .puzzleItem .itemValue{
+    margin-top: -13px;
+    margin-left: -10px;
+}
+
+
+.puzzleRow .bottomLineBorder {
+    border-bottom: 1px solid #000000;
+    box-shadow: inset 0 -5px 0 #000000;
+}
+
+.puzzleRow .rightLineBorder {
+    border-right: 1px solid #000000;
+    box-shadow: inset -5px 0 0 #000000;
+}
+.puzzleRow .rightLineBorder.bottomLineBorder{
+    border: 1px solid #000000;
+    box-shadow: inset -5px -5px 0 #000000;
+}
+/*-------*/
+.puzzleContainer6 .bottomLineBorder,
+.puzzleContainer7 .bottomLineBorder,
+.puzzleContainer8 .bottomLineBorder,
+.puzzleContainer9 .bottomLineBorder{
+    box-shadow: inset 0 -2px 0 #000000;
+}
+.puzzleContainer6 .rightLineBorder.bottomLineBorder,
+.puzzleContainer7 .rightLineBorder.bottomLineBorder,
+.puzzleContainer8 .rightLineBorder.bottomLineBorder,
+.puzzleContainer9 .rightLineBorder.bottomLineBorder{
+    box-shadow: inset -2px -2px 0 #000000;
+}
+.puzzleContainer6 .rightLineBorder,
+.puzzleContainer7 .rightLineBorder,
+.puzzleContainer8 .rightLineBorder,
+.puzzleContainer9 .rightLineBorder{
+    box-shadow: inset -2px 0 0 #000000;
+}
+#puzzleContainer.puzzleContainer6,
+#puzzleContainer.puzzleContainer7,
+#puzzleContainer.puzzleContainer8,
+#puzzleContainer.puzzleContainer9 {
+    border-width: 2px;
+}
+
+.ltlCrcl:hover img{
+    margin-top: 5px;
+}
+.ltlCrcl[data-id="cX"],
+.ltlCrcl[data-id="cC"]{
+    background-color: #fff;
+}
+
+
+
+#onPopup .closeButton{
+    position: absolute;
+    right: -12px;
+    top: -12px;
+    width: 24px;
+    height: 24px;
+    font: 600 20px/16px "Comic Sans MS", cursive, sans-serif;
+    border-radius: 50%;
+    background: #2141a9;
+    color: #ccc;
+    cursor: pointer;
+}
+#onPopup > span{
+    display: block;
+    font: 400 27px/30px Arial Black;
+    margin-top: 20px;
+    color: #2141a9;
+}
+#onPopup  button{
+    margin-top: 20px;
+    background: #2142a9;
+    padding: 5px 10px;
+    border: none;
+    color: #fff;
+}
+
+.game #content .message{
+    top: 52px;
+    left: 22%;
+}
+.choose-box h3 a{
+    padding: 9px 22px 10px 10px;
+}
+
+.mainContainer.winnerState > div:first-child+div{
+    width: 430px;
+    float: right;
+    margin-left: 30px;
+}
+.mainContainer.winnerState #puzzleContainer{
+    width: 420px;
+    height: 420px;
+}
+.mainContainer.winnerState .puzzleItem{
+    width: 138px;
+    height: 138px;
+    background: #fff !important;
+}
+.mainContainer.winnerState .puzzleContainer4 .puzzleItem{
+    width: 103px;
+    height: 103px;
+}
+.mainContainer.winnerState .puzzleContainer5 .puzzleItem{
+    width: 82px;
+    height: 82px;
+}
+.mainContainer.winnerState .puzzleContainer6 .puzzleItem{
+    width: 68px;
+    height: 68px;
+}
+.mainContainer.winnerState .puzzleContainer7 .puzzleItem{
+    width: 58px;
+    height: 58px;
+}
+.mainContainer.winnerState .puzzleContainer8 .puzzleItem{
+    width: 50.5px;
+    height: 50.5px;
+}
+.mainContainer.winnerState .puzzleContainer9 .puzzleItem{
+    width: 44.6px;
+    height: 44.6px;
+}
+
+#kengratulateBox{
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+
+#choose-puzzle-box{
+    z-index: 20;
+    height: 34px;
+}
+#circle{
+    z-index: 10;
+}
+
+#puzzle_id{
+    color: #000;
+}
+
+#header, #circle {display: none!important;}
 #myModal {display: none;}
 #container>div:not(#content){display: none;}
 #content>div:not(.row) {display: none;}
@@ -9,6 +325,11 @@
 #leftPanel {display: none;}
 #topInfoBox>button,#topInfoBox>div {display: none;}
 #bottomInfoBox{display: none;}
-#puzzleContainer{margin: 0 auto;display: table;}
-.puzzleRow {display: table-row;}
-.puzzleItem {display: table-cell;}
+#puzzleContainer{margin: 20px auto;display: table;}
+.printLink{
+    display: block;
+    color: #0606FD;
+    font-weight: bold;
+    text-decoration: underline;
+    font-size: 18px;
+}
