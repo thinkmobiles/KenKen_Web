@@ -166,6 +166,7 @@ th {
 .mainContainer > div:first-child{
     width: 150px;
     float: left;
+    margin-top: 25px;
 }
 .mainContainer > div:first-child+div{
     width: 492px;
@@ -364,6 +365,8 @@ th {
 }
 #topInfoBox span#puzzleInfo{
     font: normal 14px/12px Arial Black Black;
+    position: relative;
+    top: 10px;
 }
 #topInfoBox span#puzzleTimer{
     font: bold 13px/12px Arial Black Black;
@@ -371,7 +374,8 @@ th {
 .timerBox{
     float: right;
     margin-right: 100px;
-    margin-bottom: 2px;
+   position: relative;
+    top: 8px;
 }
 #btnOffTimer{
     border: 1px solid #000;
@@ -384,16 +388,22 @@ th {
     float: right;
     border: 1px solid #000;
     background: #fff;
+    position: relative;
+    top: 1px;
 }
 #btnPause span{
     background: no-repeat left center url('../img/icn_pause.png');
+    background-position: -5px;
     display: block;
     padding-left: 25px;
     width: 70px;
     font-weight: bold;
+    height: 30px;
+    line-height: 30px;
 }
 #btnPause:hover span{
     background: no-repeat left center url('../img/icn_play.png');
+    background-position: -5px;
 }
 
 .autoNotesBox{
