@@ -290,11 +290,11 @@ th {
     background-repeat: no-repeat;
 }
 .firstBtnBox button{
-    background: url(../img/solve-another-button.png) no-repeat 100% 100%;
+    background: url(../assets/solve-another-button.png) no-repeat 100% 100%;
     background-size: 100% 100%;
 }
 .firstBtnBox button#btnResumeSaved{
-    background: url(../img/resume-saved-puzzle.png) no-repeat 100% 100%;
+    background: url(../assets/resume-saved-puzzle.png) no-repeat 100% 100%;
     background-size: 100% 100%;
     height: 40px;
 }
@@ -309,15 +309,15 @@ th {
     background-color:#125d23;
 }*/
 .secondBtnBox button#btnUndo {
-    background: url("../img/undo-button.png") no-repeat;
+    background: url("../assets/undo-button.png") no-repeat;
     background-size: 100% 100%;
 }
 .secondBtnBox button#btnRedo {
-    background: url("../img/redo-button.png") no-repeat;
+    background: url("../assets/redo-button.png") no-repeat;
     background-size: 100% 100%;
 }
 .secondBtnBox button#btnReset {
-    background: url("../img/reset-button.png") no-repeat;
+    background: url("../assets/reset-button.png") no-repeat;
     background-size: 100% 100%;
 }
 
@@ -326,11 +326,11 @@ th {
     background-size: 100% 100%;
 }
 .thirdBtnBox button#btnCheck{
-    background: url("../img/check-button.png") no-repeat;
+    background: url("../assets/check-button.png") no-repeat;
     background-size: 100% 100%;
 }
 .thirdBtnBox button#btnSolution{
-    background: url("../img/solution-button.png") no-repeat;
+    background: url("../assets/solution-button.png") no-repeat;
     background-size: 100% 100%;
 }
 
@@ -392,7 +392,7 @@ th {
     top: 1px;
 }
 #btnPause span{
-    background: no-repeat left center url('../img/icn_pause.png');
+    background: no-repeat left center url('../assets/icn_pause.png');
     background-position: -5px;
     display: block;
     padding-left: 25px;
@@ -402,7 +402,7 @@ th {
     line-height: 30px;
 }
 #btnPause:hover span{
-    background: no-repeat left center url('../img/icn_play.png');
+    background: no-repeat left center url('../assets/icn_play.png');
     background-position: -5px;
 }
 
@@ -444,10 +444,10 @@ th {
     color: #000;
 }
 #btnSave > span{
-    background: no-repeat right center url('../img/save.png');
+    background: no-repeat right center url('../assets/save.png');
 }
 #btnPrint > span{
-    background: no-repeat right center url('../img/print.png');
+    background: no-repeat right center url('../assets/print.png');
     padding-right: 45px;
 }
 
@@ -850,7 +850,7 @@ th {
 .mainContainer.winnerState #bottomInfoBox button span{
     color: #fff;
     font: 700 22px/50px Arial Black;
-    background: url("../img/next-ico.png") no-repeat right center;
+    background: url("../assets/next-ico.png") no-repeat right center;
     padding-right: 50px;
     text-transform: uppercase;
 }
@@ -888,14 +888,14 @@ th {
     display: none;
 }
 .add{
-    background: url(../img/add.png) no-repeat center;
+    background: url(../assets/add.png) no-repeat center;
 }
 .subscr{
-    background: url(../img/subscr.PNG) no-repeat center;
+    background: url(../assets/subscr.PNG) no-repeat center;
 }
 .division{
-    background: url(../img/division.png) no-repeat center;
+    background: url(../assets/division.png) no-repeat center;
 }
 .mult{
-    background: url(../img/mult.png) no-repeat center;
+    background: url(../assets/mult.png) no-repeat center;
 }
