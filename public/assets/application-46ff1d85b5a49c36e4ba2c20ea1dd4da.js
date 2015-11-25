@@ -1486,9 +1486,13 @@ var KenKenGame = function () {
 
         // --- main container ---
         row.push('<div id="puzzleContainer" class="puzzleContainer' + size + '">');
+        row.push('<table>');
+        row.push('<thead></thead>');
+        row.push('<tbody>');
 
         for (i = 1; i <= size; i += 1) {
-            row.push('<div class="puzzleRow">');
+            //row.push('<div class="puzzleRow">');
+            row.push('<tr class="puzzleRow">');
             for (j = 1; j <= size; j += 1) {
 
                 lineClass = 'puzzleItem';
@@ -1517,7 +1521,8 @@ var KenKenGame = function () {
                 }
 
                 //puzzle item:
-                row.push('<div id="p' + i + j + '" class="' + lineClass + '">');
+                //row.push('<div id="p' + i + j + '" class="' + lineClass + '">');
+                row.push('<td id="p' + i + j + '" class="' + lineClass + '">');
 
                 //draw symbol and expected result:
                 if (+results[i - 1][j - 1]) {
@@ -1542,10 +1547,15 @@ var KenKenGame = function () {
 
                 row.push('<\/span>');
 
-                row.push('<\/div>');
+                //row.push('<\/div>');
+                row.push('<\/td>');
             }
-            row.push('<\/div>');
+            //row.push('<\/div>');
+            row.push('<\/tr>');
         }
+
+        row.push('</tbody>');
+        row.push('</table>');
 
         row.push('<\/div>');
 

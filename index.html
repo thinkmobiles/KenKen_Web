@@ -97,6 +97,37 @@
 */
             var puzzle_data = jQuery.parseJSON(base64_decode('eyJpZCI6MTQ1MTkxLCJkYXRhIjoiQVxyXG4zIDUgNCAyIDEgXHJcbjQgMyAxIDUgMiBcclxuMSAyIDMgNCA1IFxyXG41IDQgMiAxIDMgXHJcbjIgMSA1IDMgNCBcclxuVFxyXG4gIDIgICAwICAgMiAgIDAgICAxXHJcbiAyNCAgIDAgICA4ICAgNSAgIDNcclxuIDEwICAgMCAgIDAgICAwICAgMFxyXG4gIDAgICA0ICAgNiAgIDAgICAxXHJcbiAgMCAgIDQgICAwICAgMCAgIDBcclxuU1xyXG4tIDAgLyAwIDFcclxuKiAwICsgMSAtXHJcbiogMCAwIDAgMFxyXG4wIDEgKyAwIC1cclxuMCAtIDAgMCAwXHJcblZcclxuMCAxIDAgMVxyXG4wIDEgMSAxXHJcbjEgMSAwIDFcclxuMSAxIDAgMVxyXG4xIDAgMSAxXHJcbkhcclxuMSAxIDAgMFxyXG4xIDAgMSAxXHJcbjEgMCAxIDFcclxuMSAxIDEgMFxyXG4xIDAgMSAwXHJcblxyXG4iLCJzaXplIjo1LCJsZXZlbCI6ImVhc3kiLCJvcGVyYXRpb25zIjoiYWRtcyIsIm5vIjoxNDUxOTEsImd1ZXN0IjpmYWxzZSwiZGFpbHkiOnRydWUsInN0YXRlIjoie1wibm90ZXNcIjpbW2ZhbHNlLCBmYWxzZSwgZmFsc2UsIGZhbHNlLCBmYWxzZV0sIFtmYWxzZSwgZmFsc2UsIGZhbHNlLCBmYWxzZSwgZmFsc2VdLCBbZmFsc2UsIGZhbHNlLCBmYWxzZSwgZmFsc2UsIGZhbHNlXSwgW2ZhbHNlLCBmYWxzZSwgZmFsc2UsIGZhbHNlLCBmYWxzZV0sIFt0cnVlLCBmYWxzZSwgZmFsc2UsIGZhbHNlLCBmYWxzZV0sIFtmYWxzZSwgZmFsc2UsIGZhbHNlLCBmYWxzZSwgZmFsc2VdLCBbZmFsc2UsIGZhbHNlLCBmYWxzZSwgZmFsc2UsIGZhbHNlXSwgW2ZhbHNlLCBmYWxzZSwgZmFsc2UsIGZhbHNlLCBmYWxzZV0sIFtmYWxzZSwgZmFsc2UsIGZhbHNlLCBmYWxzZSwgdHJ1ZV0sIFtmYWxzZSwgZmFsc2UsIGZhbHNlLCBmYWxzZSwgZmFsc2VdLCBbZmFsc2UsIGZhbHNlLCBmYWxzZSwgZmFsc2UsIGZhbHNlXSwgW2ZhbHNlLCBmYWxzZSwgZmFsc2UsIGZhbHNlLCBmYWxzZV0sIFtmYWxzZSwgZmFsc2UsIGZhbHNlLCBmYWxzZSwgZmFsc2VdLCBbZmFsc2UsIGZhbHNlLCBmYWxzZSwgZmFsc2UsIGZhbHNlXSwgW2ZhbHNlLCBmYWxzZSwgZmFsc2UsIGZhbHNlLCBmYWxzZV0sIFtmYWxzZSwgZmFsc2UsIGZhbHNlLCBmYWxzZSwgZmFsc2VdLCBbZmFsc2UsIGZhbHNlLCBmYWxzZSwgdHJ1ZSwgZmFsc2VdLCBbZmFsc2UsIGZhbHNlLCBmYWxzZSwgZmFsc2UsIGZhbHNlXSwgW2ZhbHNlLCBmYWxzZSwgZmFsc2UsIGZhbHNlLCBmYWxzZV0sIFtmYWxzZSwgZmFsc2UsIGZhbHNlLCBmYWxzZSwgZmFsc2VdLCBbZmFsc2UsIGZhbHNlLCBmYWxzZSwgZmFsc2UsIGZhbHNlXSwgW2ZhbHNlLCBmYWxzZSwgZmFsc2UsIGZhbHNlLCBmYWxzZV0sIFtmYWxzZSwgZmFsc2UsIGZhbHNlLCBmYWxzZSwgZmFsc2VdLCBbZmFsc2UsIGZhbHNlLCBmYWxzZSwgZmFsc2UsIGZhbHNlXSwgW2ZhbHNlLCBmYWxzZSwgZmFsc2UsIGZhbHNlLCBmYWxzZV1dLCBcInZhbHVlc1wiOlwiMCwwLDAsMCwwLDAsMCwwLDAsMywwLDAsMCw1LDQsMCwwLDAsMCwwLDAsMCwwLDAsMFwifSIsInVfbGV2ZWwiOiJCIn0='));
 
+            /*
+             {
+             "id":145191,
+             "data":"A\r\n3 5 4 2 1 \r\n4 3 1 5 2 \r\n1 2 3 4 5 \r\n5 4 2 1 3 \r\n2 1 5 3 4 \r\nT\r\n  2   0   2   0   1\r\n 24   0   8   5   3\r\n 10   0   0   0   0\r\n  0   4   6   0   1\r\n  0   4   0   0   0\r\nS\r\n- 0 / 0 1\r\n* 0 + 1 -\r\n* 0 0 0 0\r\n0 1 + 0 -\r\n0 - 0 0 0\r\nV\r\n0 1 0 1\r\n0 1 1 1\r\n1 1 0 1\r\n1 1 0 1\r\n1 0 1 1\r\nH\r\n1 1 0 0\r\n1 0 1 1\r\n1 0 1 1\r\n1 1 1 0\r\n1 0 1 0\r\n\r\n",
+             "size":5,
+             "level":"easy",
+             "operations":"adms",
+             "no":145191,
+             "guest":false,
+             "daily":true,
+             "state":"{\"notes\":[[false, false, false, false, false], [false, false, false, false, false], [false, false, false, false, false], [false, false, false, false, false], [true, false, false, false, false], [false, false, false, false, false], [false, false, false, false, false], [false, false, false, false, false], [false, false, false, false, true], [false, false, false, false, false], [false, false, false, false, false], [false, false, false, false, false], [false, false, false, false, false], [false, false, false, false, false], [false, false, false, false, false], [false, false, false, false, false], [false, false, false, true, false], [false, false, false, false, false], [false, false, false, false, false], [false, false, false, false, false], [false, false, false, false, false], [false, false, false, false, false], [false, false, false, false, false], [false, false, false, false, false], [false, false, false, false, false]], \"values\":\"0,0,0,0,0,0,0,0,0,3,0,0,0,5,4,0,0,0,0,0,0,0,0,0,0\"}",
+             "u_level":"B"
+             }*/
+
+
+
+            //NO OP puzzle data:
+            /*var puzzle_data = jQuery.parseJSON(base64_decode('eyJpZCI6NTg5NSwiZGF0YSI6IkFcclxuMSA0IDIgMyBcclxuNCAzIDEgMiBcclxuMiAxIDMgNCBcclxuMyAyIDQgMSBcclxuVFxyXG4gIDMgICAxICAgNiAgIDBcclxuICAwICAgMCAgIDIgICAwXHJcbiAgNiAgIDQgICAwICAxNlxyXG4gIDAgICAyICAgMCAgIDBcclxuU0FcclxuLSAtICogMFxyXG4wIDAgLyAwXHJcbiogKyAwICpcclxuMCAxIDAgMFxyXG5WXHJcbjEgMSAwXHJcbjEgMSAwXHJcbjEgMCAxXHJcbjEgMSAwXHJcbkhcclxuMCAxIDBcclxuMCAxIDFcclxuMSAxIDFcclxuMSAxIDBcclxuXHJcbiIsInNpemUiOjQsImxldmVsIjoiZWFzeSIsIm9wZXJhdGlvbnMiOiJhZG1zdyIsIm5vIjo1ODk1LCJndWVzdCI6ZmFsc2UsImRhaWx5IjpmYWxzZSwic3RhdGUiOm51bGwsInVfbGV2ZWwiOiJDIn0='));*/
+
+            /*{
+             "id":5895,
+             "data":"A\r\n1 4 2 3 \r\n4 3 1 2 \r\n2 1 3 4 \r\n3 2 4 1 \r\nT\r\n  3   1   6   0\r\n  0   0   2   0\r\n  6   4   0  16\r\n  0   2   0   0\r\nSA\r\n- - * 0\r\n0 0 / 0\r\n* + 0 *\r\n0 1 0 0\r\nV\r\n1 1 0\r\n1 1 0\r\n1 0 1\r\n1 1 0\r\nH\r\n0 1 0\r\n0 1 1\r\n1 1 1\r\n1 1 0\r\n\r\n",
+             "size":4,
+             "level":"easy",
+             "operations":"admsw",
+             "no":5895,
+             "guest":false,
+             "daily":false,
+             "state":null,
+             "u_level":"C"
+             }*/
 
             var leave_msg = 'You are about to leave the puzzle, are you sure?';
             kenken.game = new kenken.Game(puzzle_data, leave_msg);
