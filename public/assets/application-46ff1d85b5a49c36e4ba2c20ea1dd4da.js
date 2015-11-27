@@ -896,23 +896,27 @@ var KenKenGame = function () {
         var stringResult;
         var i = 1;
 
-        while (i <= size) {
-            if (valuesArray[x - 1][i - 1] === notesValue) {
-                el = puzzleContainer.find('#p' + x + i).addClass('pulseRed');
-                allItems.push(el[0]);
-                notActive = true;
-            }
-            if (valuesArray[i - 1][y - 1] === notesValue) {
-                el = puzzleContainer.find('#p' + i + y).addClass('pulseRed');
-                allItems.push(el[0]);
-                notActive = true;
-            }
-            i += 1;
-        }
+        if (currentState.autoNotes) {
 
-        setTimeout(function () {
-            $(allItems).removeClass('pulseRed');
-        }, 400);
+            //check values of autoNotes are enabled:
+            while (i <= size) {
+                if (valuesArray[x - 1][i - 1] === notesValue) {
+                    el = puzzleContainer.find('#p' + x + i).addClass('pulseRed');
+                    allItems.push(el[0]);
+                    notActive = true;
+                }
+                if (valuesArray[i - 1][y - 1] === notesValue) {
+                    el = puzzleContainer.find('#p' + i + y).addClass('pulseRed');
+                    allItems.push(el[0]);
+                    notActive = true;
+                }
+                i += 1;
+            }
+
+            setTimeout(function () {
+                $(allItems).removeClass('pulseRed');
+            }, 400);
+        }
 
         if (!notActive) {
             notesArray = notesArray.slice(0); //clone the array
@@ -930,8 +934,6 @@ var KenKenGame = function () {
             };
 
             self.steps.saveStep(stepData);
-            //self.steps.getInfo();
-
             target.toggleClass('active');
             stringResult = booleanArrayToSting(notesArray);
             currentItem.find('.itemNotes').text(stringResult);
