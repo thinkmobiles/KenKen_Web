@@ -676,8 +676,11 @@ th {
 }
 .puzzleContainer9 .puzzleItem .itemResult,
 .puzzleContainer9 .puzzleItem .itemSymbol{
-    font: 900 15px/20px Arial Black;
+    font: 900 12px/20px Arial Black;
     top: -15px;
+}
+.puzzleContainer9 .puzzleItem .itemSymbol{
+    top: -12px;
 }
 
 .puzzleContainer4 .puzzleItem .itemResult{
@@ -716,7 +719,7 @@ th {
 .puzzleContainer6 .puzzleItem .itemValue,
 .puzzleContainer7 .puzzleItem .itemValue{
     font-size: 35px;
-    margin-top: -19px;
+    margin-top: -10px;
     margin-left: -11px;
 }
 .puzzleContainer8 .puzzleItem .itemValue,
